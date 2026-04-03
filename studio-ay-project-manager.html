@@ -139,7 +139,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 /* HINT */
 .hint{font-size:11px;color:var(--text3);background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 13px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
 /* LIVRABLES */
-.li-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px}
+.li-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.li-item:hover{border-color:var(--border2)}
+.li-btns{display:flex;gap:5px;opacity:0;transition:opacity .15s}
+.li-item:hover .li-btns{opacity:1}
 .li-icon{width:32px;height:32px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .li-status{font-size:10px;padding:3px 8px;border-radius:20px;white-space:nowrap;margin-left:auto}
 .lv{background:rgba(92,175,138,.15);color:var(--green)}
@@ -176,6 +179,25 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .toast.ok{border-color:rgba(92,175,138,.4)}
 
 /* ========= CLIENT VIEW ========= */
+/* Auto-refresh indicator */
+.cv-live-badge{position:fixed;top:16px;right:16px;background:rgba(92,175,138,.95);color:white;font-size:11px;padding:6px 12px;border-radius:20px;display:flex;align-items:center;gap:6px;font-family:"DM Sans",sans-serif;box-shadow:0 2px 12px rgba(92,175,138,.3);z-index:999;animation:slideInRight .5s ease}
+.cv-live-dot{width:7px;height:7px;border-radius:50%;background:white;animation:livepulse 2s infinite}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.cv-update-flash{animation:updateFlash .8s ease}
+@keyframes updateFlash{0%{background:rgba(92,175,138,.15)}100%{background:transparent}}
+/* Enhanced card animations */
+.cv-tc{animation:cvSlideUp .45s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes cvSlideUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.cv-etape-card-wrap{animation:cvSlideUp .45s cubic-bezier(.34,1.56,.64,1) both}
+/* Progress ring */
+.cv-ring-wrap{position:relative;width:120px;height:120px;flex-shrink:0}
+.cv-ring-svg{transform:rotate(-90deg)}
+.cv-ring-bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8}
+.cv-ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
+.cv-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white}
+.cv-ring-pct{font-size:28px;font-weight:200;line-height:1}
+.cv-ring-lbl{font-size:10px;opacity:.5;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
 #cv{display:none}
 .cv-page{min-height:100vh;background:#F5F2ED;font-family:'DM Sans',sans-serif}
 
@@ -405,6 +427,31 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 </div>
 
+
+<div class="mo" id="m-livrable">
+  <div class="modal">
+    <div class="m-title" id="m-liv-title">Nouveau livrable</div>
+    <div class="fg"><label class="fl">Nom du livrable</label><input type="text" class="fi" id="liv-name" placeholder="ex: Site internet Grandiose Paris"></div>
+    <div class="fg"><label class="fl">Date</label><input type="text" class="fi" id="liv-date" placeholder="ex: Avr 2026"></div>
+    <div class="fg"><label class="fl">Icône</label><select class="fs" id="liv-icon">
+      <option value="🌐">🌐 Site internet</option>
+      <option value="📄">📄 Catalogue / Document</option>
+      <option value="📱">📱 Application mobile</option>
+      <option value="📊">📊 Stratégie / Rapport</option>
+      <option value="📘">📘 Brand book</option>
+      <option value="🎬">🎬 Vidéo</option>
+      <option value="📸">📸 Photos</option>
+      <option value="🎨">🎨 Design / Identité</option>
+      <option value="📧">📧 Email / Newsletter</option>
+    </select></div>
+    <div class="fg"><label class="fl">Statut</label><select class="fs" id="liv-status">
+      <option value="pending">À livrer</option>
+      <option value="inreview">En révision</option>
+      <option value="validated">✓ Validé & livré</option>
+    </select></div>
+    <div class="fa"><button class="btn btn-ghost" onclick="cm('m-livrable')">Annuler</button><button class="btn btn-primary" id="liv-save" onclick="saveLivrable()">Ajouter</button></div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -500,17 +547,27 @@ function renderCV(pid){
   else if(p.id==='grandiose')bgStyle='background:linear-gradient(145deg,#2d2008 0%,#0d0902 100%)';
 
   var html='';
-  // HERO
+  // LIVE BADGE + HERO
+  html+='<div class="cv-live-badge"><div class="cv-live-dot"></div>Suivi en direct</div>';
   html+='<div class="cv-hero"><div class="cv-hero-bg" style="'+bgStyle+'"></div>';
   html+='<div class="cv-hero-overlay"></div>';
   html+='<div class="cv-hero-particles" id="cv-particles"></div>';
   html+='<div class="cv-hero-inner">';
-  html+='<div class="cv-hero-eyebrow">Studio AY — Rapport de projet</div>';
+  html+='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">';
+  html+='<div>';
+  html+='<div class="cv-hero-eyebrow">Studio AY — Suivi projet en temps réel</div>';
   html+='<div class="cv-hero-title">'+p.name+'</div>';
   html+='<div class="cv-hero-client">'+p.client+(p.instagram?' · '+p.instagram:'')+'</div>';
-  html+='<div class="cv-progress-area">';
-  html+='<div class="cv-progress-top"><div class="cv-pct" style="color:'+ac+'"><span id="cv-pct-val">0</span><span style="font-size:26px">%</span></div><div class="cv-pct-sub"><div>Avancement global</div><div class="cv-last-update">Mis à jour le '+dateStr+'</div></div></div>';
-  html+='<div class="cv-pbar-bg"><div class="cv-pbar-fill" id="cv-pbar" style="width:0%;background:'+ac+'"></div></div>';
+  html+='<div style="font-size:11px;opacity:.35;margin-top:12px">Dernière mise à jour : '+dateStr+'</div>';
+  html+='</div>';
+  var circum=289.03;
+  html+='<div class="cv-ring-wrap">';
+  html+='<svg class="cv-ring-svg" width="120" height="120" viewBox="0 0 120 120">';
+  html+='<circle class="cv-ring-bg" cx="60" cy="60" r="46"/>';
+  html+='<circle class="cv-ring-fill" id="cv-ring" cx="60" cy="60" r="46" stroke="'+ac+'" stroke-dasharray="'+circum+'" stroke-dashoffset="'+circum+'"/>';
+  html+='</svg>';
+  html+='<div class="cv-ring-text"><div class="cv-ring-pct" id="cv-pct-val">0</div><div class="cv-ring-lbl">complet</div></div>';
+  html+='</div>';
   html+='</div></div></div>';
 
   // STATS STRIP
@@ -585,22 +642,45 @@ function renderCV(pid){
 
   // Animate
   setTimeout(function(){
-    var bar=document.getElementById('cv-pbar');
-    if(bar)bar.style.width=pct+'%';
-    // Count up percentage
+    // Animate ring
+    var ring=document.getElementById('cv-ring');
+    if(ring){
+      var c=2*Math.PI*46;
+      ring.style.strokeDashoffset=c-(c*pct/100);
+    }
+    // Count up
     var val=document.getElementById('cv-pct-val');
     if(val){
-      var current=0;
-      var step=pct/60;
-      var iv=setInterval(function(){
-        current=Math.min(current+step,pct);
-        val.textContent=Math.round(current);
-        if(current>=pct)clearInterval(iv);
-      },16);
+      var cur=0,step=pct/60;
+      var iv=setInterval(function(){cur=Math.min(cur+step,pct);val.textContent=Math.round(cur);if(cur>=pct)clearInterval(iv);},16);
     }
     // Particles
     makeParticles(ac);
-  },100);
+  },200);
+
+  // AUTO-REFRESH every 30 seconds if cloud enabled
+  if(USE_CLOUD){
+    if(window._cvRefreshInterval)clearInterval(window._cvRefreshInterval);
+    window._cvRefreshInterval=setInterval(function(){
+      if(!USE_CLOUD)return;
+      pullFromCloud(function(){
+        var newP=S.projects.find(function(x){return x.id===pid;});
+        if(!newP)return;
+        var newDone=newP.tasks.filter(function(t){return t.status==="done";}).length;
+        var newTotal=newP.tasks.length;
+        var newPct=newTotal?Math.round(newDone/newTotal*100):0;
+        // Re-render if changed
+        if(newPct!==window._cvLastPct||newDone!==window._cvLastDone){
+          window._cvLastPct=newPct;window._cvLastDone=newDone;
+          renderCV(pid);
+          // Flash to show update
+          var body=document.querySelector('.cv-body');
+          if(body)body.classList.add('cv-update-flash');
+        }
+      });
+    },30000);
+    window._cvLastPct=pct;window._cvLastDone=done;
+  }
 }
 
 function darken(hex,pct){
@@ -914,7 +994,7 @@ etapes:[
 {id:'e6',date:'Juin 2026',name:'App publiée Google Play & App Store',desc:'Publication officielle sur les deux stores',status:'todo'},
 ],
 deliverables:[
-{id:'d1',name:'Site Shopify Grandiose Paris',icon:'🌐',status:'validated',date:'Déc 2024'},
+{id:'d1',name:'Site Shopify Grandiose Paris',icon:'🌐',status:'validated',date:'Avr 2026'},
 {id:'d2',name:'Catalogue HTML luxe',icon:'📄',status:'inreview',date:'Mar 2026'},
 {id:'d3',name:'App mobile React Native',icon:'📱',status:'inreview',date:'Avr 2026'},
 {id:'d4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Mai 2026'},
@@ -983,6 +1063,63 @@ deliverables:[{id:'dp1',name:'Site vitrine portfolio',icon:'🌐',status:'pendin
 notes:'Commencer par sélectionner les 20 meilleures photos/vidéos.'}
 ];
 save();
+}
+
+
+// ============= LIVRABLE ACTIONS =============
+var _editLiv=null;
+function cycleLivrable(pid,did){
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  var d=p.deliverables.find(function(x){return x.id===did;});if(!d)return;
+  var c={pending:'inreview',inreview:'validated',validated:'pending'};d.status=c[d.status];
+  save();renderDetail(pid);
+  showToast('Livrable → '+(d.status==='validated'?'Validé ✓':d.status==='inreview'?'En révision':'À livrer'),true);
+}
+function openAddLivrable(){
+  _editLiv=null;
+  document.getElementById('m-liv-title').textContent='Nouveau livrable';
+  document.getElementById('liv-save').textContent='Ajouter';
+  document.getElementById('liv-name').value='';
+  document.getElementById('liv-date').value='';
+  document.getElementById('liv-icon').value='🌐';
+  document.getElementById('liv-status').value='pending';
+  om('m-livrable');
+}
+function openEditLivrable(pid,did){
+  _editLiv=did;
+  var p=S.projects.find(function(x){return x.id===pid;});
+  var d=p&&p.deliverables.find(function(x){return x.id===did;});if(!d)return;
+  document.getElementById('m-liv-title').textContent='Modifier le livrable';
+  document.getElementById('liv-save').textContent='Enregistrer';
+  document.getElementById('liv-name').value=d.name;
+  document.getElementById('liv-date').value=d.date;
+  document.getElementById('liv-icon').value=d.icon;
+  document.getElementById('liv-status').value=d.status;
+  om('m-livrable');
+}
+function saveLivrable(){
+  var name=document.getElementById('liv-name').value.trim();
+  var date=document.getElementById('liv-date').value.trim();
+  if(!name||!date){showToast('Nom et date requis',false);return;}
+  var p=S.projects.find(function(x){return x.id===S.cur;});if(!p)return;
+  if(!p.deliverables)p.deliverables=[];
+  var icon=document.getElementById('liv-icon').value;
+  var status=document.getElementById('liv-status').value;
+  if(_editLiv){
+    var d=p.deliverables.find(function(x){return x.id===_editLiv;});
+    if(d){d.name=name;d.date=date;d.icon=icon;d.status=status;}
+    showToast('Livrable modifié !',true);
+  }else{
+    p.deliverables.push({id:'d_'+Date.now(),name:name,date:date,icon:icon,status:status});
+    showToast('Livrable ajouté !',true);
+  }
+  save();cm('m-livrable');renderDetail(S.cur);
+}
+function delLivrable(pid,did){
+  if(!confirm('Supprimer ce livrable ?'))return;
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  p.deliverables=p.deliverables.filter(function(x){return x.id!==did;});
+  save();renderDetail(pid);showToast('Livrable supprimé',true);
 }
 
 // ============= INIT =============
