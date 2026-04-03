@@ -26,23 +26,23 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#000;flex-shrink:0}
 .user-name{font-size:13px;font-weight:500}
 .user-role{font-size:11px;color:var(--text3)}
-.topbar{padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50;gap:12px;flex-wrap:wrap}
+.topbar{padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50;gap:12px;flex-wrap:wrap}
 .topbar-title{font-size:18px;font-weight:500}
-.topbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .15s}
 .btn-primary{background:var(--accent);color:#000}
 .btn-primary:hover{background:var(--accent2)}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
 .btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
 .btn-danger{background:rgba(224,92,92,.12);color:var(--red);border:1px solid rgba(224,92,92,.25)}
-.btn-danger:hover{background:rgba(224,92,92,.2)}
-.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger:hover{background:rgba(224,92,92,.22)}
+.btn-sm{padding:5px 12px;font-size:12px}
 .view{display:none;padding:32px}
 .view.active{display:block}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
 .stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
 .stat-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.stat-value{font-size:28px;font-weight:300;color:var(--text)}
+.stat-value{font-size:28px;font-weight:300}
 .stat-sub{font-size:12px;color:var(--text3);margin-top:4px}
 .stat-card.accent-card{border-color:rgba(201,168,108,.3);background:var(--accent-dim)}
 .stat-card.accent-card .stat-value{color:var(--accent)}
@@ -55,7 +55,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
 .pc-name{font-size:15px;font-weight:500}
 .pc-client{font-size:12px;color:var(--text3);margin-top:2px}
-.status-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.status-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
 .status-active{background:rgba(92,175,138,.15);color:var(--green)}
 .status-pending{background:rgba(91,143,212,.15);color:var(--blue)}
 .status-urgent{background:rgba(224,92,92,.15);color:var(--red)}
@@ -76,46 +76,43 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .detail-content{padding:32px}
 .tab-panel{display:none}
 .tab-panel.active{display:block}
-
 /* KANBAN */
 .kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .kanban-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
 .kanban-col-title{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
 .kanban-col-count{background:rgba(255,255,255,.06);color:var(--text2);font-size:11px;padding:1px 7px;border-radius:10px}
-
-/* TASK ITEM — clickable to change status */
-.task-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;transition:all .15s;position:relative}
+.task-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;transition:border-color .15s}
 .task-item:hover{border-color:var(--border2)}
 .task-header{display:flex;align-items:flex-start;gap:8px}
-.task-status-btn{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center}
-.task-status-btn:hover{border-color:var(--accent);background:var(--accent-dim)}
-.task-status-btn.done{background:var(--green);border-color:var(--green)}
-.task-status-btn.done::after{content:'✓';font-size:10px;color:white;font-weight:700}
-.task-status-btn.inprogress{background:var(--blue);border-color:var(--blue)}
-.task-status-btn.inprogress::after{content:'';width:6px;height:6px;background:white;border-radius:50%}
-.task-name{font-size:13px;flex:1;line-height:1.4;cursor:text}
+.task-status-btn{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.task-status-btn:hover{border-color:var(--accent)}
+.task-status-btn.s-done{background:var(--green);border-color:var(--green);color:white}
+.task-status-btn.s-inprogress{background:var(--blue);border-color:var(--blue)}
+.task-name{font-size:13px;flex:1;line-height:1.4}
 .task-name.done-text{text-decoration:line-through;color:var(--text3)}
 .task-note{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic;padding-left:26px}
-.task-actions{display:flex;align-items:center;gap:6px;margin-top:8px;padding-left:26px;opacity:0;transition:opacity .15s}
+.task-actions{display:flex;align-items:center;gap:6px;margin-top:8px;padding-left:26px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
 .task-item:hover .task-actions{opacity:1}
 .task-tag{font-size:10px;padding:2px 7px;border-radius:20px;display:inline-block}
-.task-action-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 7px;border-radius:4px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
-.task-action-btn:hover{color:var(--text);border-color:var(--border2);background:rgba(255,255,255,.04)}
-.task-action-btn.del:hover{color:var(--red);border-color:rgba(224,92,92,.3)}
-.status-cycle-hint{font-size:10px;color:var(--text3);margin-left:auto}
-.add-task-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px}
-.add-task-btn:hover{color:var(--text2);background:rgba(255,255,255,.03);border-color:var(--border)}
-
-/* TIMELINE */
-.timeline{position:relative;padding-left:24px}
-.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--border)}
-.milestone{position:relative;margin-bottom:20px}
-.milestone::before{content:'';position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--border2)}
-.milestone.done::before{background:var(--green);border-color:var(--green)}
-.milestone.current::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.milestone-date{font-size:11px;color:var(--text3);margin-bottom:2px}
-.milestone-name{font-size:14px;font-weight:500}
-
+.task-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.task-btn:hover{color:var(--text);border-color:var(--border2);background:rgba(255,255,255,.04)}
+.task-btn.del:hover{color:var(--red);border-color:rgba(224,92,92,.3)}
+.add-item-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px}
+.add-item-btn:hover{color:var(--text2);background:rgba(255,255,255,.03);border-color:var(--border)}
+/* MILESTONES */
+.milestone-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:border-color .15s}
+.milestone-item:hover{border-color:var(--border2)}
+.ms-status-btn{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.ms-status-btn:hover{border-color:var(--accent)}
+.ms-status-btn.ms-done{background:var(--green);border-color:var(--green);color:white}
+.ms-status-btn.ms-current{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.ms-body{flex:1}
+.ms-date{font-size:11px;color:var(--text3);margin-bottom:3px}
+.ms-name{font-size:14px;font-weight:500}
+.ms-desc{font-size:12px;color:var(--text2);margin-top:4px}
+.ms-actions{display:flex;gap:6px;margin-top:8px;opacity:0;transition:opacity .15s}
+.milestone-item:hover .ms-actions{opacity:1}
+.ms-cycle-hint{font-size:10px;color:var(--text3);margin-left:auto}
 /* STRATEGY */
 .strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .strategy-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
@@ -125,30 +122,22 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .strategy-item::before{content:'→';color:var(--accent);font-size:12px;margin-top:1px;flex-shrink:0}
 .strategy-full{grid-column:1/-1}
 .tag-pill{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:3px}
-
-/* FILES */
-.files-list{display:grid;gap:8px}
-.file-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:12px}
-.file-icon{width:32px;height:32px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.file-name{font-size:13px}
-.file-meta{font-size:11px;color:var(--text3);margin-top:2px}
-.file-action{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;padding:4px 8px;border-radius:4px;text-decoration:none;transition:all .15s}
-.file-action:hover{color:var(--text);background:rgba(255,255,255,.05)}
-
+/* LIVRABLES */
+.deliverable-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+.deliverable-item:hover{border-color:var(--border2)}
+.deliverable-icon{width:32px;height:32px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.deliverable-status{font-size:10px;padding:3px 8px;border-radius:20px;white-space:nowrap;margin-left:auto}
+.ds-pending{background:rgba(91,143,212,.15);color:var(--blue)}
+.ds-inreview{background:rgba(201,168,108,.15);color:var(--accent)}
+.ds-validated{background:rgba(92,175,138,.15);color:var(--green)}
 /* NOTES */
 .notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
 .notes-textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;resize:none;outline:none;min-height:200px}
 .notes-textarea::placeholder{color:var(--text3)}
-
-/* INLINE EDIT */
-.editable-field{display:inline-block;cursor:text;padding:2px 4px;border-radius:4px;transition:background .15s;border-bottom:1px dashed transparent}
-.editable-field:hover{background:rgba(255,255,255,.05);border-bottom-color:var(--border2)}
-.editable-field:focus{outline:none;background:rgba(255,255,255,.07);border-bottom-color:var(--accent)}
-
 /* MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:520px;max-width:90vw;max-height:90vh;overflow-y:auto}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:520px;max-width:92vw;max-height:90vh;overflow-y:auto}
 .modal-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px}
 .form-group{margin-bottom:16px}
 .form-label{font-size:12px;color:var(--text2);margin-bottom:6px;display:block}
@@ -159,20 +148,15 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .color-selector{display:flex;gap:8px;flex-wrap:wrap}
 .color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
 .color-opt.selected{border-color:white;transform:scale(1.15)}
-
 /* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:rgba(92,175,138,.4)}
-
-/* EDIT PROJECT BAR */
-.edit-project-bar{background:var(--accent-dim);border:1px solid rgba(201,168,108,.2);border-radius:var(--radius-sm);padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--accent)}
-
+/* INFO BANNER */
+.info-hint{font-size:12px;color:var(--text3);background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
 /* CLIENT VIEW */
 .cv-wrapper{min-height:100vh;background:#F5F2ED;font-family:'DM Sans',sans-serif}
 .cv-hero{padding:48px 40px;color:white}
-.cv-hero-title{font-family:'DM Serif Display',serif;font-size:36px;margin-bottom:6px}
-.cv-hero-sub{font-size:15px;opacity:.7}
 .cv-body{padding:32px 40px}
 .cv-section{margin-bottom:32px}
 .cv-section-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:16px}
@@ -180,11 +164,10 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .cv-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
 .cv-task-name{font-size:14px;color:#1a1a1a;flex:1}
 .cv-task-tag{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.cv-milestone{display:flex;gap:16px;margin-bottom:16px}
-.cv-ms-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:3px}
-.cv-ms-name{font-size:14px;font-weight:500}
-.cv-ms-date{font-size:11px;color:#999;margin-bottom:2px}
-
+.cv-ms{background:white;border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.cv-ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.cv-ms-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.cv-ms-date{font-size:11px;color:#999;margin-top:2px}
 @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.stats-row{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr}.strategy-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -232,7 +215,6 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     </div>
   </main>
 </div>
-
 <div id="client-view" style="display:none"><div class="cv-wrapper" id="cv-content"></div></div>
 
 <!-- MODALS -->
@@ -240,11 +222,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   <div class="modal">
     <div class="modal-title">Nouveau projet</div>
     <div class="form-group"><label class="form-label">Nom du projet</label><input type="text" class="form-input" id="np-name" placeholder="ex: La Guestation"></div>
-    <div class="form-group"><label class="form-label">Client</label><input type="text" class="form-input" id="np-client" placeholder="Nom du client"></div>
+    <div class="form-group"><label class="form-label">Client</label><input type="text" class="form-input" id="np-client"></div>
     <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="np-desc" placeholder="Résumé du projet..."></textarea></div>
     <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="np-status"><option value="active">En cours</option><option value="planning">Planification</option><option value="pending">En attente</option><option value="urgent">Urgent</option></select></div>
     <div class="form-group"><label class="form-label">Deadline</label><input type="text" class="form-input" id="np-deadline" placeholder="ex: Juin 2026"></div>
-    <div class="form-group"><label class="form-label">Instagram</label><input type="text" class="form-input" id="np-instagram" placeholder="ex: @grandiose_gastronomie"></div>
+    <div class="form-group"><label class="form-label">Instagram</label><input type="text" class="form-input" id="np-instagram" placeholder="@compte"></div>
     <div class="form-group"><label class="form-label">Couleur</label><div class="color-selector">
       <div class="color-opt selected" style="background:#C9A86C" data-color="#C9A86C" onclick="selectColor(this)"></div>
       <div class="color-opt" style="background:#6E0E10" data-color="#6E0E10" onclick="selectColor(this)"></div>
@@ -257,14 +239,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-add-task">
+<div class="modal-overlay" id="modal-task">
   <div class="modal">
     <div class="modal-title" id="modal-task-title">Nouvelle tâche</div>
     <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="task-name" placeholder="ex: Créer le site internet"></div>
     <div class="form-group"><label class="form-label">Catégorie</label><select class="form-select" id="task-tag"><option value="web">Site internet</option><option value="app">Application</option><option value="content">Contenu</option><option value="marketing">Marketing</option><option value="design">Design</option><option value="video">Vidéo</option><option value="photo">Photo</option><option value="other">Autre</option></select></div>
     <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="task-status"><option value="todo">À faire</option><option value="inprogress">En cours</option><option value="done">Terminé</option></select></div>
     <div class="form-group"><label class="form-label">Note (optionnel)</label><input type="text" class="form-input" id="task-note" placeholder="ex: Attendre textes de Mourad"></div>
-    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-add-task')">Annuler</button><button class="btn btn-primary" id="task-save-btn" onclick="saveTask()">Ajouter</button></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-task')">Annuler</button><button class="btn btn-primary" id="task-save-btn" onclick="saveTask()">Ajouter</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-milestone">
+  <div class="modal">
+    <div class="modal-title" id="modal-ms-title">Nouveau jalon</div>
+    <div class="form-group"><label class="form-label">Titre du jalon</label><input type="text" class="form-input" id="ms-name" placeholder="ex: Site internet en ligne"></div>
+    <div class="form-group"><label class="form-label">Date prévue</label><input type="text" class="form-input" id="ms-date" placeholder="ex: Mai 2026 ou 15/05/2026"></div>
+    <div class="form-group"><label class="form-label">Description (optionnel)</label><input type="text" class="form-input" id="ms-desc" placeholder="ex: Livraison de la maquette finale"></div>
+    <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="ms-status">
+      <option value="todo">À venir</option>
+      <option value="current">En cours</option>
+      <option value="done">Terminé ✓</option>
+    </select></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-milestone')">Annuler</button><button class="btn btn-primary" id="ms-save-btn" onclick="saveMilestone()">Ajouter</button></div>
   </div>
 </div>
 
@@ -284,8 +281,8 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="modal-overlay" id="modal-share">
   <div class="modal">
     <div class="modal-title">🔗 Lien client</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6">Partage ce lien avec ton client. Il verra <strong>uniquement son projet</strong> en lecture seule — impossible de modifier quoi que ce soit.</p>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:16px">Le client voit : avancement, tâches, jalons. Il ne voit pas tes notes internes ni tes autres clients.</p>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6">Partage ce lien avec ton client. Il verra <strong>uniquement son projet</strong> en <strong>lecture seule</strong>.</p>
+    <p style="font-size:12px;color:var(--text3);margin-bottom:16px">Le client voit : avancement, tâches, jalons. Il ne peut rien modifier. Tes notes internes sont cachées.</p>
     <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:monospace;font-size:12px;color:var(--accent);word-break:break-all" id="share-url-display"></div>
     <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-share')">Fermer</button><button class="btn btn-primary" onclick="copyShareUrl()">Copier le lien</button></div>
   </div>
@@ -294,17 +291,14 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== STATE =====
-let S={projects:[],currentProject:null,currentTab:'overview',selectedColor:'#C9A86C',editingTaskId:null};
-const TC={web:{bg:'rgba(91,143,212,.15)',text:'#5B8FD4'},app:{bg:'rgba(155,127,212,.15)',text:'#9B7FD4'},content:{bg:'rgba(201,168,108,.15)',text:'#C9A86C'},marketing:{bg:'rgba(92,175,138,.15)',text:'#5CAF8A'},design:{bg:'rgba(201,168,108,.12)',text:'#C49346'},video:{bg:'rgba(224,92,92,.12)',text:'#E05C5C'},photo:{bg:'rgba(155,127,212,.12)',text:'#9B7FD4'},other:{bg:'rgba(136,135,130,.15)',text:'#888882'}};
-const SM={active:{label:'En cours',cls:'status-active'},planning:{label:'Planification',cls:'status-planning'},pending:{label:'En attente',cls:'status-pending'},urgent:{label:'Urgent',cls:'status-urgent'}};
+var S={projects:[],currentProject:null,currentTab:'overview',selectedColor:'#C9A86C',editingTaskId:null,editingMsId:null};
+var TC={web:{bg:'rgba(91,143,212,.15)',text:'#5B8FD4'},app:{bg:'rgba(155,127,212,.15)',text:'#9B7FD4'},content:{bg:'rgba(201,168,108,.15)',text:'#C9A86C'},marketing:{bg:'rgba(92,175,138,.15)',text:'#5CAF8A'},design:{bg:'rgba(201,168,108,.12)',text:'#C49346'},video:{bg:'rgba(224,92,92,.12)',text:'#E05C5C'},photo:{bg:'rgba(155,127,212,.12)',text:'#9B7FD4'},other:{bg:'rgba(136,135,130,.15)',text:'#888882'}};
+var SM={active:{label:'En cours',cls:'status-active'},planning:{label:'Planification',cls:'status-planning'},pending:{label:'En attente',cls:'status-pending'},urgent:{label:'Urgent',cls:'status-urgent'}};
 
-// ===== STORAGE =====
-function save(){try{localStorage.setItem('studioay_data',JSON.stringify(S.projects));}catch(e){}}
-function loadFromStorage(){try{const d=localStorage.getItem('studioay_data');if(d){S.projects=JSON.parse(d);return true;}}catch(e){}return false;}
+function save(){try{localStorage.setItem('studioay_v2',JSON.stringify(S.projects));}catch(e){}}
+function loadStorage(){try{var d=localStorage.getItem('studioay_v2');if(d){S.projects=JSON.parse(d);return true;}}catch(e){}return false;}
 
-// ===== INITIAL DATA =====
-function loadDefaultData(){
+function loadDefault(){
   S.projects=[
     {id:'grandiose',name:'Grandiose Paris',client:'Mourad — Grandiose Paris',color:'#C9A86C',status:'active',deadline:'Juin 2026',instagram:'@grandiose_gastronomie',
      desc:'Brand premium halal — charcuteries & gastronomie. Site Shopify, catalogue HTML luxe, app mobile React Native et stratégie réseaux sociaux.',
@@ -315,7 +309,7 @@ function loadDefaultData(){
        {id:'t4',name:'Signature email directeur',tag:'design',status:'done'},
        {id:'t5',name:'App mobile React Native (base)',tag:'app',status:'done'},
        {id:'t6',name:'Page Production — vidéo + textes',tag:'video',status:'inprogress',note:'Attendre vidéo + textes de Mourad'},
-       {id:'t7',name:'Catalogue — modifications Hassna',tag:'design',status:'inprogress',note:'Modifications reçues, en cours'},
+       {id:'t7',name:'Catalogue — modifications Hassna',tag:'design',status:'inprogress',note:'En cours'},
        {id:'t8',name:'Photos produits pour catalogue',tag:'photo',status:'inprogress',note:'Photos à prendre'},
        {id:'t9',name:'Catalogue — partie viandes',tag:'design',status:'inprogress',note:'Attendre retour Mourad'},
        {id:'t10',name:'App → Expo Go sharing',tag:'app',status:'inprogress'},
@@ -327,16 +321,20 @@ function loadDefaultData(){
        {id:'t16',name:'App → App Store',tag:'app',status:'todo'},
      ],
      milestones:[
-       {date:'Déc 2024',name:'Site Shopify lancé',done:true},
-       {date:'Jan 2025',name:'Catalogue HTML v1',done:true},
-       {date:'Fév 2025',name:'App mobile prototype',done:true},
-       {date:'Avr 2026',name:'Page Production + Catalogue final',current:true},
-       {date:'Avr 2026',name:'App partagée via Expo Go',current:true},
-       {date:'Mai 2026',name:'Stratégie contenu réseaux sociaux',done:false},
-       {date:'Juin 2026',name:'App publiée sur les stores',done:false},
+       {id:'ms1',date:'Déc 2024',name:'Site Shopify lancé',desc:'Site e-commerce Shopify en production',status:'done'},
+       {id:'ms2',date:'Jan 2025',name:'Catalogue HTML v1',desc:'Catalogue luxe multi-langue livré',status:'done'},
+       {id:'ms3',date:'Fév 2025',name:'App mobile prototype',desc:'Version beta sur Expo Go',status:'done'},
+       {id:'ms4',date:'Avr 2026',name:'Page Production + Catalogue final',desc:'Attente vidéo Mourad + photos produits',status:'current'},
+       {id:'ms5',date:'Mai 2026',name:'Stratégie contenu réseaux sociaux',desc:'Instagram, LinkedIn, TikTok',status:'todo'},
+       {id:'ms6',date:'Juin 2026',name:'App publiée Google Play & App Store',desc:'Publication officielle sur les stores',status:'todo'},
      ],
-     marketing:{target:'Professionnels (chefs, restaurateurs, épiceries fines) et particuliers CSP+ amateurs de charcuterie premium halal. 28–55 ans, Paris & grandes villes françaises.',platforms:['Instagram — visuels luxe produits, lifestyle','LinkedIn — approche B2B, restaurateurs, professionnels','TikTok — behind the scenes, dégustations, recettes'],tone:'Luxe, raffinement, authenticité halal. Codes visuels premium : fond sombre, accents dorés, typographie élégante.',kpis:['10k followers Instagram en 6 mois','3 publications/semaine minimum','Taux d\'engagement > 3%','Partenariats influenceurs food halal','100 téléchargements app dans le 1er mois'],content:['Visuels produits studio fond sombre','Vidéos process artisanal','Stories coulisses atelier','Recettes avec les produits','Témoignages clients','Reels avant/après dressage','Posts certification halal']},
-     files:[{name:'Site Shopify Grandiose Paris',type:'🌐',size:'En ligne',date:'Déc 2024',url:'https://grandioseparis.com'},{name:'Catalogue HTML final',type:'📄',size:'2.3 MB',date:'Mar 2026'},{name:'App React Native (Expo)',type:'📱',size:'GitHub',date:'Avr 2026'}],
+     marketing:{target:'Professionnels (chefs, restaurateurs, épiceries fines) et particuliers CSP+ amateurs de charcuterie premium halal. 28–55 ans, Paris & grandes villes françaises.',platforms:['Instagram — visuels luxe produits, lifestyle','LinkedIn — approche B2B, restaurateurs, professionnels','TikTok — behind the scenes, dégustations, recettes'],tone:'Luxe, raffinement, authenticité halal. Codes visuels premium : fond sombre, accents dorés, typographie élégante.',kpis:['10k followers Instagram en 6 mois','3 publications/semaine minimum','Taux d\'engagement > 3%','Partenariats influenceurs food halal'],content:['Visuels produits studio fond sombre','Vidéos process artisanal','Stories coulisses atelier','Recettes avec les produits','Témoignages clients']},
+     deliverables:[
+       {id:'d1',name:'Site Shopify Grandiose Paris',icon:'🌐',status:'validated',date:'Déc 2024'},
+       {id:'d2',name:'Catalogue HTML luxe',icon:'📄',status:'inreview',date:'Mar 2026'},
+       {id:'d3',name:'App mobile React Native',icon:'📱',status:'inreview',date:'Avr 2026'},
+       {id:'d4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Mai 2026'},
+     ],
      notes:'→ Page Production : attendre vidéo + textes de Mourad avant de finaliser.\n→ Catalogue : modifications Hassna en cours + photos produits à prendre + attendre retour Mourad sur la partie viandes.\n→ App : connecter API Shopify pour afficher vrais produits, puis publier Google Play et App Store.'},
 
     {id:'guestation',name:'LA guestation',client:'Chef Wii — La Guestation',color:'#6E0E10',status:'planning',deadline:'À définir',instagram:'@guestation',
@@ -350,25 +348,39 @@ function loadDefaultData(){
        {id:'g6',name:'Stratégie contenu Instagram',tag:'marketing',status:'todo'},
        {id:'g7',name:'Création contenu réseaux sociaux',tag:'content',status:'todo'},
      ],
-     milestones:[{date:'Avr 2026',name:'Brief & cadrage',current:true},{date:'Mai 2026',name:'Site internet en ligne',done:false},{date:'Mai 2026',name:'Shooting photo/vidéo',done:false},{date:'Juin 2026',name:'Stratégie contenu active',done:false}],
-     marketing:{target:'CEOs, dirigeants, célébrités, travel concierge, hôtels de luxe. Clientèle internationale Paris & Dubai. Budget élevé, exigence maximale, discrétion totale.',platforms:['Instagram — gastronomique d\'exception, lifestyle ultra-luxe','LinkedIn — approche B2B corporate events, luxury hotels'],tone:'Silence du luxe. Épuré, élégant, mystérieux. Couleurs bordeaux & or. Photos cinématographiques.',kpis:['Compte Instagram soigné et cohérent','2 publications/semaine premium','Ciblage clientèle internationale','Partenariats hôtels & concierges de luxe','Mentions presse food & lifestyle'],content:['Plats dressés en close-up cinématographique','Ambiances dîners privés (chandeliers, fleurs)','Behind the scenes du Chef','Résidences Haussmanniennes Paris','Tableaux de setting luxe','Portraits Chef Wii']},
-     files:[{name:'Company Identity — Brand Book',type:'📘',size:'PDF',date:'Avr 2026'},{name:'Catalogue Services (Booklet)',type:'📄',size:'PDF',date:'Avr 2026'}],
-     notes:'Brand colors: Bordeaux #6E0E10 · Or #C49346 · Or clair #F1B356\nPolices: Roller Coaster (guestation) + Aileron (LA)\nSite: laguestation.com · Instagram: @guestation\n\nClientèle : CEOs, célébrités fashion, hôtels & résidences de luxe, concierge travel.\nDisponible Paris (7e arr., résidence Haussmannienne) + Dubai (saisonnier).'},
+     milestones:[
+       {id:'mg1',date:'Avr 2026',name:'Brief & cadrage projet',desc:'Réunion de lancement avec le client',status:'current'},
+       {id:'mg2',date:'Mai 2026',name:'Site internet en ligne',desc:'Refonte ou création du site laguestation.com',status:'todo'},
+       {id:'mg3',date:'Mai 2026',name:'Shooting photo & vidéo',desc:'Photos des plats, ambiances, portrait Chef Wii',status:'todo'},
+       {id:'mg4',date:'Juin 2026',name:'Stratégie contenu active',desc:'Instagram & LinkedIn opérationnels',status:'todo'},
+     ],
+     marketing:{target:'CEOs, dirigeants, célébrités, travel concierge, hôtels de luxe. Clientèle internationale Paris & Dubai.',platforms:['Instagram — gastronomique d\'exception, lifestyle ultra-luxe','LinkedIn — approche B2B corporate events, luxury hotels'],tone:'Silence du luxe. Épuré, élégant, mystérieux. Couleurs bordeaux & or.',kpis:['Compte Instagram soigné et cohérent','2 publications/semaine premium','Partenariats hôtels & concierges de luxe'],content:['Plats dressés en close-up cinématographique','Ambiances dîners privés','Behind the scenes du Chef','Portraits Chef Wii']},
+     deliverables:[
+       {id:'dg1',name:'Brand book & Company Identity',icon:'📘',status:'validated',date:'Reçu Avr 2026'},
+       {id:'dg2',name:'Catalogue services',icon:'📄',status:'validated',date:'Reçu Avr 2026'},
+       {id:'dg3',name:'Site internet',icon:'🌐',status:'pending',date:'Mai 2026'},
+       {id:'dg4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Juin 2026'},
+     ],
+     notes:'Brand colors: Bordeaux #6E0E10 · Or #C49346 · Or clair #F1B356\nPolices: Roller Coaster (guestation) + Aileron (LA)\nSite: laguestation.com · Instagram: @guestation\n\nClientèle : CEOs, célébrités fashion, hôtels & résidences de luxe, concierge travel.\nDisponible Paris (7e arr.) + Dubai (saisonnier).'},
 
-    {id:'mariage',name:'Montage Mariage',client:'Client privé',color:'#E05C5C',status:'urgent',deadline:'⚠️ À confirmer URGENT',instagram:null,
+    {id:'mariage',name:'Montage Mariage',client:'Client privé',color:'#E05C5C',status:'urgent',deadline:'⚠️ À confirmer',instagram:null,
      desc:'Montage vidéo professionnel d\'un mariage. Deadline de livraison à fixer de toute urgence avec le client.',
      tasks:[
        {id:'m1',name:'Récupérer tous les rushes',tag:'video',status:'inprogress'},
-       {id:'m2',name:'Fixer la deadline avec le client',tag:'other',status:'inprogress',note:'URGENT — à faire cette semaine'},
+       {id:'m2',name:'Fixer la deadline avec le client',tag:'other',status:'inprogress',note:'URGENT — cette semaine'},
        {id:'m3',name:'Sélection des meilleures scènes',tag:'video',status:'todo'},
        {id:'m4',name:'Montage principal',tag:'video',status:'todo'},
        {id:'m5',name:'Étalonnage couleur',tag:'video',status:'todo'},
        {id:'m6',name:'Mixage audio & musique',tag:'video',status:'todo'},
        {id:'m7',name:'Export & livraison client',tag:'video',status:'todo'},
      ],
-     milestones:[{date:'Avr 2026',name:'Rushes récupérés + deadline fixée',current:true},{date:'Avr 2026',name:'Montage rough cut',done:false},{date:'À confirmer',name:'Livraison finale',done:false}],
-     marketing:null,files:[],
-     notes:'⚠️ URGENT — contacter le client cette semaine pour fixer une date de livraison précise avant de commencer le montage.'},
+     milestones:[
+       {id:'mm1',date:'Avr 2026',name:'Rushes récupérés + deadline fixée',desc:'Contact client urgent',status:'current'},
+       {id:'mm2',date:'À confirmer',name:'Montage rough cut',desc:'Première version du montage',status:'todo'},
+       {id:'mm3',date:'À confirmer',name:'Livraison finale',desc:'Export et remise au client',status:'todo'},
+     ],
+     marketing:null,deliverables:[],
+     notes:'⚠️ URGENT — contacter le client cette semaine pour fixer une date de livraison précise.'},
 
     {id:'portfolio',name:'Portfolio Ayoub',client:'Personnel — @hamouni.ay',color:'#9B7FD4',status:'planning',deadline:'Mai 2026',instagram:'@hamouni.ay',
      desc:'Site vitrine personnel photo/vidéo + stratégie de contenu Instagram. Montrer ton regard unique de créatif parisien.',
@@ -380,341 +392,366 @@ function loadDefaultData(){
        {id:'p5',name:'Stratégie contenu Instagram perso',tag:'marketing',status:'todo'},
        {id:'p6',name:'Premiers posts Instagram',tag:'content',status:'todo'},
      ],
-     milestones:[{date:'Avr 2026',name:'Positionnement & sélection portfolio',current:true},{date:'Mai 2026',name:'Site en ligne',done:false},{date:'Mai 2026',name:'Instagram actif',done:false}],
-     marketing:{target:'Entreprises et particuliers cherchant un photographe/vidéaste créatif à Paris. Agences, clients luxe qui cherchent un œil artistique.',platforms:['Instagram — portfolio visuel, style éditorial','LinkedIn — approche B2B, agences, marques'],tone:'Créatif, authentique, artistique. Montrer ton regard unique. Pas un technicien — un artiste.',kpis:['Site en ligne avant fin mai','1 post/jour Instagram','Premier client via Instagram','Cohérence visuelle du feed'],content:['Portfolio photos best-of','Behind the scenes tournages clients','Process créatif','Projets Grandiose & Guestation','Portraits & reportages']},
-     files:[],
-     notes:'Commencer par sélectionner les 20 meilleures photos/vidéos avant de lancer le site.\nStyle à définir : éditorial, sombre, contrasté — en accord avec tes clients luxury.'}
+     milestones:[
+       {id:'pp1',date:'Avr 2026',name:'Positionnement & sélection portfolio',desc:'Définir l\'identité créative',status:'current'},
+       {id:'pp2',date:'Mai 2026',name:'Site en ligne',desc:'Site vitrine photo/vidéo publié',status:'todo'},
+       {id:'pp3',date:'Mai 2026',name:'Instagram actif',desc:'Feed cohérent + 10 premiers posts',status:'todo'},
+     ],
+     marketing:{target:'Entreprises et particuliers cherchant un photographe/vidéaste créatif à Paris.',platforms:['Instagram — portfolio visuel, style éditorial','LinkedIn — approche B2B, agences, marques'],tone:'Créatif, authentique, artistique. Montrer ton regard unique.',kpis:['Site en ligne avant fin mai','1 post/jour Instagram','Premier client via Instagram'],content:['Portfolio photos best-of','Behind the scenes tournages','Process créatif','Projets Grandiose & Guestation']},
+     deliverables:[
+       {id:'dp1',name:'Site vitrine portfolio',icon:'🌐',status:'pending',date:'Mai 2026'},
+       {id:'dp2',name:'Stratégie Instagram perso',icon:'📊',status:'pending',date:'Mai 2026'},
+     ],
+     notes:'Commencer par sélectionner les 20 meilleures photos/vidéos avant de lancer le site.'}
   ];
   save();
 }
 
-// ===== CLIENT VIEW CHECK =====
+// CLIENT VIEW
 function checkClientView(){
-  const p=new URLSearchParams(window.location.search).get('client');
-  if(p){const proj=S.projects.find(x=>x.id===p);if(proj){document.getElementById('app-internal').style.display='none';document.getElementById('client-view').style.display='block';renderClientView(proj);return true;}}
+  var p=new URLSearchParams(window.location.search).get('client');
+  if(p){var proj=S.projects.find(function(x){return x.id===p;});if(proj){document.getElementById('app-internal').style.display='none';document.getElementById('client-view').style.display='block';renderClientView(proj);return true;}}
   return false;
 }
 
-// ===== CLIENT VIEW =====
 function renderClientView(p){
-  const done=p.tasks.filter(t=>t.status==='done').length;
-  const inprog=p.tasks.filter(t=>t.status==='inprogress').length;
-  const total=p.tasks.length;
-  const pct=total?Math.round(done/total*100):0;
-  const ac=p.color;
-  const heroBg=p.id==='guestation'?'background:linear-gradient(135deg,#3d0508,#1a0203)':p.id==='grandiose'?'background:linear-gradient(135deg,#1a1209,#2d2000)':'background:linear-gradient(135deg,#1a1a1a,#2a2a2a)';
-  document.getElementById('cv-content').innerHTML=`
-    <div class="cv-hero" style="${heroBg}">
-      <div style="max-width:700px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px">
-        <div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.4;margin-bottom:10px">Studio AY — Suivi projet</div><div class="cv-hero-title">${p.name}</div><div class="cv-hero-sub">${p.client}</div>${p.instagram?`<div style="margin-top:8px;font-size:12px;opacity:.4">${p.instagram}</div>`:''}</div>
-        <div style="text-align:right"><div style="font-size:48px;font-weight:200;color:${ac}">${pct}%</div><div style="font-size:11px;opacity:.4;margin-bottom:10px">avancement global</div><div style="width:160px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-left:auto"><div style="width:${pct}%;height:100%;background:${ac};border-radius:2px"></div></div></div>
-      </div>
-    </div>
-    <div class="cv-body" style="max-width:700px;margin:0 auto">
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0">
-        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:${ac}">${done}</div><div style="font-size:11px;color:#999;margin-top:2px">Terminé</div></div>
-        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#5B8FD4">${inprog}</div><div style="font-size:11px;color:#999;margin-top:2px">En cours</div></div>
-        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#1a1a1a">${total-done-inprog}</div><div style="font-size:11px;color:#999;margin-top:2px">À venir</div></div>
-      </div>
-      ${['inprogress','todo','done'].map(s=>{
-        const tasks=p.tasks.filter(t=>t.status===s);if(!tasks.length)return'';
-        const label=s==='done'?'✓ Terminé':s==='inprogress'?'→ En cours':'○ À venir';
-        const dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
-        return`<div class="cv-section"><div class="cv-section-title">${label}</div>${tasks.map(t=>{const c=TC[t.tag]||TC.other;return`<div class="cv-task"><div class="cv-task-dot" style="background:${dc}"></div><div class="cv-task-name" style="${s==='done'?'text-decoration:line-through;color:#aaa':''}">${t.name}${t.note&&s!=='done'?`<div style="font-size:11px;color:#aaa;font-style:italic;margin-top:3px">↳ ${t.note}</div>`:''}</div><span class="cv-task-tag" style="background:${c.bg};color:${c.text}">${t.tag}</span></div>`;}).join('')}</div>`;
-      }).join('')}
-      <div class="cv-section"><div class="cv-section-title">Jalons & roadmap</div>
-        ${p.milestones.map(m=>`<div class="cv-milestone"><div class="cv-ms-dot" style="background:${m.done?'#5CAF8A':m.current?ac:'#ddd'};${m.current?`box-shadow:0 0 0 4px ${ac}33`:''}"></div><div><div class="cv-ms-date">${m.date}</div><div class="cv-ms-name" style="color:${m.done?'#5CAF8A':m.current?ac:'#1a1a1a'}">${m.name}</div></div></div>`).join('')}
-      </div>
-      <div style="background:white;border-radius:12px;padding:20px;margin-top:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)">
-        <div style="font-size:12px;color:#999;margin-bottom:4px">Suivi assuré par</div>
-        <div style="font-size:16px;font-weight:500;color:#1a1a1a">Ayoub — Studio AY</div>
-        <div style="font-size:12px;color:#aaa;margin-top:4px">@hamouni.ay · Directeur créatif</div>
-      </div>
-    </div>`;
+  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+  var inprog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
+  var total=p.tasks.length;
+  var pct=total?Math.round(done/total*100):0;
+  var ac=p.color;
+  var heroBg=p.id==='guestation'?'background:linear-gradient(135deg,#3d0508,#1a0203)':p.id==='grandiose'?'background:linear-gradient(135deg,#1a1209,#2d2000)':'background:linear-gradient(135deg,#1a1a1a,#2a2a2a)';
+  var html='<div class="cv-hero" style="'+heroBg+'">';
+  html+='<div style="max-width:700px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px">';
+  html+='<div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.4;margin-bottom:10px">Studio AY — Suivi projet</div><div style="font-family:\'DM Serif Display\',serif;font-size:36px;margin-bottom:6px">'+p.name+'</div><div style="font-size:15px;opacity:.7">'+p.client+'</div>'+(p.instagram?'<div style="margin-top:8px;font-size:12px;opacity:.4">'+p.instagram+'</div>':'')+'</div>';
+  html+='<div style="text-align:right"><div style="font-size:48px;font-weight:200;color:'+ac+'">'+pct+'%</div><div style="font-size:11px;opacity:.4;margin-bottom:10px">avancement global</div><div style="width:160px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-left:auto"><div style="width:'+pct+'%;height:100%;background:'+ac+';border-radius:2px"></div></div></div>';
+  html+='</div></div>';
+  html+='<div class="cv-body" style="max-width:700px;margin:0 auto">';
+  html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0">';
+  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:'+ac+'">'+done+'</div><div style="font-size:11px;color:#999;margin-top:2px">Terminé</div></div>';
+  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#5B8FD4">'+inprog+'</div><div style="font-size:11px;color:#999;margin-top:2px">En cours</div></div>';
+  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#1a1a1a">'+(total-done-inprog)+'</div><div style="font-size:11px;color:#999;margin-top:2px">À venir</div></div>';
+  html+='</div>';
+  ['inprogress','todo','done'].forEach(function(s){
+    var tasks=p.tasks.filter(function(t){return t.status===s;});
+    if(!tasks.length)return;
+    var label=s==='done'?'✓ Terminé':s==='inprogress'?'→ En cours':'○ À venir';
+    var dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
+    html+='<div class="cv-section"><div class="cv-section-title">'+label+'</div>';
+    tasks.forEach(function(t){var c=TC[t.tag]||TC.other;html+='<div class="cv-task"><div class="cv-task-dot" style="background:'+dc+'"></div><div class="cv-task-name" style="'+(s==='done'?'text-decoration:line-through;color:#aaa':'')+'">'+t.name+(t.note&&s!=='done'?'<div style="font-size:11px;color:#aaa;font-style:italic;margin-top:3px">↳ '+t.note+'</div>':'')+'</div><span class="cv-task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span></div>';});
+    html+='</div>';
+  });
+  if(p.milestones&&p.milestones.length){
+    html+='<div class="cv-section"><div class="cv-section-title">Jalons & roadmap</div>';
+    p.milestones.forEach(function(m){
+      var dc=m.status==='done'?'#5CAF8A':m.status==='current'?ac:'#ddd';
+      var shadow=m.status==='current'?'box-shadow:0 0 0 4px '+ac+'33;':'';
+      html+='<div class="cv-ms"><div class="cv-ms-dot" style="background:'+dc+';'+shadow+'"></div><div><div class="cv-ms-name" style="color:'+(m.status==='done'?'#5CAF8A':m.status==='current'?ac:'#1a1a1a')+'">'+m.name+'</div><div class="cv-ms-date">'+m.date+(m.desc?' — '+m.desc:'')+'</div></div></div>';
+    });
+    html+='</div>';
+  }
+  html+='<div style="background:white;border-radius:12px;padding:20px;margin-top:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:12px;color:#999;margin-bottom:4px">Suivi assuré par</div><div style="font-size:16px;font-weight:500;color:#1a1a1a">Ayoub — Studio AY</div><div style="font-size:12px;color:#aaa;margin-top:4px">@hamouni.ay · Directeur créatif</div></div>';
+  html+='</div>';
+  document.getElementById('cv-content').innerHTML=html;
 }
 
-// ===== VIEWS =====
+// VIEWS
 function showView(n){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
-  document.getElementById('view-'+n)?.classList.add('active');
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});
+  document.getElementById('view-'+n).classList.add('active');
   if(n==='dashboard'){renderDashboard();document.querySelectorAll('.nav-item')[0].classList.add('active');}
   else if(n==='projects'){renderAllProjects();document.querySelectorAll('.nav-item')[1].classList.add('active');}
 }
 function openProject(id){S.currentProject=id;S.currentTab='overview';showView('project-detail');renderProjectDetail(id);}
 function goBack(){showView('projects');}
 
-// ===== DASHBOARD =====
 function renderDashboard(){
-  const allT=S.projects.flatMap(p=>p.tasks);
-  const done=allT.filter(t=>t.status==='done').length;
-  document.getElementById('stats-row').innerHTML=`
-    <div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">${S.projects.length}</div><div class="stat-sub">total</div></div>
-    <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">${S.projects.filter(p=>p.status==='active').length}</div></div>
-    <div class="stat-card"><div class="stat-label" style="color:var(--red)">Urgent</div><div class="stat-value" style="color:var(--red)">${S.projects.filter(p=>p.status==='urgent').length}</div></div>
-    <div class="stat-card"><div class="stat-label">Tâches</div><div class="stat-value">${done}/${allT.length}</div><div class="stat-sub">${allT.length?Math.round(done/allT.length*100):0}% done</div></div>`;
+  var allT=S.projects.reduce(function(a,p){return a.concat(p.tasks);},[]);
+  var done=allT.filter(function(t){return t.status==='done';}).length;
+  document.getElementById('stats-row').innerHTML='<div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">'+S.projects.length+'</div><div class="stat-sub">total</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">'+S.projects.filter(function(p){return p.status==='active';}).length+'</div></div><div class="stat-card"><div class="stat-label" style="color:var(--red)">Urgent</div><div class="stat-value" style="color:var(--red)">'+S.projects.filter(function(p){return p.status==='urgent';}).length+'</div></div><div class="stat-card"><div class="stat-label">Tâches</div><div class="stat-value">'+done+'/'+allT.length+'</div><div class="stat-sub">'+(allT.length?Math.round(done/allT.length*100):0)+'% done</div></div>';
   document.getElementById('dashboard-projects').innerHTML=S.projects.map(pCard).join('');
-  document.getElementById('sidebar-projects').innerHTML=S.projects.map(p=>`<div class="nav-item" onclick="openProject('${p.id}')"><div class="project-dot" style="background:${p.color}"></div>${p.name}</div>`).join('');
+  document.getElementById('sidebar-projects').innerHTML=S.projects.map(function(p){return'<div class="nav-item" onclick="openProject(\''+p.id+'\')"><div class="project-dot" style="background:'+p.color+'"></div>'+p.name+'</div>';}).join('');
 }
 function renderAllProjects(){document.getElementById('all-projects').innerHTML=S.projects.map(pCard).join('');}
 
 function pCard(p){
-  const done=p.tasks.filter(t=>t.status==='done').length;
-  const pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
-  const s=SM[p.status];
-  return`<div class="project-card" style="--project-color:${p.color}" onclick="openProject('${p.id}')">
-    <div class="pc-header"><div><div class="pc-name">${p.name}</div><div class="pc-client">${p.client}</div></div><span class="status-badge ${s.cls}">${s.label}</span></div>
-    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">${p.desc.length>90?p.desc.slice(0,90)+'…':p.desc}</div>
-    <div class="pc-progress"><div class="progress-label"><span>Avancement</span><span>${pct}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>
-    <div class="pc-meta"><div class="pc-meta-item">${done}/${p.tasks.length} tâches</div>${p.instagram?`<div class="pc-meta-item" style="color:var(--accent)">${p.instagram}</div>`:''}<div class="pc-meta-item" style="margin-left:auto">${p.deadline}</div></div>
-  </div>`;
+  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+  var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+  var s=SM[p.status];
+  return'<div class="project-card" style="--project-color:'+p.color+'" onclick="openProject(\''+p.id+'\')">'+'<div class="pc-header"><div><div class="pc-name">'+p.name+'</div><div class="pc-client">'+p.client+'</div></div><span class="status-badge '+s.cls+'">'+s.label+'</span></div>'+'<div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">'+(p.desc.length>90?p.desc.slice(0,90)+'…':p.desc)+'</div>'+'<div class="pc-progress"><div class="progress-label"><span>Avancement</span><span>'+pct+'%</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>'+'<div class="pc-meta"><div class="pc-meta-item">'+done+'/'+p.tasks.length+' tâches</div>'+(p.instagram?'<div class="pc-meta-item" style="color:var(--accent)">'+p.instagram+'</div>':'')+'<div class="pc-meta-item" style="margin-left:auto">'+p.deadline+'</div></div></div>';
 }
 
-// ===== PROJECT DETAIL =====
 function renderProjectDetail(id){
-  const p=S.projects.find(x=>x.id===id);if(!p)return;
-  const done=p.tasks.filter(t=>t.status==='done').length;
-  const pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
-  const s=SM[p.status];
-  const tabs=['overview','tasks','milestones','marketing','files','notes'];
-  const tl=['Vue générale','Tâches','Jalons','Stratégie','Fichiers','Notes'];
-  document.getElementById('detail-topbar-actions').innerHTML=`
-    <button class="btn btn-ghost btn-sm" onclick="openEditProject('${p.id}')">✏️ Modifier</button>
-    <button class="btn btn-ghost btn-sm" onclick="openShareModal('${p.id}')">🔗 Lien client</button>
-    <button class="btn btn-primary btn-sm" onclick="openAddTaskModal()">+ Tâche</button>`;
-  document.getElementById('project-detail-content').innerHTML=`
-    <div class="detail-hero" style="border-top:3px solid ${p.color}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
-            <span class="status-badge ${s.cls}">${s.label}</span>
-            <span style="font-size:12px;color:var(--text3)">Deadline : ${p.deadline}</span>
-            ${p.instagram?`<span style="font-size:12px;color:var(--accent)">${p.instagram}</span>`:''}
-          </div>
-          <div class="detail-title">${p.name}</div>
-          <div class="detail-client">${p.client}</div>
-        </div>
-        <div style="text-align:right">
-          <div style="font-size:32px;font-weight:300;color:${p.color}">${pct}%</div>
-          <div style="font-size:11px;color:var(--text3);margin-bottom:8px">complété</div>
-          <div class="progress-bar" style="width:180px;--project-color:${p.color}"><div class="progress-fill" style="width:${pct}%"></div></div>
-        </div>
-      </div>
-      <div class="detail-tabs">${tabs.map((t,i)=>`<div class="tab ${t===S.currentTab?'active':''}" onclick="switchTab('${id}','${t}',this)">${tl[i]}</div>`).join('')}</div>
-    </div>
-    <div class="detail-content">
-      <div class="tab-panel ${S.currentTab==='overview'?'active':''}" data-tab="overview">${renderOverview(p)}</div>
-      <div class="tab-panel ${S.currentTab==='tasks'?'active':''}" data-tab="tasks">${renderTasks(p)}</div>
-      <div class="tab-panel ${S.currentTab==='milestones'?'active':''}" data-tab="milestones">${renderMilestones(p)}</div>
-      <div class="tab-panel ${S.currentTab==='marketing'?'active':''}" data-tab="marketing">${renderMarketing(p)}</div>
-      <div class="tab-panel ${S.currentTab==='files'?'active':''}" data-tab="files">${renderFiles(p)}</div>
-      <div class="tab-panel ${S.currentTab==='notes'?'active':''}" data-tab="notes">${renderNotes(p)}</div>
-    </div>`;
+  var p=S.projects.find(function(x){return x.id===id;});if(!p)return;
+  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+  var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+  var s=SM[p.status];
+  var tabs=['overview','tasks','milestones','deliverables','marketing','notes'];
+  var tl=['Vue générale','Tâches','Jalons','Livrables','Stratégie','Notes'];
+  document.getElementById('detail-topbar-actions').innerHTML='<button class="btn btn-ghost btn-sm" onclick="openEditProject(\''+p.id+'\')">✏️ Modifier</button><button class="btn btn-ghost btn-sm" onclick="openShareModal(\''+p.id+'\')">🔗 Lien client</button>';
+  var hero='<div class="detail-hero" style="border-top:3px solid '+p.color+'">';
+  hero+='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">';
+  hero+='<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap"><span class="status-badge '+s.cls+'">'+s.label+'</span><span style="font-size:12px;color:var(--text3)">Deadline : '+p.deadline+'</span>'+(p.instagram?'<span style="font-size:12px;color:var(--accent)">'+p.instagram+'</span>':'')+'</div><div class="detail-title">'+p.name+'</div><div class="detail-client">'+p.client+'</div></div>';
+  hero+='<div style="text-align:right"><div style="font-size:32px;font-weight:300;color:'+p.color+'">'+pct+'%</div><div style="font-size:11px;color:var(--text3);margin-bottom:8px">complété</div><div class="progress-bar" style="width:180px;--project-color:'+p.color+'"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>';
+  hero+='</div>';
+  hero+='<div class="detail-tabs">'+tabs.map(function(t,i){return'<div class="tab '+(t===S.currentTab?'active':'')+'" onclick="switchTab(\''+id+'\',\''+t+'\',this)">'+tl[i]+'</div>';}).join('')+'</div>';
+  hero+='</div>';
+  var panels='<div class="detail-content">';
+  panels+='<div class="tab-panel '+(S.currentTab==='overview'?'active':'')+'" data-tab="overview">'+renderOverview(p)+'</div>';
+  panels+='<div class="tab-panel '+(S.currentTab==='tasks'?'active':'')+'" data-tab="tasks">'+renderTasks(p)+'</div>';
+  panels+='<div class="tab-panel '+(S.currentTab==='milestones'?'active':'')+'" data-tab="milestones">'+renderMilestones(p)+'</div>';
+  panels+='<div class="tab-panel '+(S.currentTab==='deliverables'?'active':'')+'" data-tab="deliverables">'+renderDeliverables(p)+'</div>';
+  panels+='<div class="tab-panel '+(S.currentTab==='marketing'?'active':'')+'" data-tab="marketing">'+renderMarketing(p)+'</div>';
+  panels+='<div class="tab-panel '+(S.currentTab==='notes'?'active':'')+'" data-tab="notes">'+renderNotes(p)+'</div>';
+  panels+='</div>';
+  document.getElementById('project-detail-content').innerHTML=hero+panels;
 }
 
 function renderOverview(p){
-  return`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px">
-    <div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">${p.tasks.filter(t=>t.status==='done').length}</div></div>
-    <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">${p.tasks.filter(t=>t.status==='inprogress').length}</div></div>
-    <div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">${p.tasks.filter(t=>t.status==='todo').length}</div></div>
-  </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
-    <div style="font-size:13px;font-weight:500;margin-bottom:8px">Description</div>
-    <div style="font-size:14px;color:var(--text2);line-height:1.7">${p.desc}</div>
-  </div>`;
+  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+  var inprog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
+  var todo=p.tasks.filter(function(t){return t.status==='todo';}).length;
+  return'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px"><div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">'+done+'</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">'+inprog+'</div></div><div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">'+todo+'</div></div></div>'+'<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px"><div style="font-size:13px;font-weight:500;margin-bottom:8px">Description du projet</div><div style="font-size:14px;color:var(--text2);line-height:1.7">'+p.desc+'</div></div>';
 }
 
 function renderTasks(p){
-  const hint=`<div style="font-size:12px;color:var(--text3);margin-bottom:16px">💡 Clique sur le cercle d'une tâche pour changer son statut · Survole une tâche pour modifier ou supprimer</div>`;
-  const cols=['todo','inprogress','done'];
-  const colLabels=['À faire','En cours','Terminé'];
-  const colColors=['var(--text3)','var(--blue)','var(--green)'];
-  return hint+`<div class="kanban">${cols.map((s,i)=>{
-    const tasks=p.tasks.filter(t=>t.status===s);
-    return`<div class="kanban-col">
-      <div class="kanban-col-title" style="color:${colColors[i]}">${colLabels[i]}<span class="kanban-col-count">${tasks.length}</span></div>
-      ${tasks.map(t=>taskHTML(t,p.id)).join('')}
-      <button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
-    </div>`;
-  }).join('')}</div>`;
+  var hint='<div class="info-hint">💡 Clique sur le cercle pour changer le statut · Survole pour modifier ou supprimer</div>';
+  var cols=['todo','inprogress','done'];
+  var colLabels=['À faire','En cours','Terminé'];
+  var colColors=['var(--text3)','var(--blue)','var(--green)'];
+  var html=hint+'<div class="kanban">';
+  cols.forEach(function(s,i){
+    var tasks=p.tasks.filter(function(t){return t.status===s;});
+    html+='<div class="kanban-col"><div class="kanban-col-title" style="color:'+colColors[i]+'">'+colLabels[i]+'<span class="kanban-col-count">'+tasks.length+'</span></div>';
+    tasks.forEach(function(t){html+=taskHTML(t,p.id);});
+    html+='<button class="add-item-btn" onclick="openAddTask()">+ Ajouter une tâche</button></div>';
+  });
+  html+='</div>';
+  return html;
 }
 
 function taskHTML(t,pid){
-  const c=TC[t.tag]||TC.other;
-  const nextLabel=t.status==='todo'?'→ En cours':t.status==='inprogress'?'✓ Terminé':'↩ Réouvrir';
-  return`<div class="task-item" id="task-${t.id}">
-    <div class="task-header">
-      <div class="task-status-btn ${t.status==='done'?'done':t.status==='inprogress'?'inprogress':''}" onclick="cycleTaskStatus('${pid}','${t.id}')" title="${nextLabel}"></div>
-      <div class="task-name ${t.status==='done'?'done-text':''}">${t.name}</div>
-    </div>
-    ${t.note?`<div class="task-note">↳ ${t.note}</div>`:''}
-    <div class="task-actions">
-      <span class="task-tag" style="background:${c.bg};color:${c.text}">${t.tag}</span>
-      <button class="task-action-btn" onclick="openEditTask('${pid}','${t.id}')">✏️ Modifier</button>
-      <button class="task-action-btn del" onclick="deleteTask('${pid}','${t.id}')">🗑 Supprimer</button>
-      <span class="status-cycle-hint">${nextLabel}</span>
-    </div>
-  </div>`;
+  var c=TC[t.tag]||TC.other;
+  var nextLabel=t.status==='todo'?'→ En cours':t.status==='inprogress'?'✓ Terminé':'↩ Réouvrir';
+  var btnCls=t.status==='done'?'s-done':t.status==='inprogress'?'s-inprogress':'';
+  var btnContent=t.status==='done'?'✓':t.status==='inprogress'?'●':'';
+  return'<div class="task-item"><div class="task-header"><div class="task-status-btn '+btnCls+'" onclick="cycleTask(\''+pid+'\',\''+t.id+'\')" title="'+nextLabel+'">'+btnContent+'</div><div class="task-name '+(t.status==='done'?'done-text':'')+'">'+t.name+'</div></div>'+(t.note?'<div class="task-note">↳ '+t.note+'</div>':'')+'<div class="task-actions"><span class="task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span><button class="task-btn" onclick="openEditTask(\''+pid+'\',\''+t.id+'\')">✏️ Modifier</button><button class="task-btn del" onclick="deleteTask(\''+pid+'\',\''+t.id+'\')">🗑</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div></div>';
 }
 
 function renderMilestones(p){
-  return`<div style="max-width:600px"><div class="timeline">${p.milestones.map(m=>`<div class="milestone ${m.done?'done':''} ${m.current?'current':''}"><div class="milestone-date">${m.date}</div><div class="milestone-name">${m.name}</div></div>`).join('')}</div></div>`;
+  var hint='<div class="info-hint">💡 Clique sur le cercle pour changer l\'état (À venir → En cours → Terminé) · Survole pour modifier ou supprimer</div>';
+  var html=hint;
+  if(!p.milestones||!p.milestones.length){html+='<div style="color:var(--text3);padding:20px">Aucun jalon. Ajoute-en un !</div>';}
+  else{
+    p.milestones.forEach(function(m){
+      var btnCls=m.status==='done'?'ms-done':m.status==='current'?'ms-current':'';
+      var btnContent=m.status==='done'?'✓':m.status==='current'?'●':'';
+      var nextLabel=m.status==='todo'?'→ En cours':m.status==='current'?'✓ Terminé':'↩ À venir';
+      html+='<div class="milestone-item"><div class="ms-status-btn '+btnCls+'" onclick="cycleMilestone(\''+p.id+'\',\''+m.id+'\')" title="'+nextLabel+'">'+btnContent+'</div>';
+      html+='<div class="ms-body"><div class="ms-date">'+m.date+'</div><div class="ms-name">'+m.name+'</div>'+(m.desc?'<div class="ms-desc">'+m.desc+'</div>':'');
+      html+='<div class="ms-actions"><button class="task-btn" onclick="openEditMilestone(\''+p.id+'\',\''+m.id+'\')">✏️ Modifier</button><button class="task-btn del" onclick="deleteMilestone(\''+p.id+'\',\''+m.id+'\')">🗑 Supprimer</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div>';
+      html+='</div></div>';
+    });
+  }
+  html+='<button class="add-item-btn" style="margin-top:8px" onclick="openAddMilestone()">+ Ajouter un jalon</button>';
+  return html;
+}
+
+function renderDeliverables(p){
+  var dsMap={validated:{label:'✓ Validé',cls:'ds-validated'},inreview:{label:'En révision',cls:'ds-inreview'},pending:{label:'À livrer',cls:'ds-pending'}};
+  var html='<div style="margin-bottom:16px"><div style="font-size:13px;color:var(--text2);line-height:1.6">Les livrables sont les documents, fichiers ou éléments concrets remis au client à chaque étape du projet — comme le font les grandes agences. C\'est ce que tu livres officiellement.</div></div>';
+  if(!p.deliverables||!p.deliverables.length){html+='<div style="color:var(--text3);padding:20px">Aucun livrable enregistré.</div>';}
+  else{
+    html+='<div class="files-list">';
+    p.deliverables.forEach(function(d){
+      var ds=dsMap[d.status]||dsMap.pending;
+      html+='<div class="deliverable-item"><div class="deliverable-icon">'+d.icon+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500">'+d.name+'</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Prévu : '+d.date+'</div></div><span class="deliverable-status '+ds.cls+'">'+ds.label+'</span></div>';
+    });
+    html+='</div>';
+  }
+  return html;
 }
 
 function renderMarketing(p){
-  if(!p.marketing)return`<div style="color:var(--text3);padding:20px">Pas de stratégie marketing pour ce projet.</div>`;
-  const m=p.marketing;
-  return`<div class="strategy-grid">
-    <div class="strategy-card"><div class="strategy-card-title">🎯 Cible</div><div style="font-size:13px;color:var(--text2);line-height:1.6">${m.target}</div></div>
-    <div class="strategy-card"><div class="strategy-card-title">📱 Plateformes</div>${m.platforms.map(x=>`<div class="strategy-item">${x}</div>`).join('')}</div>
-    <div class="strategy-card"><div class="strategy-card-title">🎨 Ton & identité</div><div style="font-size:13px;color:var(--text2);line-height:1.6">${m.tone}</div></div>
-    <div class="strategy-card"><div class="strategy-card-title">📊 KPIs</div>${m.kpis.map(x=>`<div class="strategy-item">${x}</div>`).join('')}</div>
-    <div class="strategy-card strategy-full"><div class="strategy-card-title">📝 Types de contenu</div><div style="margin-top:8px">${m.content.map(c=>`<span class="tag-pill">${c}</span>`).join('')}</div></div>
-  </div>`;
-}
-
-function renderFiles(p){
-  return`${p.files.length===0?`<div style="color:var(--text3);padding:20px 0">Aucun fichier ajouté.</div>`:`<div class="files-list">${p.files.map(f=>`<div class="file-item"><div class="file-icon">${f.type}</div><div><div class="file-name">${f.name}</div><div class="file-meta">${f.size} · ${f.date}</div></div>${f.url?`<a href="${f.url}" target="_blank" class="file-action">Ouvrir →</a>`:`<div class="file-action">Ouvrir →</div>`}</div>`).join('')}</div>`}
-  <button class="btn btn-ghost" style="margin-top:16px">+ Ajouter un fichier</button>`;
+  if(!p.marketing)return'<div style="color:var(--text3);padding:20px">Pas de stratégie marketing pour ce projet.</div>';
+  var m=p.marketing;
+  return'<div class="strategy-grid"><div class="strategy-card"><div class="strategy-card-title">🎯 Cible</div><div style="font-size:13px;color:var(--text2);line-height:1.6">'+m.target+'</div></div><div class="strategy-card"><div class="strategy-card-title">📱 Plateformes</div>'+m.platforms.map(function(x){return'<div class="strategy-item">'+x+'</div>';}).join('')+'</div><div class="strategy-card"><div class="strategy-card-title">🎨 Ton & identité</div><div style="font-size:13px;color:var(--text2);line-height:1.6">'+m.tone+'</div></div><div class="strategy-card"><div class="strategy-card-title">📊 KPIs</div>'+m.kpis.map(function(x){return'<div class="strategy-item">'+x+'</div>';}).join('')+'</div><div class="strategy-card strategy-full"><div class="strategy-card-title">📝 Types de contenu</div><div style="margin-top:8px">'+m.content.map(function(c){return'<span class="tag-pill">'+c+'</span>';}).join('')+'</div></div></div>';
 }
 
 function renderNotes(p){
-  return`<div class="notes-area"><textarea class="notes-textarea" placeholder="Notes internes (non visibles par le client)..." onchange="saveNote('${p.id}',this.value)">${p.notes||''}</textarea></div>
-  <div style="font-size:11px;color:var(--text3);margin-top:8px">🔒 Ces notes ne sont pas visibles par le client.</div>`;
+  return'<div class="notes-area"><textarea class="notes-textarea" placeholder="Notes internes (invisibles par le client)..." onchange="saveNote(\''+p.id+'\',this.value)">'+(p.notes||'')+'</textarea></div><div style="font-size:11px;color:var(--text3);margin-top:8px">🔒 Ces notes ne sont jamais visibles par le client.</div>';
 }
 
 function switchTab(pid,tab,el){
   S.currentTab=tab;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelector(`.tab-panel[data-tab="${tab}"]`)?.classList.add('active');
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+  document.querySelector('.tab-panel[data-tab="'+tab+'"]').classList.add('active');
 }
 
-// ===== TASK STATUS CYCLE =====
-function cycleTaskStatus(pid,tid){
-  const p=S.projects.find(x=>x.id===pid);if(!p)return;
-  const t=p.tasks.find(x=>x.id===tid);if(!t)return;
-  const cycle={todo:'inprogress',inprogress:'done',done:'todo'};
-  t.status=cycle[t.status];
-  save();
-  // Update UI without full re-render
-  renderProjectDetail(pid);
-  renderDashboard();
-  const label={todo:'À faire',inprogress:'En cours',done:'Terminé'};
-  showToast(`Tâche → ${label[t.status]}`,true);
+// TASK ACTIONS
+function cycleTask(pid,tid){
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  var t=p.tasks.find(function(x){return x.id===tid;});if(!t)return;
+  var cycle={todo:'inprogress',inprogress:'done',done:'todo'};
+  t.status=cycle[t.status];save();
+  renderProjectDetail(pid);renderDashboard();
+  showToast('Tâche → '+(t.status==='done'?'Terminé':t.status==='inprogress'?'En cours':'À faire'),true);
 }
 
-// ===== TASK EDIT/DELETE =====
-function openAddTaskModal(){
+function openAddTask(){
   S.editingTaskId=null;
   document.getElementById('modal-task-title').textContent='Nouvelle tâche';
   document.getElementById('task-save-btn').textContent='Ajouter';
-  document.getElementById('task-name').value='';
-  document.getElementById('task-note').value='';
+  document.getElementById('task-name').value='';document.getElementById('task-note').value='';
   document.getElementById('task-status').value='todo';
-  document.getElementById('modal-add-task').classList.add('open');
+  document.getElementById('modal-task').classList.add('open');
 }
 
 function openEditTask(pid,tid){
   S.editingTaskId=tid;
-  const p=S.projects.find(x=>x.id===pid);if(!p)return;
-  const t=p.tasks.find(x=>x.id===tid);if(!t)return;
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  var t=p.tasks.find(function(x){return x.id===tid;});if(!t)return;
   document.getElementById('modal-task-title').textContent='Modifier la tâche';
   document.getElementById('task-save-btn').textContent='Enregistrer';
   document.getElementById('task-name').value=t.name;
   document.getElementById('task-tag').value=t.tag;
   document.getElementById('task-status').value=t.status;
   document.getElementById('task-note').value=t.note||'';
-  document.getElementById('modal-add-task').classList.add('open');
+  document.getElementById('modal-task').classList.add('open');
 }
 
 function saveTask(){
-  const name=document.getElementById('task-name').value.trim();
+  var name=document.getElementById('task-name').value.trim();
   if(!name){showToast('Donne un nom à la tâche',false);return;}
-  const p=S.projects.find(x=>x.id===S.currentProject);if(!p)return;
-  const note=document.getElementById('task-note').value.trim();
+  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
+  var note=document.getElementById('task-note').value.trim();
   if(S.editingTaskId){
-    const t=p.tasks.find(x=>x.id===S.editingTaskId);
+    var t=p.tasks.find(function(x){return x.id===S.editingTaskId;});
     if(t){t.name=name;t.tag=document.getElementById('task-tag').value;t.status=document.getElementById('task-status').value;t.note=note||null;}
     showToast('Tâche modifiée !',true);
-  } else {
-    p.tasks.push({id:'t_'+Date.now(),name,tag:document.getElementById('task-tag').value,status:document.getElementById('task-status').value,note:note||null});
+  }else{
+    p.tasks.push({id:'t_'+Date.now(),name:name,tag:document.getElementById('task-tag').value,status:document.getElementById('task-status').value,note:note||null});
     showToast('Tâche ajoutée !',true);
   }
-  save();
-  closeModal('modal-add-task');
-  renderProjectDetail(S.currentProject);
-  renderDashboard();
+  save();closeModal('modal-task');renderProjectDetail(S.currentProject);renderDashboard();
 }
 
 function deleteTask(pid,tid){
   if(!confirm('Supprimer cette tâche ?'))return;
-  const p=S.projects.find(x=>x.id===pid);if(!p)return;
-  p.tasks=p.tasks.filter(x=>x.id!==tid);
-  save();renderProjectDetail(pid);renderDashboard();
-  showToast('Tâche supprimée',true);
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  p.tasks=p.tasks.filter(function(x){return x.id!==tid;});
+  save();renderProjectDetail(pid);renderDashboard();showToast('Supprimée',true);
 }
 
-// ===== EDIT PROJECT =====
+// MILESTONE ACTIONS
+function cycleMilestone(pid,mid){
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  var m=p.milestones.find(function(x){return x.id===mid;});if(!m)return;
+  var cycle={todo:'current',current:'done',done:'todo'};
+  m.status=cycle[m.status];save();
+  renderProjectDetail(pid);
+  showToast('Jalon → '+(m.status==='done'?'Terminé ✓':m.status==='current'?'En cours':'À venir'),true);
+}
+
+function openAddMilestone(){
+  S.editingMsId=null;
+  document.getElementById('modal-ms-title').textContent='Nouveau jalon';
+  document.getElementById('ms-save-btn').textContent='Ajouter';
+  document.getElementById('ms-name').value='';document.getElementById('ms-date').value='';
+  document.getElementById('ms-desc').value='';document.getElementById('ms-status').value='todo';
+  document.getElementById('modal-milestone').classList.add('open');
+}
+
+function openEditMilestone(pid,mid){
+  S.editingMsId=mid;
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  var m=p.milestones.find(function(x){return x.id===mid;});if(!m)return;
+  document.getElementById('modal-ms-title').textContent='Modifier le jalon';
+  document.getElementById('ms-save-btn').textContent='Enregistrer';
+  document.getElementById('ms-name').value=m.name;
+  document.getElementById('ms-date').value=m.date;
+  document.getElementById('ms-desc').value=m.desc||'';
+  document.getElementById('ms-status').value=m.status;
+  document.getElementById('modal-milestone').classList.add('open');
+}
+
+function saveMilestone(){
+  var name=document.getElementById('ms-name').value.trim();
+  var date=document.getElementById('ms-date').value.trim();
+  if(!name||!date){showToast('Titre et date requis',false);return;}
+  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
+  var desc=document.getElementById('ms-desc').value.trim();
+  var status=document.getElementById('ms-status').value;
+  if(!p.milestones)p.milestones=[];
+  if(S.editingMsId){
+    var m=p.milestones.find(function(x){return x.id===S.editingMsId;});
+    if(m){m.name=name;m.date=date;m.desc=desc||null;m.status=status;}
+    showToast('Jalon modifié !',true);
+  }else{
+    p.milestones.push({id:'ms_'+Date.now(),name:name,date:date,desc:desc||null,status:status});
+    showToast('Jalon ajouté !',true);
+  }
+  save();closeModal('modal-milestone');renderProjectDetail(S.currentProject);
+}
+
+function deleteMilestone(pid,mid){
+  if(!confirm('Supprimer ce jalon ?'))return;
+  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+  p.milestones=p.milestones.filter(function(x){return x.id!==mid;});
+  save();renderProjectDetail(pid);showToast('Jalon supprimé',true);
+}
+
+// PROJECT ACTIONS
+function openNewProjectModal(){document.getElementById('modal-new-project').classList.add('open');}
+function createProject(){
+  var name=document.getElementById('np-name').value.trim();
+  if(!name){showToast('Donne un nom au projet',false);return;}
+  S.projects.push({id:'proj_'+Date.now(),name:name,client:document.getElementById('np-client').value.trim()||'Non défini',desc:document.getElementById('np-desc').value.trim()||'Projet en cours.',color:S.selectedColor,status:document.getElementById('np-status').value,deadline:document.getElementById('np-deadline').value.trim()||'À définir',instagram:document.getElementById('np-instagram').value.trim()||null,tasks:[],milestones:[],marketing:null,deliverables:[],notes:''});
+  save();closeModal('modal-new-project');
+  ['np-name','np-client','np-desc','np-deadline','np-instagram'].forEach(function(id){document.getElementById(id).value='';});
+  showToast('Projet créé !',true);renderDashboard();renderAllProjects();
+}
+
 function openEditProject(id){
-  const p=S.projects.find(x=>x.id===id);if(!p)return;
-  document.getElementById('ep-name').value=p.name;
-  document.getElementById('ep-client').value=p.client;
-  document.getElementById('ep-desc').value=p.desc;
-  document.getElementById('ep-status').value=p.status;
-  document.getElementById('ep-deadline').value=p.deadline;
-  document.getElementById('ep-instagram').value=p.instagram||'';
+  var p=S.projects.find(function(x){return x.id===id;});if(!p)return;
+  document.getElementById('ep-name').value=p.name;document.getElementById('ep-client').value=p.client;
+  document.getElementById('ep-desc').value=p.desc;document.getElementById('ep-status').value=p.status;
+  document.getElementById('ep-deadline').value=p.deadline;document.getElementById('ep-instagram').value=p.instagram||'';
   document.getElementById('modal-edit-project').classList.add('open');
 }
 
 function saveEditProject(){
-  const p=S.projects.find(x=>x.id===S.currentProject);if(!p)return;
+  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
   p.name=document.getElementById('ep-name').value.trim()||p.name;
   p.client=document.getElementById('ep-client').value.trim()||p.client;
   p.desc=document.getElementById('ep-desc').value.trim()||p.desc;
   p.status=document.getElementById('ep-status').value;
   p.deadline=document.getElementById('ep-deadline').value.trim()||p.deadline;
   p.instagram=document.getElementById('ep-instagram').value.trim()||null;
-  save();
-  closeModal('modal-edit-project');
-  renderProjectDetail(S.currentProject);
-  renderDashboard();
+  save();closeModal('modal-edit-project');renderProjectDetail(S.currentProject);renderDashboard();
   showToast('Projet mis à jour !',true);
 }
 
-// ===== NEW PROJECT =====
-function openNewProjectModal(){document.getElementById('modal-new-project').classList.add('open');}
-function createProject(){
-  const name=document.getElementById('np-name').value.trim();
-  if(!name){showToast('Donne un nom au projet',false);return;}
-  const id='proj_'+Date.now();
-  S.projects.push({id,name,client:document.getElementById('np-client').value.trim()||'Non défini',desc:document.getElementById('np-desc').value.trim()||'Projet en cours.',color:S.selectedColor,status:document.getElementById('np-status').value,deadline:document.getElementById('np-deadline').value.trim()||'À définir',instagram:document.getElementById('np-instagram').value.trim()||null,tasks:[],milestones:[],marketing:null,files:[],notes:''});
-  save();
-  closeModal('modal-new-project');
-  ['np-name','np-client','np-desc','np-deadline','np-instagram'].forEach(id=>document.getElementById(id).value='');
-  showToast('Projet créé !',true);renderDashboard();renderAllProjects();
-}
-
-// ===== SHARE =====
 function openShareModal(id){
-  const url=`${window.location.origin}${window.location.pathname}?client=${id}`;
+  var url=window.location.origin+window.location.pathname+'?client='+id;
   document.getElementById('share-url-display').textContent=url;
   document.getElementById('modal-share').classList.add('open');
 }
 function copyShareUrl(){
-  const url=document.getElementById('share-url-display').textContent;
-  navigator.clipboard.writeText(url).then(()=>{showToast('Lien copié !',true);closeModal('modal-share');}).catch(()=>{showToast('Copie manuelle : sélectionne le lien',false);});
+  var url=document.getElementById('share-url-display').textContent;
+  navigator.clipboard.writeText(url).then(function(){showToast('Lien copié !',true);closeModal('modal-share');}).catch(function(){showToast('Sélectionne et copie le lien manuellement',false);});
 }
 
-// ===== UTILS =====
-function saveNote(id,val){const p=S.projects.find(x=>x.id===id);if(p){p.notes=val;save();}}
+function saveNote(id,val){var p=S.projects.find(function(x){return x.id===id;});if(p){p.notes=val;save();}}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
-function selectColor(el){document.querySelectorAll('.color-opt').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');S.selectedColor=el.dataset.color;}
-function showToast(msg,ok){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(ok?' success':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function selectColor(el){document.querySelectorAll('.color-opt').forEach(function(c){c.classList.remove('selected');});el.classList.add('selected');S.selectedColor=el.dataset.color;}
+function showToast(msg,ok){var t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(ok?' success':'');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2800);}
+document.querySelectorAll('.modal-overlay').forEach(function(o){o.addEventListener('click',function(e){if(e.target===o)o.classList.remove('open');});});
 
-// ===== INIT =====
-if(!loadFromStorage())loadDefaultData();
+// INIT
+if(!loadStorage())loadDefault();
 if(!checkClientView())renderDashboard();
 </script>
 </body>
