@@ -2,186 +2,317 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Studio AY — Project Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#F0EDE8;--text2:#888882;--text3:#555550;--accent:#C9A86C;--accent2:#E8D5A3;--accent-dim:rgba(201,168,108,0.12);--red:#E05C5C;--green:#5CAF8A;--blue:#5B8FD4;--purple:#9B7FD4;--radius:12px;--radius-sm:8px}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+:root{
+  --bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--bg4:#1E1E1E;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.2);
+  --text:#F0EDE8;--text2:#888882;--text3:#555550;
+  --accent:#C9A86C;--accent2:#E8D5A3;--accent-dim:rgba(201,168,108,0.12);--accent-glow:rgba(201,168,108,0.25);
+  --red:#E05C5C;--green:#5CAF8A;--blue:#5B8FD4;--purple:#9B7FD4;
+  --radius:14px;--radius-sm:9px;--radius-xs:6px;
+  --shadow:0 4px 24px rgba(0,0,0,0.4);
+  --sidebar-w:265px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;font-size:15px}
+
+/* ===== LAYOUT ===== */
 .app{display:flex;min-height:100vh}
-.sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
-.main{margin-left:260px;flex:1;min-height:100vh}
-.sidebar-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
-.logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:var(--accent)}
-.logo-sub{font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:2px}
-.sidebar-nav{padding:16px 12px;flex:1;overflow-y:auto}
-.nav-section{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding:12px 12px 6px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:13.5px;color:var(--text2);transition:all .15s;margin-bottom:2px}
+.sidebar{width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:200;transition:transform .3s cubic-bezier(.4,0,.2,1)}
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;transition:margin .3s}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:190;backdrop-filter:blur(2px)}
+
+/* ===== SIDEBAR ===== */
+.sidebar-logo{padding:24px 22px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.logo-text{font-family:'DM Serif Display',serif;font-size:19px;color:var(--accent);letter-spacing:.02em}
+.logo-sub{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-top:1px}
+.sidebar-close{display:none;background:none;border:none;color:var(--text2);cursor:pointer;padding:4px;font-size:20px}
+.sidebar-nav{padding:14px 10px;flex:1;overflow-y:auto}
+.nav-section{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);padding:12px 10px 5px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:13.5px;color:var(--text2);transition:all .15s;margin-bottom:2px;user-select:none}
 .nav-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
 .nav-item.active{background:var(--accent-dim);color:var(--accent)}
+.nav-item svg{flex-shrink:0;opacity:.7}
+.nav-item.active svg{opacity:1}
 .project-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.sidebar-footer{padding:14px;border-top:1px solid var(--border)}
 .user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--radius-sm);background:var(--bg3)}
-.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#000;flex-shrink:0}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#000;flex-shrink:0}
 .user-name{font-size:13px;font-weight:500}
 .user-role{font-size:11px;color:var(--text3)}
-.topbar{padding:18px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50;gap:12px;flex-wrap:wrap}
-.topbar-title{font-size:18px;font-weight:500}
+
+/* ===== TOPBAR ===== */
+.topbar{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:rgba(10,10,10,.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100;gap:12px;flex-wrap:wrap}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.hamburger{display:none;background:none;border:none;color:var(--text);cursor:pointer;padding:4px;border-radius:6px;flex-shrink:0}
+.hamburger:hover{background:rgba(255,255,255,.06)}
+.topbar-title{font-size:17px;font-weight:500}
 .topbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .15s}
+.btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .18s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
 .btn-primary{background:var(--accent);color:#000}
-.btn-primary:hover{background:var(--accent2)}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
 .btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
 .btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.btn-sm{padding:6px 12px;font-size:12px}
 .btn-danger{background:rgba(224,92,92,.12);color:var(--red);border:1px solid rgba(224,92,92,.25)}
 .btn-danger:hover{background:rgba(224,92,92,.22)}
-.btn-sm{padding:5px 12px;font-size:12px}
-.view{display:none;padding:32px}
+
+/* ===== VIEWS ===== */
+.view{display:none;padding:28px 24px;animation:fadeIn .25s ease}
 .view.active{display:block}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== STATS ===== */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;transition:border-color .2s}
+.stat-card:hover{border-color:var(--border2)}
 .stat-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
-.stat-value{font-size:28px;font-weight:300}
-.stat-sub{font-size:12px;color:var(--text3);margin-top:4px}
+.stat-value{font-size:26px;font-weight:300;color:var(--text)}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:4px}
 .stat-card.accent-card{border-color:rgba(201,168,108,.3);background:var(--accent-dim)}
 .stat-card.accent-card .stat-value{color:var(--accent)}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+
+/* ===== PROJECT CARDS ===== */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .section-title{font-size:15px;font-weight:500}
-.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
-.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden}
 .project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--project-color)}
-.project-card:hover{border-color:var(--border2);transform:translateY(-2px)}
-.pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.pc-name{font-size:15px;font-weight:500}
-.pc-client{font-size:12px;color:var(--text3);margin-top:2px}
-.status-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap}
+.project-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:var(--shadow)}
+.project-card:active{transform:translateY(-1px)}
+.pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:8px}
+.pc-name{font-size:14px;font-weight:500}
+.pc-client{font-size:11px;color:var(--text3);margin-top:2px}
+.status-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:500;white-space:nowrap;flex-shrink:0}
 .status-active{background:rgba(92,175,138,.15);color:var(--green)}
 .status-pending{background:rgba(91,143,212,.15);color:var(--blue)}
 .status-urgent{background:rgba(224,92,92,.15);color:var(--red)}
 .status-planning{background:rgba(155,127,212,.15);color:var(--purple)}
-.pc-progress{margin:14px 0}
-.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:6px}
+.pc-progress{margin:12px 0}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:5px}
 .progress-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
-.progress-fill{height:100%;border-radius:2px;background:var(--project-color);transition:width .4s}
-.pc-meta{display:flex;gap:14px;flex-wrap:wrap}
-.pc-meta-item{font-size:12px;color:var(--text3)}
-.detail-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:32px}
-.detail-title{font-family:'DM Serif Display',serif;font-size:32px}
-.detail-client{font-size:15px;color:var(--text2);margin-top:4px}
-.detail-tabs{display:flex;gap:4px;margin-top:24px;flex-wrap:wrap}
-.tab{padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s}
+.progress-fill{height:100%;border-radius:2px;background:var(--project-color);transition:width .6s cubic-bezier(.4,0,.2,1)}
+.pc-meta{display:flex;gap:12px;flex-wrap:wrap}
+.pc-meta-item{font-size:11px;color:var(--text3)}
+
+/* ===== DETAIL ===== */
+.detail-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:28px 24px}
+.detail-title{font-family:'DM Serif Display',serif;font-size:28px;line-height:1.2}
+.detail-client{font-size:14px;color:var(--text2);margin-top:4px}
+.detail-tabs{display:flex;gap:3px;margin-top:22px;flex-wrap:wrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.detail-tabs::-webkit-scrollbar{height:0}
+.tab{padding:7px 14px;border-radius:var(--radius-sm);font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .tab:hover{color:var(--text);background:rgba(255,255,255,.04)}
 .tab.active{background:var(--accent-dim);color:var(--accent)}
-.detail-content{padding:32px}
-.tab-panel{display:none}
+.detail-content{padding:24px}
+.tab-panel{display:none;animation:fadeIn .2s ease}
 .tab-panel.active{display:block}
-/* KANBAN */
-.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.kanban-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
-.kanban-col-title{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.kanban-col-count{background:rgba(255,255,255,.06);color:var(--text2);font-size:11px;padding:1px 7px;border-radius:10px}
-.task-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;transition:border-color .15s}
+
+/* ===== KANBAN ===== */
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kanban-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.kanban-col-title{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+.kanban-col-count{background:rgba(255,255,255,.06);color:var(--text2);font-size:10px;padding:1px 6px;border-radius:10px}
+.task-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px;margin-bottom:7px;transition:border-color .15s}
 .task-item:hover{border-color:var(--border2)}
 .task-header{display:flex;align-items:flex-start;gap:8px}
-.task-status-btn{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
-.task-status-btn:hover{border-color:var(--accent)}
+.task-status-btn{width:17px;height:17px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.task-status-btn:hover{border-color:var(--accent);transform:scale(1.1)}
 .task-status-btn.s-done{background:var(--green);border-color:var(--green);color:white}
 .task-status-btn.s-inprogress{background:var(--blue);border-color:var(--blue)}
-.task-name{font-size:13px;flex:1;line-height:1.4}
+.task-name{font-size:12.5px;flex:1;line-height:1.4}
 .task-name.done-text{text-decoration:line-through;color:var(--text3)}
-.task-note{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic;padding-left:26px}
-.task-actions{display:flex;align-items:center;gap:6px;margin-top:8px;padding-left:26px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
+.task-note{font-size:10.5px;color:var(--text3);margin-top:4px;font-style:italic;padding-left:25px}
+.task-actions{display:flex;align-items:center;gap:5px;margin-top:7px;padding-left:25px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
 .task-item:hover .task-actions{opacity:1}
-.task-tag{font-size:10px;padding:2px 7px;border-radius:20px;display:inline-block}
-.task-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 8px;border-radius:4px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
-.task-btn:hover{color:var(--text);border-color:var(--border2);background:rgba(255,255,255,.04)}
+.task-tag{font-size:9px;padding:2px 6px;border-radius:20px;display:inline-block}
+.task-btn{font-size:11px;color:var(--text3);cursor:pointer;padding:3px 7px;border-radius:4px;border:1px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;transition:all .15s}
+.task-btn:hover{color:var(--text);border-color:var(--border2)}
 .task-btn.del:hover{color:var(--red);border-color:rgba(224,92,92,.3)}
-.add-item-btn{width:100%;padding:9px;border-radius:var(--radius-sm);border:1px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px}
+.add-item-btn{width:100%;padding:8px;border-radius:var(--radius-sm);border:1px dashed var(--border2);background:transparent;color:var(--text3);font-size:11px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px}
 .add-item-btn:hover{color:var(--text2);background:rgba(255,255,255,.03);border-color:var(--border)}
-/* MILESTONES */
-.milestone-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;transition:border-color .15s}
-.milestone-item:hover{border-color:var(--border2)}
-.ms-status-btn{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:2px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
-.ms-status-btn:hover{border-color:var(--accent)}
-.ms-status-btn.ms-done{background:var(--green);border-color:var(--green);color:white}
-.ms-status-btn.ms-current{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.ms-body{flex:1}
-.ms-date{font-size:11px;color:var(--text3);margin-bottom:3px}
-.ms-name{font-size:14px;font-weight:500}
-.ms-desc{font-size:12px;color:var(--text2);margin-top:4px}
-.ms-actions{display:flex;gap:6px;margin-top:8px;opacity:0;transition:opacity .15s}
-.milestone-item:hover .ms-actions{opacity:1}
-.ms-cycle-hint{font-size:10px;color:var(--text3);margin-left:auto}
-/* STRATEGY */
-.strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.strategy-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.strategy-card-title{font-size:13px;font-weight:500;margin-bottom:12px}
-.strategy-item{padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);display:flex;align-items:flex-start;gap:8px}
-.strategy-item:last-child{border-bottom:none}
-.strategy-item::before{content:'→';color:var(--accent);font-size:12px;margin-top:1px;flex-shrink:0}
-.strategy-full{grid-column:1/-1}
-.tag-pill{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:3px}
-/* LIVRABLES */
-.deliverable-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:13px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
+
+/* ===== ÉTAPES (was jalons) ===== */
+.etape-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:9px;display:flex;align-items:flex-start;gap:13px;transition:border-color .15s}
+.etape-item:hover{border-color:var(--border2)}
+.etape-status-btn{width:20px;height:20px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;cursor:pointer;transition:all .2s;margin-top:1px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700}
+.etape-status-btn:hover{border-color:var(--accent);transform:scale(1.1)}
+.etape-status-btn.e-done{background:var(--green);border-color:var(--green);color:white}
+.etape-status-btn.e-current{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.etape-body{flex:1}
+.etape-date{font-size:10px;color:var(--text3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.06em}
+.etape-name{font-size:14px;font-weight:500}
+.etape-desc{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.5}
+.etape-actions{display:flex;gap:6px;margin-top:8px;opacity:0;transition:opacity .15s}
+.etape-item:hover .etape-actions{opacity:1}
+
+/* ===== LIVRABLES ===== */
+.deliverable-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;transition:border-color .15s}
 .deliverable-item:hover{border-color:var(--border2)}
 .deliverable-icon{width:32px;height:32px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .deliverable-status{font-size:10px;padding:3px 8px;border-radius:20px;white-space:nowrap;margin-left:auto}
 .ds-pending{background:rgba(91,143,212,.15);color:var(--blue)}
 .ds-inreview{background:rgba(201,168,108,.15);color:var(--accent)}
 .ds-validated{background:rgba(92,175,138,.15);color:var(--green)}
-/* NOTES */
-.notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.notes-textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;resize:none;outline:none;min-height:200px}
+
+/* ===== RAPPORT ===== */
+.rapport-header{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.rapport-section{margin-bottom:22px}
+.rapport-section-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.rapport-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.rapport-task-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:var(--radius-xs);background:var(--bg3);margin-bottom:5px;font-size:13px}
+.rapport-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ===== NOTES ===== */
+.notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.notes-textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13.5px;line-height:1.8;resize:none;outline:none;min-height:180px}
 .notes-textarea::placeholder{color:var(--text3)}
-/* MODALS */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.info-hint{font-size:11px;color:var(--text3);background:rgba(255,255,255,.025);border:1px solid var(--border);border-radius:var(--radius-xs);padding:8px 13px;margin-bottom:14px;display:flex;align-items:center;gap:7px}
+
+/* ===== MODALS ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(6px);padding:16px}
 .modal-overlay.open{display:flex}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:520px;max-width:92vw;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px}
-.form-group{margin-bottom:16px}
-.form-label{font-size:12px;color:var(--text2);margin-bottom:6px;display:block}
-.form-input,.form-select,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:18px;padding:26px;width:500px;max-width:100%;max-height:90vh;overflow-y:auto;animation:modalIn .2s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-title{font-family:'DM Serif Display',serif;font-size:21px;margin-bottom:18px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:11px;color:var(--text2);margin-bottom:5px;display:block;letter-spacing:.04em;text-transform:uppercase}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .15s;-webkit-appearance:none}
 .form-input:focus,.form-textarea:focus{border-color:var(--accent)}
-.form-textarea{resize:vertical;min-height:80px}
-.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
-.color-selector{display:flex;gap:8px;flex-wrap:wrap}
+.form-textarea{resize:vertical;min-height:75px}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.color-selector{display:flex;gap:9px;flex-wrap:wrap}
 .color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
 .color-opt.selected{border-color:white;transform:scale(1.15)}
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:300px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;box-shadow:var(--shadow)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{border-color:rgba(92,175,138,.4)}
-/* INFO BANNER */
-.info-hint{font-size:12px;color:var(--text3);background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 14px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-/* CLIENT VIEW */
-.cv-wrapper{min-height:100vh;background:#F5F2ED;font-family:'DM Sans',sans-serif}
-.cv-hero{padding:48px 40px;color:white}
-.cv-body{padding:32px 40px}
-.cv-section{margin-bottom:32px}
-.cv-section-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:16px}
-.cv-task{background:white;border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.cv-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
-.cv-task-name{font-size:14px;color:#1a1a1a;flex:1}
-.cv-task-tag{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-.cv-ms{background:white;border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.cv-ms-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.cv-ms-name{font-size:14px;font-weight:500;color:#1a1a1a}
-.cv-ms-date{font-size:11px;color:#999;margin-top:2px}
-@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.stats-row{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr}.strategy-grid{grid-template-columns:1fr}}
+
+/* ===== CLIENT VIEW ===== */
+#client-view{display:none}
+.cv-body-outer{min-height:100vh;background:#F7F4EF;font-family:'DM Sans',sans-serif}
+.cv-hero{padding:0;position:relative;overflow:hidden;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end}
+.cv-hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#1a1209 0%,#2d2000 100%)}
+.cv-hero-bg.guestation{background:linear-gradient(135deg,#3d0508 0%,#1a0203 100%)}
+.cv-hero-bg.mariage{background:linear-gradient(135deg,#1a0808 0%,#2d0000 100%)}
+.cv-hero-bg.default{background:linear-gradient(135deg,#0d0d1a 0%,#1a1a2d 100%)}
+.cv-hero-particles{position:absolute;inset:0;opacity:.3}
+.cv-hero-content{position:relative;padding:48px 40px 40px;color:white}
+.cv-hero-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;opacity:.45;margin-bottom:16px}
+.cv-hero-title{font-family:'DM Serif Display',serif;font-size:38px;line-height:1.1;margin-bottom:8px}
+.cv-hero-client{font-size:15px;opacity:.6;margin-bottom:24px}
+.cv-hero-ig{font-size:12px;opacity:.4}
+.cv-hero-progress{margin-top:32px}
+.cv-progress-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.cv-progress-pct{font-size:48px;font-weight:200;line-height:1}
+.cv-progress-txt{font-size:12px;opacity:.5}
+.cv-progress-bar-bg{height:4px;background:rgba(255,255,255,.12);border-radius:2px;overflow:hidden}
+.cv-progress-bar-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+.cv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:24px 40px;background:#F7F4EF}
+.cv-stat{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.cv-stat-value{font-size:26px;font-weight:300}
+.cv-stat-label{font-size:10px;color:#999;margin-top:3px;text-transform:uppercase;letter-spacing:.06em}
+
+.cv-main{padding:8px 40px 40px}
+.cv-filter-bar{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.cv-filter-btn{padding:7px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #e0ddd8;background:white;color:#666;transition:all .18s;font-family:'DM Sans',sans-serif}
+.cv-filter-btn.active{background:#1a1a1a;color:white;border-color:#1a1a1a}
+.cv-section{margin-bottom:28px}
+.cv-section-title{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.cv-section-title::after{content:'';flex:1;height:1px;background:#e8e5e0}
+
+.cv-task-card{background:white;border-radius:12px;padding:15px 18px;margin-bottom:8px;display:flex;align-items:flex-start;gap:13px;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:transform .18s,box-shadow .18s;animation:cvFadeIn .4s ease both}
+.cv-task-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+@keyframes cvFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.cv-task-icon{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.cv-task-body{flex:1}
+.cv-task-name{font-size:14px;color:#1a1a1a;font-weight:400;line-height:1.4}
+.cv-task-note{font-size:11px;color:#aaa;font-style:italic;margin-top:3px}
+.cv-task-tag{font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;align-self:flex-start;margin-top:3px}
+
+.cv-etape-card{background:white;border-radius:12px;padding:16px 18px;margin-bottom:8px;display:flex;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,.06);animation:cvFadeIn .4s ease both;transition:transform .18s,box-shadow .18s}
+.cv-etape-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.cv-etape-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.cv-etape-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;transition:transform .2s}
+.cv-etape-connector{width:2px;flex:1;min-height:16px;background:#e8e5e0;margin-top:4px}
+.cv-etape-content{flex:1;padding-bottom:4px}
+.cv-etape-date{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.cv-etape-name{font-size:14px;font-weight:500;color:#1a1a1a}
+.cv-etape-desc{font-size:12px;color:#888;margin-top:4px;line-height:1.5}
+.cv-etape-status-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:3px 9px;border-radius:20px;margin-top:6px;font-weight:500}
+
+.cv-footer{background:white;border-top:1px solid #e8e5e0;padding:24px 40px;text-align:center}
+.cv-footer-name{font-size:15px;font-weight:500;color:#1a1a1a;margin-bottom:3px}
+.cv-footer-sub{font-size:12px;color:#aaa}
+.cv-footer-logo{font-family:'DM Serif Display',serif;font-size:18px;color:#C9A86C;margin-bottom:6px}
+
+/* ===== RAPPORT PRINT ===== */
+@media print{
+  .no-print{display:none!important}
+  body{background:white!important;color:#1a1a1a!important}
+  .rapport-print-area{padding:24px}
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .kanban{grid-template-columns:1fr;gap:10px}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}
+  .sidebar-close{display:block}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .view{padding:16px}
+  .detail-hero{padding:18px 16px}
+  .detail-content{padding:16px}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:10px}
+  .projects-grid{grid-template-columns:1fr}
+  .topbar{padding:12px 16px}
+  .topbar-title{font-size:15px}
+  .btn-sm{padding:5px 10px;font-size:11px}
+  .cv-hero-content{padding:28px 20px 28px}
+  .cv-hero-title{font-size:28px}
+  .cv-stats{padding:16px 20px;grid-template-columns:repeat(3,1fr);gap:8px}
+  .cv-main{padding:8px 20px 28px}
+  .cv-footer{padding:20px}
+  .detail-title{font-size:22px}
+}
+@media(max-width:480px){
+  .stats-row{grid-template-columns:1fr 1fr}
+  .topbar-actions .btn-ghost{display:none}
+}
 </style>
 </head>
 <body>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- ===== APP INTERNE ===== -->
 <div class="app" id="app-internal">
-  <aside class="sidebar">
-    <div class="sidebar-logo"><div class="logo-text">Studio AY</div><div class="logo-sub">Project Manager</div></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div><div class="logo-text">Studio AY</div><div class="logo-sub">Project Manager</div></div>
+      <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    </div>
     <nav class="sidebar-nav">
       <div class="nav-section">Navigation</div>
-      <div class="nav-item active" onclick="showView('dashboard')">
+      <div class="nav-item active" onclick="showView('dashboard');closeSidebar()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Tableau de bord
       </div>
-      <div class="nav-item" onclick="showView('projects')">
+      <div class="nav-item" onclick="showView('projects');closeSidebar()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
         Tous les projets
       </div>
@@ -195,19 +326,40 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
       </div>
     </div>
   </aside>
+
   <main class="main">
+    <!-- DASHBOARD -->
     <div id="view-dashboard" class="view active">
-      <div class="topbar"><div class="topbar-title">Tableau de bord</div><div class="topbar-actions"><button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button></div></div>
-      <div style="padding:32px"><div class="stats-row" id="stats-row"></div><div class="section-header"><div class="section-title">Projets actifs</div><button class="btn btn-ghost" onclick="showView('projects')">Voir tous →</button></div><div class="projects-grid" id="dashboard-projects"></div></div>
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" onclick="openSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+          <div class="topbar-title">Tableau de bord</div>
+        </div>
+        <div class="topbar-actions"><button class="btn btn-primary btn-sm" onclick="openNewProjectModal()">+ Nouveau projet</button></div>
+      </div>
+      <div style="padding:24px"><div class="stats-row" id="stats-row"></div><div class="section-header"><div class="section-title">Projets</div></div><div class="projects-grid" id="dashboard-projects"></div></div>
     </div>
+
+    <!-- PROJECTS -->
     <div id="view-projects" class="view">
-      <div class="topbar"><div class="topbar-title">Tous les projets</div><div class="topbar-actions"><button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button></div></div>
-      <div style="padding:32px"><div class="projects-grid" id="all-projects"></div></div>
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="hamburger" onclick="openSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+          <div class="topbar-title">Tous les projets</div>
+        </div>
+        <div class="topbar-actions"><button class="btn btn-primary btn-sm" onclick="openNewProjectModal()">+ Nouveau projet</button></div>
+      </div>
+      <div style="padding:24px"><div class="projects-grid" id="all-projects"></div></div>
     </div>
+
+    <!-- DETAIL -->
     <div id="view-project-detail" class="view" style="padding:0">
       <div class="topbar">
-        <div style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text2);font-size:13px" onclick="goBack()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Retour
+        <div class="topbar-left">
+          <button class="hamburger" onclick="openSidebar()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+          <div style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text2);font-size:13px" onclick="goBack()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Retour
+          </div>
         </div>
         <div class="topbar-actions" id="detail-topbar-actions"></div>
       </div>
@@ -215,9 +367,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
     </div>
   </main>
 </div>
-<div id="client-view" style="display:none"><div class="cv-wrapper" id="cv-content"></div></div>
 
-<!-- MODALS -->
+<!-- ===== CLIENT VIEW ===== -->
+<div id="client-view">
+  <div class="cv-body-outer" id="cv-content"></div>
+</div>
+
+<!-- ===== MODALS ===== -->
 <div class="modal-overlay" id="modal-new-project">
   <div class="modal">
     <div class="modal-title">Nouveau projet</div>
@@ -242,33 +398,29 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="modal-overlay" id="modal-task">
   <div class="modal">
     <div class="modal-title" id="modal-task-title">Nouvelle tâche</div>
-    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="task-name" placeholder="ex: Créer le site internet"></div>
+    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="task-name"></div>
     <div class="form-group"><label class="form-label">Catégorie</label><select class="form-select" id="task-tag"><option value="web">Site internet</option><option value="app">Application</option><option value="content">Contenu</option><option value="marketing">Marketing</option><option value="design">Design</option><option value="video">Vidéo</option><option value="photo">Photo</option><option value="other">Autre</option></select></div>
     <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="task-status"><option value="todo">À faire</option><option value="inprogress">En cours</option><option value="done">Terminé</option></select></div>
-    <div class="form-group"><label class="form-label">Note (optionnel)</label><input type="text" class="form-input" id="task-note" placeholder="ex: Attendre textes de Mourad"></div>
+    <div class="form-group"><label class="form-label">Note</label><input type="text" class="form-input" id="task-note" placeholder="ex: Attendre Mourad"></div>
     <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-task')">Annuler</button><button class="btn btn-primary" id="task-save-btn" onclick="saveTask()">Ajouter</button></div>
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-milestone">
+<div class="modal-overlay" id="modal-etape">
   <div class="modal">
-    <div class="modal-title" id="modal-ms-title">Nouveau jalon</div>
-    <div class="form-group"><label class="form-label">Titre du jalon</label><input type="text" class="form-input" id="ms-name" placeholder="ex: Site internet en ligne"></div>
-    <div class="form-group"><label class="form-label">Date prévue</label><input type="text" class="form-input" id="ms-date" placeholder="ex: Mai 2026 ou 15/05/2026"></div>
-    <div class="form-group"><label class="form-label">Description (optionnel)</label><input type="text" class="form-input" id="ms-desc" placeholder="ex: Livraison de la maquette finale"></div>
-    <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="ms-status">
-      <option value="todo">À venir</option>
-      <option value="current">En cours</option>
-      <option value="done">Terminé ✓</option>
-    </select></div>
-    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-milestone')">Annuler</button><button class="btn btn-primary" id="ms-save-btn" onclick="saveMilestone()">Ajouter</button></div>
+    <div class="modal-title" id="modal-etape-title">Nouvelle étape</div>
+    <div class="form-group"><label class="form-label">Titre de l'étape</label><input type="text" class="form-input" id="etape-name" placeholder="ex: Site internet en ligne"></div>
+    <div class="form-group"><label class="form-label">Date prévue</label><input type="text" class="form-input" id="etape-date" placeholder="ex: Mai 2026"></div>
+    <div class="form-group"><label class="form-label">Description (optionnel)</label><input type="text" class="form-input" id="etape-desc" placeholder="ex: Livraison de la maquette finale"></div>
+    <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="etape-status"><option value="todo">À venir</option><option value="current">En cours</option><option value="done">Terminé ✓</option></select></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-etape')">Annuler</button><button class="btn btn-primary" id="etape-save-btn" onclick="saveEtape()">Ajouter</button></div>
   </div>
 </div>
 
 <div class="modal-overlay" id="modal-edit-project">
   <div class="modal">
     <div class="modal-title">Modifier le projet</div>
-    <div class="form-group"><label class="form-label">Nom du projet</label><input type="text" class="form-input" id="ep-name"></div>
+    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="ep-name"></div>
     <div class="form-group"><label class="form-label">Client</label><input type="text" class="form-input" id="ep-client"></div>
     <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="ep-desc"></textarea></div>
     <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="ep-status"><option value="active">En cours</option><option value="planning">Planification</option><option value="pending">En attente</option><option value="urgent">Urgent</option></select></div>
@@ -281,9 +433,9 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="modal-overlay" id="modal-share">
   <div class="modal">
     <div class="modal-title">🔗 Lien client</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6">Partage ce lien avec ton client. Il verra <strong>uniquement son projet</strong> en <strong>lecture seule</strong>.</p>
-    <p style="font-size:12px;color:var(--text3);margin-bottom:16px">Le client voit : avancement, tâches, jalons. Il ne peut rien modifier. Tes notes internes sont cachées.</p>
-    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:monospace;font-size:12px;color:var(--accent);word-break:break-all" id="share-url-display"></div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:8px;line-height:1.6">Partage ce lien avec ton client. Il verra <strong>uniquement son projet</strong> en lecture seule avec filtres interactifs.</p>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:14px">Tes notes internes ne sont jamais visibles.</p>
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:13px;font-family:monospace;font-size:11px;color:var(--accent);word-break:break-all" id="share-url-display"></div>
     <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-share')">Fermer</button><button class="btn btn-primary" onclick="copyShareUrl()">Copier le lien</button></div>
   </div>
 </div>
@@ -291,459 +443,462 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="toast" id="toast"></div>
 
 <script>
-var S={projects:[],currentProject:null,currentTab:'overview',selectedColor:'#C9A86C',editingTaskId:null,editingMsId:null};
+var S={projects:[],currentProject:null,currentTab:'overview',selectedColor:'#C9A86C',editingTaskId:null,editingEtapeId:null,cvFilter:'all'};
 var TC={web:{bg:'rgba(91,143,212,.15)',text:'#5B8FD4'},app:{bg:'rgba(155,127,212,.15)',text:'#9B7FD4'},content:{bg:'rgba(201,168,108,.15)',text:'#C9A86C'},marketing:{bg:'rgba(92,175,138,.15)',text:'#5CAF8A'},design:{bg:'rgba(201,168,108,.12)',text:'#C49346'},video:{bg:'rgba(224,92,92,.12)',text:'#E05C5C'},photo:{bg:'rgba(155,127,212,.12)',text:'#9B7FD4'},other:{bg:'rgba(136,135,130,.15)',text:'#888882'}};
 var SM={active:{label:'En cours',cls:'status-active'},planning:{label:'Planification',cls:'status-planning'},pending:{label:'En attente',cls:'status-pending'},urgent:{label:'Urgent',cls:'status-urgent'}};
 
-function save(){try{localStorage.setItem('studioay_v2',JSON.stringify(S.projects));}catch(e){}}
-function loadStorage(){try{var d=localStorage.getItem('studioay_v2');if(d){S.projects=JSON.parse(d);return true;}}catch(e){}return false;}
+// Storage
+function save(){try{localStorage.setItem('studioay_v3',JSON.stringify(S.projects));}catch(e){}}
+function loadStorage(){try{var d=localStorage.getItem('studioay_v3');if(d){S.projects=JSON.parse(d);return true;}}catch(e){}return false;}
 
 function loadDefault(){
-  S.projects=[
-    {id:'grandiose',name:'Grandiose Paris',client:'Mourad — Grandiose Paris',color:'#C9A86C',status:'active',deadline:'Juin 2026',instagram:'@grandiose_gastronomie',
-     desc:'Brand premium halal — charcuteries & gastronomie. Site Shopify, catalogue HTML luxe, app mobile React Native et stratégie réseaux sociaux.',
-     tasks:[
-       {id:'t1',name:'Site Shopify complet',tag:'web',status:'done'},
-       {id:'t2',name:'Catalogue HTML luxe multi-langue',tag:'design',status:'done'},
-       {id:'t3',name:'Page certification halal',tag:'web',status:'done'},
-       {id:'t4',name:'Signature email directeur',tag:'design',status:'done'},
-       {id:'t5',name:'App mobile React Native (base)',tag:'app',status:'done'},
-       {id:'t6',name:'Page Production — vidéo + textes',tag:'video',status:'inprogress',note:'Attendre vidéo + textes de Mourad'},
-       {id:'t7',name:'Catalogue — modifications Hassna',tag:'design',status:'inprogress',note:'En cours'},
-       {id:'t8',name:'Photos produits pour catalogue',tag:'photo',status:'inprogress',note:'Photos à prendre'},
-       {id:'t9',name:'Catalogue — partie viandes',tag:'design',status:'inprogress',note:'Attendre retour Mourad'},
-       {id:'t10',name:'App → Expo Go sharing',tag:'app',status:'inprogress'},
-       {id:'t11',name:'Connexion Shopify API',tag:'app',status:'inprogress'},
-       {id:'t12',name:'Contenu Instagram',tag:'content',status:'inprogress'},
-       {id:'t13',name:'Contenu LinkedIn',tag:'content',status:'todo'},
-       {id:'t14',name:'Stratégie TikTok',tag:'marketing',status:'todo'},
-       {id:'t15',name:'App → Google Play',tag:'app',status:'todo'},
-       {id:'t16',name:'App → App Store',tag:'app',status:'todo'},
-     ],
-     milestones:[
-       {id:'ms1',date:'Déc 2024',name:'Site Shopify lancé',desc:'Site e-commerce Shopify en production',status:'done'},
-       {id:'ms2',date:'Jan 2025',name:'Catalogue HTML v1',desc:'Catalogue luxe multi-langue livré',status:'done'},
-       {id:'ms3',date:'Fév 2025',name:'App mobile prototype',desc:'Version beta sur Expo Go',status:'done'},
-       {id:'ms4',date:'Avr 2026',name:'Page Production + Catalogue final',desc:'Attente vidéo Mourad + photos produits',status:'current'},
-       {id:'ms5',date:'Mai 2026',name:'Stratégie contenu réseaux sociaux',desc:'Instagram, LinkedIn, TikTok',status:'todo'},
-       {id:'ms6',date:'Juin 2026',name:'App publiée Google Play & App Store',desc:'Publication officielle sur les stores',status:'todo'},
-     ],
-     marketing:{target:'Professionnels (chefs, restaurateurs, épiceries fines) et particuliers CSP+ amateurs de charcuterie premium halal. 28–55 ans, Paris & grandes villes françaises.',platforms:['Instagram — visuels luxe produits, lifestyle','LinkedIn — approche B2B, restaurateurs, professionnels','TikTok — behind the scenes, dégustations, recettes'],tone:'Luxe, raffinement, authenticité halal. Codes visuels premium : fond sombre, accents dorés, typographie élégante.',kpis:['10k followers Instagram en 6 mois','3 publications/semaine minimum','Taux d\'engagement > 3%','Partenariats influenceurs food halal'],content:['Visuels produits studio fond sombre','Vidéos process artisanal','Stories coulisses atelier','Recettes avec les produits','Témoignages clients']},
-     deliverables:[
-       {id:'d1',name:'Site Shopify Grandiose Paris',icon:'🌐',status:'validated',date:'Déc 2024'},
-       {id:'d2',name:'Catalogue HTML luxe',icon:'📄',status:'inreview',date:'Mar 2026'},
-       {id:'d3',name:'App mobile React Native',icon:'📱',status:'inreview',date:'Avr 2026'},
-       {id:'d4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Mai 2026'},
-     ],
-     notes:'→ Page Production : attendre vidéo + textes de Mourad avant de finaliser.\n→ Catalogue : modifications Hassna en cours + photos produits à prendre + attendre retour Mourad sur la partie viandes.\n→ App : connecter API Shopify pour afficher vrais produits, puis publier Google Play et App Store.'},
+S.projects=[
+{id:'grandiose',name:'Grandiose Paris',client:'Mourad — Grandiose Paris',color:'#C9A86C',status:'active',deadline:'Juin 2026',instagram:'@grandiose_gastronomie',
+desc:'Brand premium halal — charcuteries & gastronomie. Site Shopify, catalogue HTML luxe, app mobile React Native et stratégie réseaux sociaux.',
+tasks:[
+{id:'t1',name:'Site Shopify complet',tag:'web',status:'done'},
+{id:'t2',name:'Catalogue HTML luxe multi-langue',tag:'design',status:'done'},
+{id:'t3',name:'Page certification halal',tag:'web',status:'done'},
+{id:'t4',name:'Signature email directeur',tag:'design',status:'done'},
+{id:'t5',name:'App mobile React Native (base)',tag:'app',status:'done'},
+{id:'t6',name:'Page Production — vidéo + textes',tag:'video',status:'inprogress',note:'Attendre vidéo + textes de Mourad'},
+{id:'t7',name:'Catalogue — modifications Hassna',tag:'design',status:'inprogress',note:'En cours'},
+{id:'t8',name:'Photos produits pour catalogue',tag:'photo',status:'inprogress',note:'Photos à prendre'},
+{id:'t9',name:'Catalogue — partie viandes',tag:'design',status:'inprogress',note:'Attendre retour Mourad'},
+{id:'t10',name:'App → Expo Go sharing',tag:'app',status:'inprogress'},
+{id:'t11',name:'Connexion Shopify API',tag:'app',status:'inprogress'},
+{id:'t12',name:'Contenu Instagram',tag:'content',status:'inprogress'},
+{id:'t13',name:'Contenu LinkedIn',tag:'content',status:'todo'},
+{id:'t14',name:'Stratégie TikTok',tag:'marketing',status:'todo'},
+{id:'t15',name:'App → Google Play',tag:'app',status:'todo'},
+{id:'t16',name:'App → App Store',tag:'app',status:'todo'},
+],
+etapes:[
+{id:'e1',date:'Déc 2024',name:'Site Shopify lancé',desc:'Site e-commerce Shopify en production',status:'done'},
+{id:'e2',date:'Jan 2025',name:'Catalogue HTML v1',desc:'Catalogue luxe multi-langue livré',status:'done'},
+{id:'e3',date:'Fév 2025',name:'App mobile prototype',desc:'Version beta sur Expo Go',status:'done'},
+{id:'e4',date:'Avr 2026',name:'Page Production + Catalogue final',desc:'Attente vidéo Mourad + photos produits + retour viandes',status:'current'},
+{id:'e5',date:'Mai 2026',name:'Stratégie contenu réseaux sociaux',desc:'Instagram, LinkedIn, TikTok opérationnels',status:'todo'},
+{id:'e6',date:'Juin 2026',name:'App publiée Google Play & App Store',desc:'Publication officielle sur les deux stores',status:'todo'},
+],
+deliverables:[
+{id:'d1',name:'Site Shopify Grandiose Paris',icon:'🌐',status:'validated',date:'Déc 2024'},
+{id:'d2',name:'Catalogue HTML luxe',icon:'📄',status:'inreview',date:'Mar 2026'},
+{id:'d3',name:'App mobile React Native',icon:'📱',status:'inreview',date:'Avr 2026'},
+{id:'d4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Mai 2026'},
+],
+notes:'→ Page Production : attendre vidéo + textes de Mourad avant de finaliser.\n→ Catalogue : modifications Hassna en cours + photos produits à prendre + attendre retour Mourad sur la partie viandes.\n→ App : connecter API Shopify pour afficher vrais produits, puis publier Google Play et App Store.'},
 
-    {id:'guestation',name:'LA guestation',client:'Chef Wii — La Guestation',color:'#6E0E10',status:'planning',deadline:'À définir',instagram:'@guestation',
-     desc:'Gastronomie privée de luxe — Paris & Dubai. Chef Wii, Le Cordon Bleu. Dîners privés, corporate events, chef à domicile pour clientèle ultra-premium.',
-     tasks:[
-       {id:'g1',name:'Brief complet & cadrage projet',tag:'other',status:'todo'},
-       {id:'g2',name:'Site internet laguestation.com',tag:'web',status:'todo',note:'Refonte ou amélioration du site existant'},
-       {id:'g3',name:'Catalogue services digital',tag:'design',status:'todo',note:'Basé sur le catalogue existant'},
-       {id:'g4',name:'Shooting photo des plats & ambiances',tag:'photo',status:'todo'},
-       {id:'g5',name:'Vidéo de présentation Chef Wii',tag:'video',status:'todo'},
-       {id:'g6',name:'Stratégie contenu Instagram',tag:'marketing',status:'todo'},
-       {id:'g7',name:'Création contenu réseaux sociaux',tag:'content',status:'todo'},
-     ],
-     milestones:[
-       {id:'mg1',date:'Avr 2026',name:'Brief & cadrage projet',desc:'Réunion de lancement avec le client',status:'current'},
-       {id:'mg2',date:'Mai 2026',name:'Site internet en ligne',desc:'Refonte ou création du site laguestation.com',status:'todo'},
-       {id:'mg3',date:'Mai 2026',name:'Shooting photo & vidéo',desc:'Photos des plats, ambiances, portrait Chef Wii',status:'todo'},
-       {id:'mg4',date:'Juin 2026',name:'Stratégie contenu active',desc:'Instagram & LinkedIn opérationnels',status:'todo'},
-     ],
-     marketing:{target:'CEOs, dirigeants, célébrités, travel concierge, hôtels de luxe. Clientèle internationale Paris & Dubai.',platforms:['Instagram — gastronomique d\'exception, lifestyle ultra-luxe','LinkedIn — approche B2B corporate events, luxury hotels'],tone:'Silence du luxe. Épuré, élégant, mystérieux. Couleurs bordeaux & or.',kpis:['Compte Instagram soigné et cohérent','2 publications/semaine premium','Partenariats hôtels & concierges de luxe'],content:['Plats dressés en close-up cinématographique','Ambiances dîners privés','Behind the scenes du Chef','Portraits Chef Wii']},
-     deliverables:[
-       {id:'dg1',name:'Brand book & Company Identity',icon:'📘',status:'validated',date:'Reçu Avr 2026'},
-       {id:'dg2',name:'Catalogue services',icon:'📄',status:'validated',date:'Reçu Avr 2026'},
-       {id:'dg3',name:'Site internet',icon:'🌐',status:'pending',date:'Mai 2026'},
-       {id:'dg4',name:'Stratégie contenu réseaux sociaux',icon:'📊',status:'pending',date:'Juin 2026'},
-     ],
-     notes:'Brand colors: Bordeaux #6E0E10 · Or #C49346 · Or clair #F1B356\nPolices: Roller Coaster (guestation) + Aileron (LA)\nSite: laguestation.com · Instagram: @guestation\n\nClientèle : CEOs, célébrités fashion, hôtels & résidences de luxe, concierge travel.\nDisponible Paris (7e arr.) + Dubai (saisonnier).'},
+{id:'guestation',name:'LA guestation',client:'Chef Wii — La Guestation',color:'#6E0E10',status:'planning',deadline:'À définir',instagram:'@guestation',
+desc:'Gastronomie privée de luxe — Paris & Dubai. Chef Wii, Le Cordon Bleu. Dîners privés, corporate events, chef à domicile pour clientèle ultra-premium.',
+tasks:[
+{id:'g1',name:'Brief complet & cadrage projet',tag:'other',status:'todo'},
+{id:'g2',name:'Site internet laguestation.com',tag:'web',status:'todo',note:'Refonte ou amélioration'},
+{id:'g3',name:'Catalogue services digital',tag:'design',status:'todo',note:'Basé sur le catalogue existant'},
+{id:'g4',name:'Shooting photo des plats & ambiances',tag:'photo',status:'todo'},
+{id:'g5',name:'Vidéo de présentation Chef Wii',tag:'video',status:'todo'},
+{id:'g6',name:'Stratégie contenu Instagram',tag:'marketing',status:'todo'},
+{id:'g7',name:'Création contenu réseaux sociaux',tag:'content',status:'todo'},
+],
+etapes:[
+{id:'eg1',date:'Avr 2026',name:'Brief & cadrage projet',desc:'Réunion de lancement avec le client',status:'current'},
+{id:'eg2',date:'Mai 2026',name:'Site internet en ligne',desc:'Refonte ou création du site laguestation.com',status:'todo'},
+{id:'eg3',date:'Mai 2026',name:'Shooting photo & vidéo',desc:'Photos des plats, ambiances, portrait Chef Wii',status:'todo'},
+{id:'eg4',date:'Juin 2026',name:'Stratégie contenu active',desc:'Instagram & LinkedIn opérationnels',status:'todo'},
+],
+deliverables:[
+{id:'dg1',name:'Brand book & Company Identity',icon:'📘',status:'validated',date:'Reçu Avr 2026'},
+{id:'dg2',name:'Catalogue services',icon:'📄',status:'validated',date:'Reçu Avr 2026'},
+{id:'dg3',name:'Site internet',icon:'🌐',status:'pending',date:'Mai 2026'},
+{id:'dg4',name:'Stratégie contenu',icon:'📊',status:'pending',date:'Juin 2026'},
+],
+notes:'Brand colors: Bordeaux #6E0E10 · Or #C49346\nPolices: Roller Coaster + Aileron\nSite: laguestation.com · Instagram: @guestation\nClientèle : CEOs, célébrités, hôtels luxe, concierge travel.\nParis 7e + Dubai (saisonnier).'},
 
-    {id:'mariage',name:'Montage Mariage',client:'Client privé',color:'#E05C5C',status:'urgent',deadline:'⚠️ À confirmer',instagram:null,
-     desc:'Montage vidéo professionnel d\'un mariage. Deadline de livraison à fixer de toute urgence avec le client.',
-     tasks:[
-       {id:'m1',name:'Récupérer tous les rushes',tag:'video',status:'inprogress'},
-       {id:'m2',name:'Fixer la deadline avec le client',tag:'other',status:'inprogress',note:'URGENT — cette semaine'},
-       {id:'m3',name:'Sélection des meilleures scènes',tag:'video',status:'todo'},
-       {id:'m4',name:'Montage principal',tag:'video',status:'todo'},
-       {id:'m5',name:'Étalonnage couleur',tag:'video',status:'todo'},
-       {id:'m6',name:'Mixage audio & musique',tag:'video',status:'todo'},
-       {id:'m7',name:'Export & livraison client',tag:'video',status:'todo'},
-     ],
-     milestones:[
-       {id:'mm1',date:'Avr 2026',name:'Rushes récupérés + deadline fixée',desc:'Contact client urgent',status:'current'},
-       {id:'mm2',date:'À confirmer',name:'Montage rough cut',desc:'Première version du montage',status:'todo'},
-       {id:'mm3',date:'À confirmer',name:'Livraison finale',desc:'Export et remise au client',status:'todo'},
-     ],
-     marketing:null,deliverables:[],
-     notes:'⚠️ URGENT — contacter le client cette semaine pour fixer une date de livraison précise.'},
+{id:'mariage',name:'Montage Mariage',client:'Client privé',color:'#E05C5C',status:'urgent',deadline:'⚠️ À confirmer',instagram:null,
+desc:'Montage vidéo professionnel d\'un mariage. Deadline de livraison à fixer de toute urgence.',
+tasks:[
+{id:'m1',name:'Récupérer tous les rushes',tag:'video',status:'inprogress'},
+{id:'m2',name:'Fixer la deadline avec le client',tag:'other',status:'inprogress',note:'URGENT — cette semaine'},
+{id:'m3',name:'Sélection des meilleures scènes',tag:'video',status:'todo'},
+{id:'m4',name:'Montage principal',tag:'video',status:'todo'},
+{id:'m5',name:'Étalonnage couleur',tag:'video',status:'todo'},
+{id:'m6',name:'Mixage audio & musique',tag:'video',status:'todo'},
+{id:'m7',name:'Export & livraison client',tag:'video',status:'todo'},
+],
+etapes:[
+{id:'em1',date:'Avr 2026',name:'Rushes récupérés + deadline fixée',desc:'Contact client urgent',status:'current'},
+{id:'em2',date:'À confirmer',name:'Montage rough cut',desc:'Première version',status:'todo'},
+{id:'em3',date:'À confirmer',name:'Livraison finale',desc:'Export et remise au client',status:'todo'},
+],
+deliverables:[],notes:'⚠️ URGENT — contacter le client cette semaine pour fixer la date.'},
 
-    {id:'portfolio',name:'Portfolio Ayoub',client:'Personnel — @hamouni.ay',color:'#9B7FD4',status:'planning',deadline:'Mai 2026',instagram:'@hamouni.ay',
-     desc:'Site vitrine personnel photo/vidéo + stratégie de contenu Instagram. Montrer ton regard unique de créatif parisien.',
-     tasks:[
-       {id:'p1',name:'Définir le positionnement créatif',tag:'marketing',status:'todo'},
-       {id:'p2',name:'Sélection portfolio photos/vidéos',tag:'content',status:'todo'},
-       {id:'p3',name:'Design site vitrine',tag:'design',status:'todo'},
-       {id:'p4',name:'Développement site',tag:'web',status:'todo'},
-       {id:'p5',name:'Stratégie contenu Instagram perso',tag:'marketing',status:'todo'},
-       {id:'p6',name:'Premiers posts Instagram',tag:'content',status:'todo'},
-     ],
-     milestones:[
-       {id:'pp1',date:'Avr 2026',name:'Positionnement & sélection portfolio',desc:'Définir l\'identité créative',status:'current'},
-       {id:'pp2',date:'Mai 2026',name:'Site en ligne',desc:'Site vitrine photo/vidéo publié',status:'todo'},
-       {id:'pp3',date:'Mai 2026',name:'Instagram actif',desc:'Feed cohérent + 10 premiers posts',status:'todo'},
-     ],
-     marketing:{target:'Entreprises et particuliers cherchant un photographe/vidéaste créatif à Paris.',platforms:['Instagram — portfolio visuel, style éditorial','LinkedIn — approche B2B, agences, marques'],tone:'Créatif, authentique, artistique. Montrer ton regard unique.',kpis:['Site en ligne avant fin mai','1 post/jour Instagram','Premier client via Instagram'],content:['Portfolio photos best-of','Behind the scenes tournages','Process créatif','Projets Grandiose & Guestation']},
-     deliverables:[
-       {id:'dp1',name:'Site vitrine portfolio',icon:'🌐',status:'pending',date:'Mai 2026'},
-       {id:'dp2',name:'Stratégie Instagram perso',icon:'📊',status:'pending',date:'Mai 2026'},
-     ],
-     notes:'Commencer par sélectionner les 20 meilleures photos/vidéos avant de lancer le site.'}
-  ];
-  save();
+{id:'portfolio',name:'Portfolio Ayoub',client:'Personnel — @hamouni.ay',color:'#9B7FD4',status:'planning',deadline:'Mai 2026',instagram:'@hamouni.ay',
+desc:'Site vitrine personnel photo/vidéo + stratégie de contenu Instagram. Montrer ton regard unique de créatif parisien.',
+tasks:[
+{id:'p1',name:'Définir le positionnement créatif',tag:'marketing',status:'todo'},
+{id:'p2',name:'Sélection portfolio photos/vidéos',tag:'content',status:'todo'},
+{id:'p3',name:'Design site vitrine',tag:'design',status:'todo'},
+{id:'p4',name:'Développement site',tag:'web',status:'todo'},
+{id:'p5',name:'Stratégie contenu Instagram perso',tag:'marketing',status:'todo'},
+{id:'p6',name:'Premiers posts Instagram',tag:'content',status:'todo'},
+],
+etapes:[
+{id:'ep1',date:'Avr 2026',name:'Positionnement & sélection portfolio',desc:'Définir l\'identité créative',status:'current'},
+{id:'ep2',date:'Mai 2026',name:'Site en ligne',desc:'Site vitrine photo/vidéo publié',status:'todo'},
+{id:'ep3',date:'Mai 2026',name:'Instagram actif',desc:'Feed cohérent + 10 premiers posts',status:'todo'},
+],
+deliverables:[
+{id:'dp1',name:'Site vitrine portfolio',icon:'🌐',status:'pending',date:'Mai 2026'},
+],
+notes:'Commencer par sélectionner les 20 meilleures photos/vidéos avant de lancer le site.'}
+];
+save();
 }
 
-// CLIENT VIEW
+// Sidebar mobile
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebar-overlay').classList.add('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open');}
+
+// Client view
 function checkClientView(){
-  var p=new URLSearchParams(window.location.search).get('client');
-  if(p){var proj=S.projects.find(function(x){return x.id===p;});if(proj){document.getElementById('app-internal').style.display='none';document.getElementById('client-view').style.display='block';renderClientView(proj);return true;}}
-  return false;
+var p=new URLSearchParams(window.location.search).get('client');
+if(p){var proj=S.projects.find(function(x){return x.id===p;});if(proj){document.getElementById('app-internal').style.display='none';document.getElementById('client-view').style.display='block';renderClientView(proj);return true;}}
+return false;
 }
 
 function renderClientView(p){
-  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
-  var inprog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
-  var total=p.tasks.length;
-  var pct=total?Math.round(done/total*100):0;
-  var ac=p.color;
-  var heroBg=p.id==='guestation'?'background:linear-gradient(135deg,#3d0508,#1a0203)':p.id==='grandiose'?'background:linear-gradient(135deg,#1a1209,#2d2000)':'background:linear-gradient(135deg,#1a1a1a,#2a2a2a)';
-  var html='<div class="cv-hero" style="'+heroBg+'">';
-  html+='<div style="max-width:700px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px">';
-  html+='<div><div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.4;margin-bottom:10px">Studio AY — Suivi projet</div><div style="font-family:\'DM Serif Display\',serif;font-size:36px;margin-bottom:6px">'+p.name+'</div><div style="font-size:15px;opacity:.7">'+p.client+'</div>'+(p.instagram?'<div style="margin-top:8px;font-size:12px;opacity:.4">'+p.instagram+'</div>':'')+'</div>';
-  html+='<div style="text-align:right"><div style="font-size:48px;font-weight:200;color:'+ac+'">'+pct+'%</div><div style="font-size:11px;opacity:.4;margin-bottom:10px">avancement global</div><div style="width:160px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-left:auto"><div style="width:'+pct+'%;height:100%;background:'+ac+';border-radius:2px"></div></div></div>';
-  html+='</div></div>';
-  html+='<div class="cv-body" style="max-width:700px;margin:0 auto">';
-  html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0">';
-  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:'+ac+'">'+done+'</div><div style="font-size:11px;color:#999;margin-top:2px">Terminé</div></div>';
-  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#5B8FD4">'+inprog+'</div><div style="font-size:11px;color:#999;margin-top:2px">En cours</div></div>';
-  html+='<div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#1a1a1a">'+(total-done-inprog)+'</div><div style="font-size:11px;color:#999;margin-top:2px">À venir</div></div>';
-  html+='</div>';
-  ['inprogress','todo','done'].forEach(function(s){
-    var tasks=p.tasks.filter(function(t){return t.status===s;});
-    if(!tasks.length)return;
-    var label=s==='done'?'✓ Terminé':s==='inprogress'?'→ En cours':'○ À venir';
-    var dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
-    html+='<div class="cv-section"><div class="cv-section-title">'+label+'</div>';
-    tasks.forEach(function(t){var c=TC[t.tag]||TC.other;html+='<div class="cv-task"><div class="cv-task-dot" style="background:'+dc+'"></div><div class="cv-task-name" style="'+(s==='done'?'text-decoration:line-through;color:#aaa':'')+'">'+t.name+(t.note&&s!=='done'?'<div style="font-size:11px;color:#aaa;font-style:italic;margin-top:3px">↳ '+t.note+'</div>':'')+'</div><span class="cv-task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span></div>';});
-    html+='</div>';
-  });
-  if(p.milestones&&p.milestones.length){
-    html+='<div class="cv-section"><div class="cv-section-title">Jalons & roadmap</div>';
-    p.milestones.forEach(function(m){
-      var dc=m.status==='done'?'#5CAF8A':m.status==='current'?ac:'#ddd';
-      var shadow=m.status==='current'?'box-shadow:0 0 0 4px '+ac+'33;':'';
-      html+='<div class="cv-ms"><div class="cv-ms-dot" style="background:'+dc+';'+shadow+'"></div><div><div class="cv-ms-name" style="color:'+(m.status==='done'?'#5CAF8A':m.status==='current'?ac:'#1a1a1a')+'">'+m.name+'</div><div class="cv-ms-date">'+m.date+(m.desc?' — '+m.desc:'')+'</div></div></div>';
-    });
-    html+='</div>';
-  }
-  html+='<div style="background:white;border-radius:12px;padding:20px;margin-top:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:12px;color:#999;margin-bottom:4px">Suivi assuré par</div><div style="font-size:16px;font-weight:500;color:#1a1a1a">Ayoub — Studio AY</div><div style="font-size:12px;color:#aaa;margin-top:4px">@hamouni.ay · Directeur créatif</div></div>';
-  html+='</div>';
-  document.getElementById('cv-content').innerHTML=html;
+var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+var inprog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
+var total=p.tasks.length;
+var pct=total?Math.round(done/total*100):0;
+var ac=p.color;
+var bgClass=p.id==='guestation'?'guestation':p.id==='grandiose'?'':'default';
+
+var h='<div class="cv-hero">';
+h+='<div class="cv-hero-bg '+bgClass+'"></div>';
+h+='<div class="cv-hero-content">';
+h+='<div class="cv-hero-label">Studio AY — Suivi de projet</div>';
+h+='<div class="cv-hero-title">'+p.name+'</div>';
+h+='<div class="cv-hero-client">'+p.client+'</div>';
+if(p.instagram)h+='<div class="cv-hero-ig">'+p.instagram+'</div>';
+h+='<div class="cv-hero-progress">';
+h+='<div class="cv-progress-label"><div class="cv-progress-pct" style="color:'+ac+'">'+pct+'<span style="font-size:24px">%</span></div><div class="cv-progress-txt">avancement global</div></div>';
+h+='<div class="cv-progress-bar-bg"><div class="cv-progress-bar-fill" style="width:0%;background:'+ac+'" id="cv-pbar"></div></div>';
+h+='</div></div></div>';
+
+h+='<div class="cv-stats">';
+h+='<div class="cv-stat"><div class="cv-stat-value" style="color:'+ac+'">'+done+'</div><div class="cv-stat-label">Terminé</div></div>';
+h+='<div class="cv-stat"><div class="cv-stat-value" style="color:#5B8FD4">'+inprog+'</div><div class="cv-stat-label">En cours</div></div>';
+h+='<div class="cv-stat"><div class="cv-stat-value" style="color:#aaa">'+(total-done-inprog)+'</div><div class="cv-stat-label">À venir</div></div>';
+h+='</div>';
+
+h+='<div class="cv-main">';
+
+// Filter bar
+h+='<div class="cv-filter-bar">';
+h+='<button class="cv-filter-btn active" onclick="cvSetFilter(\'all\',this)">Tout voir</button>';
+h+='<button class="cv-filter-btn" onclick="cvSetFilter(\'inprogress\',this)">En cours</button>';
+h+='<button class="cv-filter-btn" onclick="cvSetFilter(\'todo\',this)">À venir</button>';
+h+='<button class="cv-filter-btn" onclick="cvSetFilter(\'done\',this)">Terminé</button>';
+h+='</div>';
+
+// Tasks
+h+='<div id="cv-tasks-container">';
+h+=renderCvTasks(p,'all',ac);
+h+='</div>';
+
+// Étapes
+if(p.etapes&&p.etapes.length){
+h+='<div class="cv-section" style="margin-top:8px">';
+h+='<div class="cv-section-title">Étapes du projet</div>';
+p.etapes.forEach(function(e,i){
+var dc=e.status==='done'?'#5CAF8A':e.status==='current'?ac:'#ddd';
+var shadow=e.status==='current'?'box-shadow:0 0 0 5px '+ac+'22;':'';
+var sbadge=e.status==='done'?'<span class="cv-etape-status-badge" style="background:#f0faf5;color:#5CAF8A">✓ Terminé</span>':e.status==='current'?'<span class="cv-etape-status-badge" style="background:#fdf8f0;color:'+ac+'">● En cours</span>':'<span class="cv-etape-status-badge" style="background:#f5f5f5;color:#aaa">○ À venir</span>';
+var isLast=i===p.etapes.length-1;
+h+='<div class="cv-etape-card" style="animation-delay:'+(i*0.07)+'s">';
+h+='<div class="cv-etape-dot-wrap"><div class="cv-etape-dot" style="background:'+dc+';'+shadow+'"></div>'+(isLast?'':'<div class="cv-etape-connector"></div>')+'</div>';
+h+='<div class="cv-etape-content"><div class="cv-etape-date">'+e.date+'</div><div class="cv-etape-name" style="color:'+(e.status==='done'?'#5CAF8A':e.status==='current'?ac:'#1a1a1a')+'">'+e.name+'</div>'+(e.desc?'<div class="cv-etape-desc">'+e.desc+'</div>':'')+sbadge+'</div>';
+h+='</div>';
+});
+h+='</div>';
 }
 
-// VIEWS
+h+='</div>';// cv-main
+
+h+='<div class="cv-footer">';
+h+='<div class="cv-footer-logo">Studio AY</div>';
+h+='<div class="cv-footer-name">Ayoub — Directeur créatif</div>';
+h+='<div class="cv-footer-sub">@hamouni.ay · Suivi projet en temps réel</div>';
+h+='</div>';
+
+document.getElementById('cv-content').innerHTML=h;
+setTimeout(function(){var bar=document.getElementById('cv-pbar');if(bar)bar.style.width=pct+'%';},100);
+}
+
+function renderCvTasks(p,filter,ac){
+var statusOrder=filter==='all'?['inprogress','todo','done']:[filter];
+var html='';
+statusOrder.forEach(function(s){
+var tasks=p.tasks.filter(function(t){return t.status===s;});
+if(!tasks.length)return;
+var label=s==='done'?'✓ Terminé':s==='inprogress'?'→ En cours':'○ À venir';
+var dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
+html+='<div class="cv-section"><div class="cv-section-title">'+label+'</div>';
+tasks.forEach(function(t,i){
+var c=TC[t.tag]||TC.other;
+html+='<div class="cv-task-card" style="animation-delay:'+(i*0.06)+'s">';
+html+='<div class="cv-task-icon" style="background:'+dc+'"></div>';
+html+='<div class="cv-task-body"><div class="cv-task-name" style="'+(s==='done'?'text-decoration:line-through;color:#aaa':'')+'">'+t.name+'</div>'+(t.note&&s!=='done'?'<div class="cv-task-note">↳ '+t.note+'</div>':'')+'</div>';
+html+='<span class="cv-task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span>';
+html+='</div>';
+});
+html+='</div>';
+});
+return html;
+}
+
+function cvSetFilter(filter,btn){
+document.querySelectorAll('.cv-filter-btn').forEach(function(b){b.classList.remove('active');});
+btn.classList.add('active');
+var pid=new URLSearchParams(window.location.search).get('client');
+var p=S.projects.find(function(x){return x.id===pid;});
+if(p){document.getElementById('cv-tasks-container').innerHTML=renderCvTasks(p,filter,p.color);}
+}
+
+// Views
 function showView(n){
-  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
-  document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});
-  document.getElementById('view-'+n).classList.add('active');
-  if(n==='dashboard'){renderDashboard();document.querySelectorAll('.nav-item')[0].classList.add('active');}
-  else if(n==='projects'){renderAllProjects();document.querySelectorAll('.nav-item')[1].classList.add('active');}
+document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+document.querySelectorAll('.nav-item').forEach(function(x){x.classList.remove('active');});
+document.getElementById('view-'+n).classList.add('active');
+if(n==='dashboard'){renderDashboard();document.querySelectorAll('.nav-item')[0].classList.add('active');}
+else if(n==='projects'){renderAllProjects();document.querySelectorAll('.nav-item')[1].classList.add('active');}
 }
 function openProject(id){S.currentProject=id;S.currentTab='overview';showView('project-detail');renderProjectDetail(id);}
 function goBack(){showView('projects');}
 
 function renderDashboard(){
-  var allT=S.projects.reduce(function(a,p){return a.concat(p.tasks);},[]);
-  var done=allT.filter(function(t){return t.status==='done';}).length;
-  document.getElementById('stats-row').innerHTML='<div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">'+S.projects.length+'</div><div class="stat-sub">total</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">'+S.projects.filter(function(p){return p.status==='active';}).length+'</div></div><div class="stat-card"><div class="stat-label" style="color:var(--red)">Urgent</div><div class="stat-value" style="color:var(--red)">'+S.projects.filter(function(p){return p.status==='urgent';}).length+'</div></div><div class="stat-card"><div class="stat-label">Tâches</div><div class="stat-value">'+done+'/'+allT.length+'</div><div class="stat-sub">'+(allT.length?Math.round(done/allT.length*100):0)+'% done</div></div>';
-  document.getElementById('dashboard-projects').innerHTML=S.projects.map(pCard).join('');
-  document.getElementById('sidebar-projects').innerHTML=S.projects.map(function(p){return'<div class="nav-item" onclick="openProject(\''+p.id+'\')"><div class="project-dot" style="background:'+p.color+'"></div>'+p.name+'</div>';}).join('');
+var allT=S.projects.reduce(function(a,p){return a.concat(p.tasks);},[]);
+var done=allT.filter(function(t){return t.status==='done';}).length;
+document.getElementById('stats-row').innerHTML='<div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">'+S.projects.length+'</div><div class="stat-sub">actifs</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">'+S.projects.filter(function(p){return p.status==='active';}).length+'</div></div><div class="stat-card"><div class="stat-label" style="color:var(--red)">Urgent</div><div class="stat-value" style="color:var(--red)">'+S.projects.filter(function(p){return p.status==='urgent';}).length+'</div></div><div class="stat-card"><div class="stat-label">Tâches</div><div class="stat-value">'+done+'/'+allT.length+'</div><div class="stat-sub">'+(allT.length?Math.round(done/allT.length*100):0)+'%</div></div>';
+document.getElementById('dashboard-projects').innerHTML=S.projects.map(pCard).join('');
+document.getElementById('sidebar-projects').innerHTML=S.projects.map(function(p){return'<div class="nav-item" onclick="openProject(\''+p.id+'\');closeSidebar()"><div class="project-dot" style="background:'+p.color+'"></div>'+p.name+'</div>';}).join('');
 }
 function renderAllProjects(){document.getElementById('all-projects').innerHTML=S.projects.map(pCard).join('');}
 
 function pCard(p){
-  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
-  var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
-  var s=SM[p.status];
-  return'<div class="project-card" style="--project-color:'+p.color+'" onclick="openProject(\''+p.id+'\')">'+'<div class="pc-header"><div><div class="pc-name">'+p.name+'</div><div class="pc-client">'+p.client+'</div></div><span class="status-badge '+s.cls+'">'+s.label+'</span></div>'+'<div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">'+(p.desc.length>90?p.desc.slice(0,90)+'…':p.desc)+'</div>'+'<div class="pc-progress"><div class="progress-label"><span>Avancement</span><span>'+pct+'%</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>'+'<div class="pc-meta"><div class="pc-meta-item">'+done+'/'+p.tasks.length+' tâches</div>'+(p.instagram?'<div class="pc-meta-item" style="color:var(--accent)">'+p.instagram+'</div>':'')+'<div class="pc-meta-item" style="margin-left:auto">'+p.deadline+'</div></div></div>';
+var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+var s=SM[p.status];
+return'<div class="project-card" style="--project-color:'+p.color+'" onclick="openProject(\''+p.id+'\')">'+'<div class="pc-header"><div><div class="pc-name">'+p.name+'</div><div class="pc-client">'+p.client+'</div></div><span class="status-badge '+s.cls+'">'+s.label+'</span></div>'+'<div style="font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5">'+(p.desc.length>85?p.desc.slice(0,85)+'…':p.desc)+'</div>'+'<div class="pc-progress"><div class="progress-label"><span>Avancement</span><span>'+pct+'%</span></div><div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>'+'<div class="pc-meta"><div class="pc-meta-item">'+done+'/'+p.tasks.length+' tâches</div>'+(p.instagram?'<div class="pc-meta-item" style="color:var(--accent)">'+p.instagram+'</div>':'')+'<div class="pc-meta-item" style="margin-left:auto">'+p.deadline+'</div></div></div>';
 }
 
 function renderProjectDetail(id){
-  var p=S.projects.find(function(x){return x.id===id;});if(!p)return;
-  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
-  var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
-  var s=SM[p.status];
-  var tabs=['overview','tasks','milestones','deliverables','marketing','notes'];
-  var tl=['Vue générale','Tâches','Jalons','Livrables','Stratégie','Notes'];
-  document.getElementById('detail-topbar-actions').innerHTML='<button class="btn btn-ghost btn-sm" onclick="openEditProject(\''+p.id+'\')">✏️ Modifier</button><button class="btn btn-ghost btn-sm" onclick="openShareModal(\''+p.id+'\')">🔗 Lien client</button>';
-  var hero='<div class="detail-hero" style="border-top:3px solid '+p.color+'">';
-  hero+='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">';
-  hero+='<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap"><span class="status-badge '+s.cls+'">'+s.label+'</span><span style="font-size:12px;color:var(--text3)">Deadline : '+p.deadline+'</span>'+(p.instagram?'<span style="font-size:12px;color:var(--accent)">'+p.instagram+'</span>':'')+'</div><div class="detail-title">'+p.name+'</div><div class="detail-client">'+p.client+'</div></div>';
-  hero+='<div style="text-align:right"><div style="font-size:32px;font-weight:300;color:'+p.color+'">'+pct+'%</div><div style="font-size:11px;color:var(--text3);margin-bottom:8px">complété</div><div class="progress-bar" style="width:180px;--project-color:'+p.color+'"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>';
-  hero+='</div>';
-  hero+='<div class="detail-tabs">'+tabs.map(function(t,i){return'<div class="tab '+(t===S.currentTab?'active':'')+'" onclick="switchTab(\''+id+'\',\''+t+'\',this)">'+tl[i]+'</div>';}).join('')+'</div>';
-  hero+='</div>';
-  var panels='<div class="detail-content">';
-  panels+='<div class="tab-panel '+(S.currentTab==='overview'?'active':'')+'" data-tab="overview">'+renderOverview(p)+'</div>';
-  panels+='<div class="tab-panel '+(S.currentTab==='tasks'?'active':'')+'" data-tab="tasks">'+renderTasks(p)+'</div>';
-  panels+='<div class="tab-panel '+(S.currentTab==='milestones'?'active':'')+'" data-tab="milestones">'+renderMilestones(p)+'</div>';
-  panels+='<div class="tab-panel '+(S.currentTab==='deliverables'?'active':'')+'" data-tab="deliverables">'+renderDeliverables(p)+'</div>';
-  panels+='<div class="tab-panel '+(S.currentTab==='marketing'?'active':'')+'" data-tab="marketing">'+renderMarketing(p)+'</div>';
-  panels+='<div class="tab-panel '+(S.currentTab==='notes'?'active':'')+'" data-tab="notes">'+renderNotes(p)+'</div>';
-  panels+='</div>';
-  document.getElementById('project-detail-content').innerHTML=hero+panels;
+var p=S.projects.find(function(x){return x.id===id;});if(!p)return;
+var done=p.tasks.filter(function(t){return t.status==='done';}).length;
+var pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+var s=SM[p.status];
+var tabs=['overview','tasks','etapes','livrables','rapport','notes'];
+var tl=['Vue générale','Tâches','Étapes','Livrables','Rapport','Notes'];
+document.getElementById('detail-topbar-actions').innerHTML='<button class="btn btn-ghost btn-sm" onclick="openEditProject(\''+p.id+'\')">✏️ Modifier</button><button class="btn btn-ghost btn-sm" onclick="openShareModal(\''+p.id+'\')">🔗 Lien client</button>';
+var hero='<div class="detail-hero" style="border-top:3px solid '+p.color+'">';
+hero+='<div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px">';
+hero+='<div><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap"><span class="status-badge '+s.cls+'">'+s.label+'</span><span style="font-size:11px;color:var(--text3)">'+p.deadline+'</span>'+(p.instagram?'<span style="font-size:11px;color:var(--accent)">'+p.instagram+'</span>':'')+'</div><div class="detail-title">'+p.name+'</div><div class="detail-client">'+p.client+'</div></div>';
+hero+='<div style="text-align:right"><div style="font-size:30px;font-weight:300;color:'+p.color+'">'+pct+'%</div><div style="font-size:10px;color:var(--text3);margin-bottom:6px">complété</div><div class="progress-bar" style="width:160px;--project-color:'+p.color+'"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>';
+hero+='</div>';
+hero+='<div class="detail-tabs">'+tabs.map(function(t,i){return'<div class="tab '+(t===S.currentTab?'active':'')+'" onclick="switchTab(\''+id+'\',\''+t+'\',this)">'+tl[i]+'</div>';}).join('')+'</div>';
+hero+='</div>';
+var content='<div class="detail-content">';
+content+='<div class="tab-panel '+(S.currentTab==='overview'?'active':'')+'" data-tab="overview">'+renderOverview(p)+'</div>';
+content+='<div class="tab-panel '+(S.currentTab==='tasks'?'active':'')+'" data-tab="tasks">'+renderTasks(p)+'</div>';
+content+='<div class="tab-panel '+(S.currentTab==='etapes'?'active':'')+'" data-tab="etapes">'+renderEtapes(p)+'</div>';
+content+='<div class="tab-panel '+(S.currentTab==='livrables'?'active':'')+'" data-tab="livrables">'+renderLivrables(p)+'</div>';
+content+='<div class="tab-panel '+(S.currentTab==='rapport'?'active':'')+'" data-tab="rapport">'+renderRapport(p)+'</div>';
+content+='<div class="tab-panel '+(S.currentTab==='notes'?'active':'')+'" data-tab="notes">'+renderNotes(p)+'</div>';
+content+='</div>';
+document.getElementById('project-detail-content').innerHTML=hero+content;
 }
 
 function renderOverview(p){
-  var done=p.tasks.filter(function(t){return t.status==='done';}).length;
-  var inprog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
-  var todo=p.tasks.filter(function(t){return t.status==='todo';}).length;
-  return'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px"><div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">'+done+'</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">'+inprog+'</div></div><div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">'+todo+'</div></div></div>'+'<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px"><div style="font-size:13px;font-weight:500;margin-bottom:8px">Description du projet</div><div style="font-size:14px;color:var(--text2);line-height:1.7">'+p.desc+'</div></div>';
+return'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px"><div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">'+p.tasks.filter(function(t){return t.status==='done';}).length+'</div></div><div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">'+p.tasks.filter(function(t){return t.status==='inprogress';}).length+'</div></div><div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">'+p.tasks.filter(function(t){return t.status==='todo';}).length+'</div></div></div><div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px"><div style="font-size:12px;font-weight:500;margin-bottom:7px;color:var(--text2)">Description</div><div style="font-size:13.5px;color:var(--text);line-height:1.7">'+p.desc+'</div></div>';
 }
 
 function renderTasks(p){
-  var hint='<div class="info-hint">💡 Clique sur le cercle pour changer le statut · Survole pour modifier ou supprimer</div>';
-  var cols=['todo','inprogress','done'];
-  var colLabels=['À faire','En cours','Terminé'];
-  var colColors=['var(--text3)','var(--blue)','var(--green)'];
-  var html=hint+'<div class="kanban">';
-  cols.forEach(function(s,i){
-    var tasks=p.tasks.filter(function(t){return t.status===s;});
-    html+='<div class="kanban-col"><div class="kanban-col-title" style="color:'+colColors[i]+'">'+colLabels[i]+'<span class="kanban-col-count">'+tasks.length+'</span></div>';
-    tasks.forEach(function(t){html+=taskHTML(t,p.id);});
-    html+='<button class="add-item-btn" onclick="openAddTask()">+ Ajouter une tâche</button></div>';
-  });
-  html+='</div>';
-  return html;
+var hint='<div class="info-hint">💡 Clique sur le cercle pour changer le statut · Survole pour modifier ou supprimer</div>';
+var cols=['todo','inprogress','done'];
+var labels=['À faire','En cours','Terminé'];
+var colors=['var(--text3)','var(--blue)','var(--green)'];
+var html=hint+'<div class="kanban">';
+cols.forEach(function(s,i){
+var tasks=p.tasks.filter(function(t){return t.status===s;});
+html+='<div class="kanban-col"><div class="kanban-col-title" style="color:'+colors[i]+'">'+labels[i]+'<span class="kanban-col-count">'+tasks.length+'</span></div>';
+tasks.forEach(function(t){html+=taskHTML(t,p.id);});
+html+='<button class="add-item-btn" onclick="openAddTask()">+ Ajouter</button></div>';
+});
+return html+'</div>';
 }
 
 function taskHTML(t,pid){
-  var c=TC[t.tag]||TC.other;
-  var nextLabel=t.status==='todo'?'→ En cours':t.status==='inprogress'?'✓ Terminé':'↩ Réouvrir';
-  var btnCls=t.status==='done'?'s-done':t.status==='inprogress'?'s-inprogress':'';
-  var btnContent=t.status==='done'?'✓':t.status==='inprogress'?'●':'';
-  return'<div class="task-item"><div class="task-header"><div class="task-status-btn '+btnCls+'" onclick="cycleTask(\''+pid+'\',\''+t.id+'\')" title="'+nextLabel+'">'+btnContent+'</div><div class="task-name '+(t.status==='done'?'done-text':'')+'">'+t.name+'</div></div>'+(t.note?'<div class="task-note">↳ '+t.note+'</div>':'')+'<div class="task-actions"><span class="task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span><button class="task-btn" onclick="openEditTask(\''+pid+'\',\''+t.id+'\')">✏️ Modifier</button><button class="task-btn del" onclick="deleteTask(\''+pid+'\',\''+t.id+'\')">🗑</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div></div>';
+var c=TC[t.tag]||TC.other;
+var nextLabel=t.status==='todo'?'→ En cours':t.status==='inprogress'?'✓ Terminé':'↩ Réouvrir';
+var btnCls=t.status==='done'?'s-done':t.status==='inprogress'?'s-inprogress':'';
+var btnContent=t.status==='done'?'✓':t.status==='inprogress'?'●':'';
+return'<div class="task-item"><div class="task-header"><div class="task-status-btn '+btnCls+'" onclick="cycleTask(\''+pid+'\',\''+t.id+'\')" title="'+nextLabel+'">'+btnContent+'</div><div class="task-name '+(t.status==='done'?'done-text':'')+'">'+t.name+'</div></div>'+(t.note?'<div class="task-note">↳ '+t.note+'</div>':'')+'<div class="task-actions"><span class="task-tag" style="background:'+c.bg+';color:'+c.text+'">'+t.tag+'</span><button class="task-btn" onclick="openEditTask(\''+pid+'\',\''+t.id+'\')">✏️</button><button class="task-btn del" onclick="deleteTask(\''+pid+'\',\''+t.id+'\')">🗑</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div></div>';
 }
 
-function renderMilestones(p){
-  var hint='<div class="info-hint">💡 Clique sur le cercle pour changer l\'état (À venir → En cours → Terminé) · Survole pour modifier ou supprimer</div>';
-  var html=hint;
-  if(!p.milestones||!p.milestones.length){html+='<div style="color:var(--text3);padding:20px">Aucun jalon. Ajoute-en un !</div>';}
-  else{
-    p.milestones.forEach(function(m){
-      var btnCls=m.status==='done'?'ms-done':m.status==='current'?'ms-current':'';
-      var btnContent=m.status==='done'?'✓':m.status==='current'?'●':'';
-      var nextLabel=m.status==='todo'?'→ En cours':m.status==='current'?'✓ Terminé':'↩ À venir';
-      html+='<div class="milestone-item"><div class="ms-status-btn '+btnCls+'" onclick="cycleMilestone(\''+p.id+'\',\''+m.id+'\')" title="'+nextLabel+'">'+btnContent+'</div>';
-      html+='<div class="ms-body"><div class="ms-date">'+m.date+'</div><div class="ms-name">'+m.name+'</div>'+(m.desc?'<div class="ms-desc">'+m.desc+'</div>':'');
-      html+='<div class="ms-actions"><button class="task-btn" onclick="openEditMilestone(\''+p.id+'\',\''+m.id+'\')">✏️ Modifier</button><button class="task-btn del" onclick="deleteMilestone(\''+p.id+'\',\''+m.id+'\')">🗑 Supprimer</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div>';
-      html+='</div></div>';
-    });
-  }
-  html+='<button class="add-item-btn" style="margin-top:8px" onclick="openAddMilestone()">+ Ajouter un jalon</button>';
-  return html;
+function renderEtapes(p){
+var hint='<div class="info-hint">💡 Clique sur le cercle pour changer l\'état · Survole pour modifier ou supprimer</div>';
+var html=hint;
+if(!p.etapes||!p.etapes.length)html+='<div style="color:var(--text3);padding:16px">Aucune étape. Ajoute-en une !</div>';
+else p.etapes.forEach(function(e){
+var btnCls=e.status==='done'?'e-done':e.status==='current'?'e-current':'';
+var btnContent=e.status==='done'?'✓':e.status==='current'?'●':'';
+var nextLabel=e.status==='todo'?'→ En cours':e.status==='current'?'✓ Terminé':'↩ À venir';
+html+='<div class="etape-item"><div class="etape-status-btn '+btnCls+'" onclick="cycleEtape(\''+p.id+'\',\''+e.id+'\')" title="'+nextLabel+'">'+btnContent+'</div><div class="etape-body"><div class="etape-date">'+e.date+'</div><div class="etape-name">'+e.name+'</div>'+(e.desc?'<div class="etape-desc">'+e.desc+'</div>':'')+'<div class="etape-actions"><button class="task-btn" onclick="openEditEtape(\''+p.id+'\',\''+e.id+'\')">✏️ Modifier</button><button class="task-btn del" onclick="deleteEtape(\''+p.id+'\',\''+e.id+'\')">🗑 Supprimer</button><span style="font-size:10px;color:var(--text3);margin-left:auto">'+nextLabel+'</span></div></div></div>';
+});
+html+='<button class="add-item-btn" style="margin-top:8px" onclick="openAddEtape()">+ Ajouter une étape</button>';
+return html;
 }
 
-function renderDeliverables(p){
-  var dsMap={validated:{label:'✓ Validé',cls:'ds-validated'},inreview:{label:'En révision',cls:'ds-inreview'},pending:{label:'À livrer',cls:'ds-pending'}};
-  var html='<div style="margin-bottom:16px"><div style="font-size:13px;color:var(--text2);line-height:1.6">Les livrables sont les documents, fichiers ou éléments concrets remis au client à chaque étape du projet — comme le font les grandes agences. C\'est ce que tu livres officiellement.</div></div>';
-  if(!p.deliverables||!p.deliverables.length){html+='<div style="color:var(--text3);padding:20px">Aucun livrable enregistré.</div>';}
-  else{
-    html+='<div class="files-list">';
-    p.deliverables.forEach(function(d){
-      var ds=dsMap[d.status]||dsMap.pending;
-      html+='<div class="deliverable-item"><div class="deliverable-icon">'+d.icon+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500">'+d.name+'</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Prévu : '+d.date+'</div></div><span class="deliverable-status '+ds.cls+'">'+ds.label+'</span></div>';
-    });
-    html+='</div>';
-  }
-  return html;
+function renderLivrables(p){
+var dsMap={validated:{label:'✓ Validé',cls:'ds-validated'},inreview:{label:'En révision',cls:'ds-inreview'},pending:{label:'À livrer',cls:'ds-pending'}};
+var html='<div style="font-size:13px;color:var(--text2);margin-bottom:18px;line-height:1.6;padding:14px;background:var(--bg2);border-radius:var(--radius-sm);border:1px solid var(--border)">Les <strong style="color:var(--text)">livrables</strong> sont les éléments concrets remis officiellement au client à chaque étape — site, catalogue, vidéo, rapport…</div>';
+if(!p.deliverables||!p.deliverables.length)html+='<div style="color:var(--text3);padding:16px">Aucun livrable enregistré.</div>';
+else{html+='<div>';p.deliverables.forEach(function(d){var ds=dsMap[d.status]||dsMap.pending;html+='<div class="deliverable-item"><div class="deliverable-icon">'+d.icon+'</div><div style="flex:1"><div style="font-size:13px;font-weight:500">'+d.name+'</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Prévu : '+d.date+'</div></div><span class="deliverable-status '+ds.cls+'">'+ds.label+'</span></div>';});html+='</div>';}
+return html;
 }
 
-function renderMarketing(p){
-  if(!p.marketing)return'<div style="color:var(--text3);padding:20px">Pas de stratégie marketing pour ce projet.</div>';
-  var m=p.marketing;
-  return'<div class="strategy-grid"><div class="strategy-card"><div class="strategy-card-title">🎯 Cible</div><div style="font-size:13px;color:var(--text2);line-height:1.6">'+m.target+'</div></div><div class="strategy-card"><div class="strategy-card-title">📱 Plateformes</div>'+m.platforms.map(function(x){return'<div class="strategy-item">'+x+'</div>';}).join('')+'</div><div class="strategy-card"><div class="strategy-card-title">🎨 Ton & identité</div><div style="font-size:13px;color:var(--text2);line-height:1.6">'+m.tone+'</div></div><div class="strategy-card"><div class="strategy-card-title">📊 KPIs</div>'+m.kpis.map(function(x){return'<div class="strategy-item">'+x+'</div>';}).join('')+'</div><div class="strategy-card strategy-full"><div class="strategy-card-title">📝 Types de contenu</div><div style="margin-top:8px">'+m.content.map(function(c){return'<span class="tag-pill">'+c+'</span>';}).join('')+'</div></div></div>';
+function renderRapport(p){
+var now=new Date();var mois=['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+var moisNom=mois[now.getMonth()]+' '+now.getFullYear();
+var done=p.tasks.filter(function(t){return t.status==='done';});
+var inprog=p.tasks.filter(function(t){return t.status==='inprogress';});
+var todo=p.tasks.filter(function(t){return t.status==='todo';});
+var donePct=p.tasks.length?Math.round(done.length/p.tasks.length*100):0;
+var etapesDone=(p.etapes||[]).filter(function(e){return e.status==='done';});
+var etapesCurrent=(p.etapes||[]).filter(function(e){return e.status==='current';});
+
+var html='<div id="rapport-print-area">';
+html+='<div class="rapport-header">';
+html+='<div><div style="font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Rapport mensuel</div><div style="font-size:20px;font-weight:500">'+p.name+'</div><div style="font-size:13px;color:var(--text2);margin-top:3px">'+p.client+' · '+moisNom+'</div></div>';
+html+='<div style="text-align:right"><div style="font-size:32px;font-weight:300;color:'+p.color+'">'+donePct+'%</div><div style="font-size:11px;color:var(--text3)">avancement global</div></div>';
+html+='</div>';
+
+// Résumé
+html+='<div class="rapport-section"><div class="rapport-section-title">Résumé du mois</div>';
+html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px">';
+html+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center"><div style="font-size:24px;font-weight:300;color:var(--green)">'+done.length+'</div><div style="font-size:11px;color:var(--text3)">Tâches terminées</div></div>';
+html+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center"><div style="font-size:24px;font-weight:300;color:var(--blue)">'+inprog.length+'</div><div style="font-size:11px;color:var(--text3)">En cours</div></div>';
+html+='<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center"><div style="font-size:24px;font-weight:300;color:var(--accent)">'+etapesDone.length+'</div><div style="font-size:11px;color:var(--text3)">Étapes complétées</div></div>';
+html+='</div></div>';
+
+if(done.length){
+html+='<div class="rapport-section"><div class="rapport-section-title">Ce qu\'on a réalisé</div>';
+done.forEach(function(t){var c=TC[t.tag]||TC.other;html+='<div class="rapport-task-row"><div class="rapport-dot" style="background:var(--green)"></div><span style="flex:1">'+t.name+'</span><span class="task-tag" style="background:'+c.bg+';color:'+c.text+';font-size:10px;padding:2px 7px;border-radius:20px">'+t.tag+'</span></div>';});
+html+='</div>';}
+
+if(inprog.length){
+html+='<div class="rapport-section"><div class="rapport-section-title">En cours de réalisation</div>';
+inprog.forEach(function(t){var c=TC[t.tag]||TC.other;html+='<div class="rapport-task-row"><div class="rapport-dot" style="background:var(--blue)"></div><span style="flex:1">'+t.name+(t.note?'<span style="font-size:11px;color:var(--text3);font-style:italic"> — '+t.note+'</span>':'')+'</span><span class="task-tag" style="background:'+c.bg+';color:'+c.text+';font-size:10px;padding:2px 7px;border-radius:20px">'+t.tag+'</span></div>';});
+html+='</div>';}
+
+if(etapesCurrent.length){
+html+='<div class="rapport-section"><div class="rapport-section-title">Étape actuelle</div>';
+etapesCurrent.forEach(function(e){html+='<div class="rapport-task-row"><div class="rapport-dot" style="background:'+p.color+'"></div><div style="flex:1"><div>'+e.name+'</div>'+(e.desc?'<div style="font-size:11px;color:var(--text3)">'+e.desc+'</div>':'')+'</div><span style="font-size:11px;color:var(--text3)">'+e.date+'</span></div>';});
+html+='</div>';}
+
+if(todo.length){
+html+='<div class="rapport-section"><div class="rapport-section-title">Prochaines étapes</div>';
+todo.slice(0,5).forEach(function(t){html+='<div class="rapport-task-row"><div class="rapport-dot" style="background:var(--text3)"></div><span style="flex:1">'+t.name+'</span></div>';});
+if(todo.length>5)html+='<div style="font-size:12px;color:var(--text3);padding:8px 12px">+ '+(todo.length-5)+' autres tâches à venir</div>';
+html+='</div>';}
+
+html+='<div style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">';
+html+='<div style="font-size:12px;color:var(--text3)">Rapport généré par Studio AY · Ayoub · @hamouni.ay</div>';
+html+='<div style="display:flex;gap:8px">';
+html+='<button class="btn btn-ghost btn-sm" onclick="printRapport()">🖨️ Imprimer</button>';
+html+='<button class="btn btn-primary btn-sm" onclick="shareRapport(\''+p.id+'\')">📤 Partager</button>';
+html+='</div></div>';
+html+='</div>';
+return html;
 }
 
 function renderNotes(p){
-  return'<div class="notes-area"><textarea class="notes-textarea" placeholder="Notes internes (invisibles par le client)..." onchange="saveNote(\''+p.id+'\',this.value)">'+(p.notes||'')+'</textarea></div><div style="font-size:11px;color:var(--text3);margin-top:8px">🔒 Ces notes ne sont jamais visibles par le client.</div>';
+return'<div class="notes-area"><textarea class="notes-textarea" placeholder="Notes internes (jamais visibles par le client)..." onchange="saveNote(\''+p.id+'\',this.value)">'+(p.notes||'')+'</textarea></div><div style="font-size:11px;color:var(--text3);margin-top:8px">🔒 Ces notes ne sont jamais visibles par le client.</div>';
 }
 
 function switchTab(pid,tab,el){
-  S.currentTab=tab;
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');
-  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
-  document.querySelector('.tab-panel[data-tab="'+tab+'"]').classList.add('active');
+S.currentTab=tab;
+document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});el.classList.add('active');
+document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+document.querySelector('.tab-panel[data-tab="'+tab+'"]').classList.add('active');
 }
 
-// TASK ACTIONS
+// TASK actions
 function cycleTask(pid,tid){
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  var t=p.tasks.find(function(x){return x.id===tid;});if(!t)return;
-  var cycle={todo:'inprogress',inprogress:'done',done:'todo'};
-  t.status=cycle[t.status];save();
-  renderProjectDetail(pid);renderDashboard();
-  showToast('Tâche → '+(t.status==='done'?'Terminé':t.status==='inprogress'?'En cours':'À faire'),true);
+var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+var t=p.tasks.find(function(x){return x.id===tid;});if(!t)return;
+var cycle={todo:'inprogress',inprogress:'done',done:'todo'};t.status=cycle[t.status];save();
+renderProjectDetail(pid);renderDashboard();
+showToast('Tâche → '+(t.status==='done'?'Terminé ✓':t.status==='inprogress'?'En cours':'À faire'),true);
 }
-
-function openAddTask(){
-  S.editingTaskId=null;
-  document.getElementById('modal-task-title').textContent='Nouvelle tâche';
-  document.getElementById('task-save-btn').textContent='Ajouter';
-  document.getElementById('task-name').value='';document.getElementById('task-note').value='';
-  document.getElementById('task-status').value='todo';
-  document.getElementById('modal-task').classList.add('open');
-}
-
-function openEditTask(pid,tid){
-  S.editingTaskId=tid;
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  var t=p.tasks.find(function(x){return x.id===tid;});if(!t)return;
-  document.getElementById('modal-task-title').textContent='Modifier la tâche';
-  document.getElementById('task-save-btn').textContent='Enregistrer';
-  document.getElementById('task-name').value=t.name;
-  document.getElementById('task-tag').value=t.tag;
-  document.getElementById('task-status').value=t.status;
-  document.getElementById('task-note').value=t.note||'';
-  document.getElementById('modal-task').classList.add('open');
-}
-
+function openAddTask(){S.editingTaskId=null;document.getElementById('modal-task-title').textContent='Nouvelle tâche';document.getElementById('task-save-btn').textContent='Ajouter';['task-name','task-note'].forEach(function(x){document.getElementById(x).value='';});document.getElementById('task-status').value='todo';document.getElementById('modal-task').classList.add('open');}
+function openEditTask(pid,tid){S.editingTaskId=tid;var p=S.projects.find(function(x){return x.id===pid;});var t=p&&p.tasks.find(function(x){return x.id===tid;});if(!t)return;document.getElementById('modal-task-title').textContent='Modifier la tâche';document.getElementById('task-save-btn').textContent='Enregistrer';document.getElementById('task-name').value=t.name;document.getElementById('task-tag').value=t.tag;document.getElementById('task-status').value=t.status;document.getElementById('task-note').value=t.note||'';document.getElementById('modal-task').classList.add('open');}
 function saveTask(){
-  var name=document.getElementById('task-name').value.trim();
-  if(!name){showToast('Donne un nom à la tâche',false);return;}
-  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
-  var note=document.getElementById('task-note').value.trim();
-  if(S.editingTaskId){
-    var t=p.tasks.find(function(x){return x.id===S.editingTaskId;});
-    if(t){t.name=name;t.tag=document.getElementById('task-tag').value;t.status=document.getElementById('task-status').value;t.note=note||null;}
-    showToast('Tâche modifiée !',true);
-  }else{
-    p.tasks.push({id:'t_'+Date.now(),name:name,tag:document.getElementById('task-tag').value,status:document.getElementById('task-status').value,note:note||null});
-    showToast('Tâche ajoutée !',true);
-  }
-  save();closeModal('modal-task');renderProjectDetail(S.currentProject);renderDashboard();
+var name=document.getElementById('task-name').value.trim();if(!name){showToast('Donne un nom à la tâche',false);return;}
+var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
+var note=document.getElementById('task-note').value.trim();
+if(S.editingTaskId){var t=p.tasks.find(function(x){return x.id===S.editingTaskId;});if(t){t.name=name;t.tag=document.getElementById('task-tag').value;t.status=document.getElementById('task-status').value;t.note=note||null;}showToast('Tâche modifiée !',true);}
+else{p.tasks.push({id:'t_'+Date.now(),name:name,tag:document.getElementById('task-tag').value,status:document.getElementById('task-status').value,note:note||null});showToast('Tâche ajoutée !',true);}
+save();closeModal('modal-task');renderProjectDetail(S.currentProject);renderDashboard();
 }
+function deleteTask(pid,tid){if(!confirm('Supprimer cette tâche ?'))return;var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;p.tasks=p.tasks.filter(function(x){return x.id!==tid;});save();renderProjectDetail(pid);renderDashboard();showToast('Supprimée',true);}
 
-function deleteTask(pid,tid){
-  if(!confirm('Supprimer cette tâche ?'))return;
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  p.tasks=p.tasks.filter(function(x){return x.id!==tid;});
-  save();renderProjectDetail(pid);renderDashboard();showToast('Supprimée',true);
+// ÉTAPE actions
+function cycleEtape(pid,eid){
+var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
+var e=p.etapes.find(function(x){return x.id===eid;});if(!e)return;
+var cycle={todo:'current',current:'done',done:'todo'};e.status=cycle[e.status];save();
+renderProjectDetail(pid);
+showToast('Étape → '+(e.status==='done'?'Terminée ✓':e.status==='current'?'En cours':'À venir'),true);
 }
-
-// MILESTONE ACTIONS
-function cycleMilestone(pid,mid){
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  var m=p.milestones.find(function(x){return x.id===mid;});if(!m)return;
-  var cycle={todo:'current',current:'done',done:'todo'};
-  m.status=cycle[m.status];save();
-  renderProjectDetail(pid);
-  showToast('Jalon → '+(m.status==='done'?'Terminé ✓':m.status==='current'?'En cours':'À venir'),true);
+function openAddEtape(){S.editingEtapeId=null;document.getElementById('modal-etape-title').textContent='Nouvelle étape';document.getElementById('etape-save-btn').textContent='Ajouter';['etape-name','etape-date','etape-desc'].forEach(function(x){document.getElementById(x).value='';});document.getElementById('etape-status').value='todo';document.getElementById('modal-etape').classList.add('open');}
+function openEditEtape(pid,eid){S.editingEtapeId=eid;var p=S.projects.find(function(x){return x.id===pid;});var e=p&&p.etapes.find(function(x){return x.id===eid;});if(!e)return;document.getElementById('modal-etape-title').textContent='Modifier l\'étape';document.getElementById('etape-save-btn').textContent='Enregistrer';document.getElementById('etape-name').value=e.name;document.getElementById('etape-date').value=e.date;document.getElementById('etape-desc').value=e.desc||'';document.getElementById('etape-status').value=e.status;document.getElementById('modal-etape').classList.add('open');}
+function saveEtape(){
+var name=document.getElementById('etape-name').value.trim();var date=document.getElementById('etape-date').value.trim();
+if(!name||!date){showToast('Titre et date requis',false);return;}
+var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
+var desc=document.getElementById('etape-desc').value.trim();var status=document.getElementById('etape-status').value;
+if(!p.etapes)p.etapes=[];
+if(S.editingEtapeId){var e=p.etapes.find(function(x){return x.id===S.editingEtapeId;});if(e){e.name=name;e.date=date;e.desc=desc||null;e.status=status;}showToast('Étape modifiée !',true);}
+else{p.etapes.push({id:'e_'+Date.now(),name:name,date:date,desc:desc||null,status:status});showToast('Étape ajoutée !',true);}
+save();closeModal('modal-etape');renderProjectDetail(S.currentProject);
 }
+function deleteEtape(pid,eid){if(!confirm('Supprimer cette étape ?'))return;var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;p.etapes=p.etapes.filter(function(x){return x.id!==eid;});save();renderProjectDetail(pid);showToast('Étape supprimée',true);}
 
-function openAddMilestone(){
-  S.editingMsId=null;
-  document.getElementById('modal-ms-title').textContent='Nouveau jalon';
-  document.getElementById('ms-save-btn').textContent='Ajouter';
-  document.getElementById('ms-name').value='';document.getElementById('ms-date').value='';
-  document.getElementById('ms-desc').value='';document.getElementById('ms-status').value='todo';
-  document.getElementById('modal-milestone').classList.add('open');
-}
-
-function openEditMilestone(pid,mid){
-  S.editingMsId=mid;
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  var m=p.milestones.find(function(x){return x.id===mid;});if(!m)return;
-  document.getElementById('modal-ms-title').textContent='Modifier le jalon';
-  document.getElementById('ms-save-btn').textContent='Enregistrer';
-  document.getElementById('ms-name').value=m.name;
-  document.getElementById('ms-date').value=m.date;
-  document.getElementById('ms-desc').value=m.desc||'';
-  document.getElementById('ms-status').value=m.status;
-  document.getElementById('modal-milestone').classList.add('open');
-}
-
-function saveMilestone(){
-  var name=document.getElementById('ms-name').value.trim();
-  var date=document.getElementById('ms-date').value.trim();
-  if(!name||!date){showToast('Titre et date requis',false);return;}
-  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
-  var desc=document.getElementById('ms-desc').value.trim();
-  var status=document.getElementById('ms-status').value;
-  if(!p.milestones)p.milestones=[];
-  if(S.editingMsId){
-    var m=p.milestones.find(function(x){return x.id===S.editingMsId;});
-    if(m){m.name=name;m.date=date;m.desc=desc||null;m.status=status;}
-    showToast('Jalon modifié !',true);
-  }else{
-    p.milestones.push({id:'ms_'+Date.now(),name:name,date:date,desc:desc||null,status:status});
-    showToast('Jalon ajouté !',true);
-  }
-  save();closeModal('modal-milestone');renderProjectDetail(S.currentProject);
-}
-
-function deleteMilestone(pid,mid){
-  if(!confirm('Supprimer ce jalon ?'))return;
-  var p=S.projects.find(function(x){return x.id===pid;});if(!p)return;
-  p.milestones=p.milestones.filter(function(x){return x.id!==mid;});
-  save();renderProjectDetail(pid);showToast('Jalon supprimé',true);
-}
-
-// PROJECT ACTIONS
+// PROJECT actions
 function openNewProjectModal(){document.getElementById('modal-new-project').classList.add('open');}
 function createProject(){
-  var name=document.getElementById('np-name').value.trim();
-  if(!name){showToast('Donne un nom au projet',false);return;}
-  S.projects.push({id:'proj_'+Date.now(),name:name,client:document.getElementById('np-client').value.trim()||'Non défini',desc:document.getElementById('np-desc').value.trim()||'Projet en cours.',color:S.selectedColor,status:document.getElementById('np-status').value,deadline:document.getElementById('np-deadline').value.trim()||'À définir',instagram:document.getElementById('np-instagram').value.trim()||null,tasks:[],milestones:[],marketing:null,deliverables:[],notes:''});
-  save();closeModal('modal-new-project');
-  ['np-name','np-client','np-desc','np-deadline','np-instagram'].forEach(function(id){document.getElementById(id).value='';});
-  showToast('Projet créé !',true);renderDashboard();renderAllProjects();
+var name=document.getElementById('np-name').value.trim();if(!name){showToast('Donne un nom au projet',false);return;}
+S.projects.push({id:'proj_'+Date.now(),name:name,client:document.getElementById('np-client').value.trim()||'Non défini',desc:document.getElementById('np-desc').value.trim()||'Projet en cours.',color:S.selectedColor,status:document.getElementById('np-status').value,deadline:document.getElementById('np-deadline').value.trim()||'À définir',instagram:document.getElementById('np-instagram').value.trim()||null,tasks:[],etapes:[],deliverables:[],notes:''});
+save();closeModal('modal-new-project');['np-name','np-client','np-desc','np-deadline','np-instagram'].forEach(function(id){document.getElementById(id).value='';});
+showToast('Projet créé !',true);renderDashboard();renderAllProjects();
+}
+function openEditProject(id){var p=S.projects.find(function(x){return x.id===id;});if(!p)return;document.getElementById('ep-name').value=p.name;document.getElementById('ep-client').value=p.client;document.getElementById('ep-desc').value=p.desc;document.getElementById('ep-status').value=p.status;document.getElementById('ep-deadline').value=p.deadline;document.getElementById('ep-instagram').value=p.instagram||'';document.getElementById('modal-edit-project').classList.add('open');}
+function saveEditProject(){var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;p.name=document.getElementById('ep-name').value.trim()||p.name;p.client=document.getElementById('ep-client').value.trim()||p.client;p.desc=document.getElementById('ep-desc').value.trim()||p.desc;p.status=document.getElementById('ep-status').value;p.deadline=document.getElementById('ep-deadline').value.trim()||p.deadline;p.instagram=document.getElementById('ep-instagram').value.trim()||null;save();closeModal('modal-edit-project');renderProjectDetail(S.currentProject);renderDashboard();showToast('Projet mis à jour !',true);}
+
+// RAPPORT
+function printRapport(){window.print();}
+function shareRapport(pid){
+var url=window.location.origin+window.location.pathname+'?client='+pid+'&tab=rapport';
+navigator.clipboard.writeText(url).then(function(){showToast('Lien rapport copié !',true);}).catch(function(){showToast('Copie manuelle nécessaire',false);});
 }
 
-function openEditProject(id){
-  var p=S.projects.find(function(x){return x.id===id;});if(!p)return;
-  document.getElementById('ep-name').value=p.name;document.getElementById('ep-client').value=p.client;
-  document.getElementById('ep-desc').value=p.desc;document.getElementById('ep-status').value=p.status;
-  document.getElementById('ep-deadline').value=p.deadline;document.getElementById('ep-instagram').value=p.instagram||'';
-  document.getElementById('modal-edit-project').classList.add('open');
-}
+// SHARE
+function openShareModal(id){var url=window.location.origin+window.location.pathname+'?client='+id;document.getElementById('share-url-display').textContent=url;document.getElementById('modal-share').classList.add('open');}
+function copyShareUrl(){var url=document.getElementById('share-url-display').textContent;navigator.clipboard.writeText(url).then(function(){showToast('Lien copié !',true);closeModal('modal-share');}).catch(function(){showToast('Sélectionne et copie le lien',false);});}
 
-function saveEditProject(){
-  var p=S.projects.find(function(x){return x.id===S.currentProject;});if(!p)return;
-  p.name=document.getElementById('ep-name').value.trim()||p.name;
-  p.client=document.getElementById('ep-client').value.trim()||p.client;
-  p.desc=document.getElementById('ep-desc').value.trim()||p.desc;
-  p.status=document.getElementById('ep-status').value;
-  p.deadline=document.getElementById('ep-deadline').value.trim()||p.deadline;
-  p.instagram=document.getElementById('ep-instagram').value.trim()||null;
-  save();closeModal('modal-edit-project');renderProjectDetail(S.currentProject);renderDashboard();
-  showToast('Projet mis à jour !',true);
-}
-
-function openShareModal(id){
-  var url=window.location.origin+window.location.pathname+'?client='+id;
-  document.getElementById('share-url-display').textContent=url;
-  document.getElementById('modal-share').classList.add('open');
-}
-function copyShareUrl(){
-  var url=document.getElementById('share-url-display').textContent;
-  navigator.clipboard.writeText(url).then(function(){showToast('Lien copié !',true);closeModal('modal-share');}).catch(function(){showToast('Sélectionne et copie le lien manuellement',false);});
-}
-
+// UTILS
 function saveNote(id,val){var p=S.projects.find(function(x){return x.id===id;});if(p){p.notes=val;save();}}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function selectColor(el){document.querySelectorAll('.color-opt').forEach(function(c){c.classList.remove('selected');});el.classList.add('selected');S.selectedColor=el.dataset.color;}
