@@ -6,940 +6,557 @@
 <title>Studio AY — Project Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0A0A0A;
-  --bg2: #111111;
-  --bg3: #181818;
-  --border: rgba(255,255,255,0.07);
-  --border2: rgba(255,255,255,0.13);
-  --text: #F0EDE8;
-  --text2: #888882;
-  --text3: #555550;
-  --accent: #C9A86C;
-  --accent2: #E8D5A3;
-  --accent-dim: rgba(201,168,108,0.12);
-  --red: #E05C5C;
-  --green: #5CAF8A;
-  --blue: #5B8FD4;
-  --purple: #9B7FD4;
-  --radius: 12px;
-  --radius-sm: 8px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
-.serif { font-family: 'DM Serif Display', serif; }
-
-/* LAYOUT */
-.app { display: flex; min-height: 100vh; }
-.sidebar { width: 260px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 100; transition: transform 0.3s; }
-.main { margin-left: 260px; flex: 1; min-height: 100vh; }
-
-/* SIDEBAR */
-.sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
-.logo-text { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--accent); letter-spacing: 0.02em; }
-.logo-sub { font-size: 11px; color: var(--text3); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
-.sidebar-nav { padding: 16px 12px; flex: 1; overflow-y: auto; }
-.nav-section { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text3); padding: 12px 12px 6px; }
-.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius-sm); cursor: pointer; font-size: 13.5px; color: var(--text2); transition: all 0.15s; margin-bottom: 2px; }
-.nav-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.nav-item.active { background: var(--accent-dim); color: var(--accent); }
-.nav-item .icon { width: 18px; height: 18px; opacity: 0.7; flex-shrink: 0; }
-.nav-item.active .icon { opacity: 1; }
-.project-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.sidebar-footer { padding: 16px; border-top: 1px solid var(--border); }
-.user-card { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: var(--radius-sm); background: var(--bg3); }
-.user-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #000; flex-shrink: 0; }
-.user-name { font-size: 13px; font-weight: 500; }
-.user-role { font-size: 11px; color: var(--text3); }
-
-/* TOP BAR */
-.topbar { padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--bg); position: sticky; top: 0; z-index: 50; }
-.topbar-title { font-size: 18px; font-weight: 500; color: var(--text); }
-.topbar-actions { display: flex; align-items: center; gap: 10px; }
-.btn { padding: 8px 16px; border-radius: var(--radius-sm); border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; transition: all 0.15s; }
-.btn-primary { background: var(--accent); color: #000; }
-.btn-primary:hover { background: var(--accent2); }
-.btn-ghost { background: transparent; color: var(--text2); border: 1px solid var(--border2); }
-.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-
-/* VIEWS */
-.view { display: none; padding: 32px; }
-.view.active { display: block; }
-
-/* DASHBOARD */
-.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-.stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; }
-.stat-label { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
-.stat-value { font-size: 28px; font-weight: 300; color: var(--text); }
-.stat-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
-.stat-card.accent-card { border-color: rgba(201,168,108,0.3); background: var(--accent-dim); }
-.stat-card.accent-card .stat-value { color: var(--accent); }
-
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-.section-title { font-size: 15px; font-weight: 500; }
-
-/* PROJECT CARDS */
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-.project-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
-.project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--project-color); }
-.project-card:hover { border-color: var(--border2); transform: translateY(-2px); }
-.pc-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 12px; }
-.pc-name { font-size: 15px; font-weight: 500; color: var(--text); }
-.pc-client { font-size: 12px; color: var(--text3); margin-top: 2px; }
-.status-badge { font-size: 10px; padding: 3px 8px; border-radius: 20px; font-weight: 500; letter-spacing: 0.04em; white-space: nowrap; }
-.status-active { background: rgba(92,175,138,0.15); color: var(--green); }
-.status-pending { background: rgba(91,143,212,0.15); color: var(--blue); }
-.status-urgent { background: rgba(224,92,92,0.15); color: var(--red); }
-.status-planning { background: rgba(155,127,212,0.15); color: var(--purple); }
-.pc-progress { margin: 14px 0; }
-.progress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--text3); margin-bottom: 6px; }
-.progress-bar { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; border-radius: 2px; background: var(--project-color); transition: width 0.5s; }
-.pc-meta { display: flex; gap: 14px; }
-.pc-meta-item { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
-.pc-meta-item svg { width: 12px; height: 12px; }
-
-/* PROJECT DETAIL PAGE */
-.project-detail { display: none; }
-.project-detail.active { display: block; }
-.detail-hero { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 32px; }
-.detail-hero-top { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.back-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text2); cursor: pointer; padding: 6px 10px; border-radius: var(--radius-sm); transition: all 0.15s; }
-.back-btn:hover { background: rgba(255,255,255,0.05); color: var(--text); }
-.detail-title { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--text); }
-.detail-client { font-size: 15px; color: var(--text2); margin-top: 4px; }
-.detail-tabs { display: flex; gap: 4px; margin-top: 24px; }
-.tab { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.15s; }
-.tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-.tab.active { background: var(--accent-dim); color: var(--accent); }
-.detail-content { padding: 32px; }
-.tab-panel { display: none; }
-.tab-panel.active { display: block; }
-
-/* TASKS / KANBAN */
-.kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.kanban-col { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
-.kanban-col-title { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text3); margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
-.kanban-col-count { background: rgba(255,255,255,0.06); color: var(--text2); font-size: 11px; padding: 1px 7px; border-radius: 10px; }
-.task-item { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; }
-.task-item:hover { border-color: var(--border2); }
-.task-name { font-size: 13px; color: var(--text); margin-bottom: 6px; }
-.task-tag { font-size: 10px; padding: 2px 7px; border-radius: 20px; display: inline-block; margin-right: 4px; }
-.add-task-btn { width: 100%; padding: 8px; border-radius: var(--radius-sm); border: 1px dashed var(--border2); background: transparent; color: var(--text3); font-size: 12px; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; margin-top: 4px; }
-.add-task-btn:hover { color: var(--text2); border-color: var(--border); background: rgba(255,255,255,0.03); }
-
-/* MILESTONES */
-.timeline { position: relative; padding-left: 24px; }
-.timeline::before { content: ''; position: absolute; left: 6px; top: 0; bottom: 0; width: 1px; background: var(--border); }
-.milestone { position: relative; margin-bottom: 20px; }
-.milestone::before { content: ''; position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); border: 2px solid var(--border2); }
-.milestone.done::before { background: var(--green); border-color: var(--green); }
-.milestone.current::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
-.milestone-date { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
-.milestone-name { font-size: 14px; color: var(--text); font-weight: 500; }
-.milestone-desc { font-size: 12px; color: var(--text2); margin-top: 3px; }
-
-/* MARKETING STRATEGY */
-.strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.strategy-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-.strategy-card-title { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-.strategy-item { padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; }
-.strategy-item:last-child { border-bottom: none; }
-.strategy-item::before { content: '→'; color: var(--accent); font-size: 12px; margin-top: 1px; flex-shrink: 0; }
-.strategy-full { grid-column: 1 / -1; }
-
-/* CONTENT CALENDAR */
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 16px; }
-.cal-header { text-align: center; font-size: 11px; color: var(--text3); padding: 8px 4px; }
-.cal-day { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 6px; min-height: 60px; position: relative; cursor: pointer; transition: all 0.15s; }
-.cal-day:hover { border-color: var(--border2); }
-.cal-day-num { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
-.cal-post { font-size: 9px; padding: 2px 4px; border-radius: 3px; margin-bottom: 2px; line-height: 1.3; }
-.post-ig { background: rgba(201,168,108,0.15); color: var(--accent); }
-.post-li { background: rgba(91,143,212,0.15); color: var(--blue); }
-.post-tt { background: rgba(92,175,138,0.15); color: var(--green); }
-
-/* SHARING / CLIENT VIEW */
-.share-bar { background: linear-gradient(135deg, var(--accent-dim), rgba(91,143,212,0.08)); border: 1px solid rgba(201,168,108,0.2); border-radius: var(--radius); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-.share-text { font-size: 13px; color: var(--text2); }
-.share-link { font-size: 12px; color: var(--accent); font-family: monospace; background: rgba(0,0,0,0.3); padding: 4px 10px; border-radius: 4px; }
-
-/* FILES SECTION */
-.files-list { display: grid; gap: 8px; }
-.file-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }
-.file-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.file-name { font-size: 13px; color: var(--text); }
-.file-meta { font-size: 11px; color: var(--text3); margin-top: 2px; }
-.file-action { margin-left: auto; font-size: 12px; color: var(--text3); cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: all 0.15s; }
-.file-action:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-
-/* NOTES */
-.notes-area { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-.notes-textarea { width: 100%; background: transparent; border: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.8; resize: none; outline: none; min-height: 200px; }
-.notes-textarea::placeholder { color: var(--text3); }
-
-/* MODALS */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-.modal-overlay.open { display: flex; }
-.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 16px; padding: 28px; width: 500px; max-width: 90vw; max-height: 90vh; overflow-y: auto; }
-.modal-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 20px; }
-.form-group { margin-bottom: 16px; }
-.form-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; display: block; letter-spacing: 0.04em; }
-.form-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; transition: border-color 0.15s; }
-.form-input:focus { border-color: var(--accent); }
-.form-select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; }
-.form-select option { background: var(--bg3); }
-.form-textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 10px 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 13px; outline: none; resize: vertical; min-height: 80px; }
-.form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 20px; }
-.color-selector { display: flex; gap: 8px; }
-.color-opt { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: all 0.15s; }
-.color-opt.selected { border-color: white; transform: scale(1.15); }
-
-/* NOTIFICATION */
-.toast { position: fixed; bottom: 24px; right: 24px; background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 18px; font-size: 13px; color: var(--text); z-index: 9999; transform: translateY(80px); opacity: 0; transition: all 0.3s; }
-.toast.show { transform: translateY(0); opacity: 1; }
-.toast.success { border-color: rgba(92,175,138,0.4); }
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: translateX(0); }
-  .main { margin-left: 0; }
-  .stats-row { grid-template-columns: repeat(2, 1fr); }
-  .kanban { grid-template-columns: 1fr; }
-  .strategy-grid { grid-template-columns: 1fr; }
-}
+:root{--bg:#0A0A0A;--bg2:#111111;--bg3:#181818;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--text:#F0EDE8;--text2:#888882;--text3:#555550;--accent:#C9A86C;--accent2:#E8D5A3;--accent-dim:rgba(201,168,108,0.12);--red:#E05C5C;--green:#5CAF8A;--blue:#5B8FD4;--purple:#9B7FD4;--radius:12px;--radius-sm:8px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+.app{display:flex;min-height:100vh}
+.sidebar{width:260px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
+.main{margin-left:260px;flex:1;min-height:100vh}
+.sidebar-logo{padding:28px 24px 20px;border-bottom:1px solid var(--border)}
+.logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:var(--accent)}
+.logo-sub{font-size:11px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px}
+.sidebar-nav{padding:16px 12px;flex:1;overflow-y:auto}
+.nav-section{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);padding:12px 12px 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:13.5px;color:var(--text2);transition:all .15s;margin-bottom:2px}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.nav-item.active{background:var(--accent-dim);color:var(--accent)}
+.project-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:10px;padding:10px;border-radius:var(--radius-sm);background:var(--bg3)}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#000;flex-shrink:0}
+.user-name{font-size:13px;font-weight:500}
+.user-role{font-size:11px;color:var(--text3)}
+.topbar{padding:20px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:50}
+.topbar-title{font-size:18px;font-weight:500}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.btn{padding:8px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;transition:all .15s}
+.btn-primary{background:var(--accent);color:#000}
+.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{background:rgba(255,255,255,.05);color:var(--text)}
+.view{display:none;padding:32px}
+.view.active{display:block}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+.stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px}
+.stat-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.stat-value{font-size:28px;font-weight:300;color:var(--text)}
+.stat-sub{font-size:12px;color:var(--text3);margin-top:4px}
+.stat-card.accent-card{border-color:rgba(201,168,108,.3);background:var(--accent-dim)}
+.stat-card.accent-card .stat-value{color:var(--accent)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-size:15px;font-weight:500}
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.project-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:22px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--project-color)}
+.project-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.pc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.pc-name{font-size:15px;font-weight:500}
+.pc-client{font-size:12px;color:var(--text3);margin-top:2px}
+.status-badge{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.status-active{background:rgba(92,175,138,.15);color:var(--green)}
+.status-pending{background:rgba(91,143,212,.15);color:var(--blue)}
+.status-urgent{background:rgba(224,92,92,.15);color:var(--red)}
+.status-planning{background:rgba(155,127,212,.15);color:var(--purple)}
+.pc-progress{margin:14px 0}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:6px}
+.progress-bar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;background:var(--project-color)}
+.pc-meta{display:flex;gap:14px;flex-wrap:wrap}
+.pc-meta-item{font-size:12px;color:var(--text3)}
+.detail-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:32px}
+.detail-title{font-family:'DM Serif Display',serif;font-size:32px}
+.detail-client{font-size:15px;color:var(--text2);margin-top:4px}
+.detail-tabs{display:flex;gap:4px;margin-top:24px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:var(--radius-sm);font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s}
+.tab:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.tab.active{background:var(--accent-dim);color:var(--accent)}
+.detail-content{padding:32px}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kanban-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.kanban-col-title{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.kanban-col-count{background:rgba(255,255,255,.06);color:var(--text2);font-size:11px;padding:1px 7px;border-radius:10px}
+.task-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px}
+.task-name{font-size:13px;margin-bottom:5px}
+.task-tag{font-size:10px;padding:2px 7px;border-radius:20px;display:inline-block;margin-right:4px}
+.task-note{font-size:11px;color:var(--text3);margin-top:5px;font-style:italic}
+.add-task-btn{width:100%;padding:8px;border-radius:var(--radius-sm);border:1px dashed var(--border2);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif;margin-top:4px}
+.add-task-btn:hover{color:var(--text2);background:rgba(255,255,255,.03)}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--border)}
+.milestone{position:relative;margin-bottom:20px}
+.milestone::before{content:'';position:absolute;left:-20px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--border2)}
+.milestone.done::before{background:var(--green);border-color:var(--green)}
+.milestone.current::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.milestone-date{font-size:11px;color:var(--text3);margin-bottom:2px}
+.milestone-name{font-size:14px;font-weight:500}
+.milestone-desc{font-size:12px;color:var(--text2);margin-top:3px}
+.strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.strategy-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.strategy-card-title{font-size:13px;font-weight:500;margin-bottom:12px}
+.strategy-item{padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);display:flex;align-items:flex-start;gap:8px}
+.strategy-item:last-child{border-bottom:none}
+.strategy-item::before{content:'→';color:var(--accent);font-size:12px;margin-top:1px;flex-shrink:0}
+.strategy-full{grid-column:1/-1}
+.tag-pill{display:inline-block;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);margin:3px}
+.files-list{display:grid;gap:8px}
+.file-item{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 16px;display:flex;align-items:center;gap:12px}
+.file-icon{width:32px;height:32px;border-radius:6px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.file-name{font-size:13px}
+.file-meta{font-size:11px;color:var(--text3);margin-top:2px}
+.file-action{margin-left:auto;font-size:12px;color:var(--text3);cursor:pointer;padding:4px 8px;border-radius:4px;text-decoration:none}
+.file-action:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.notes-area{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.notes-textarea{width:100%;background:transparent;border:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.8;resize:none;outline:none;min-height:200px}
+.notes-textarea::placeholder{color:var(--text3)}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:16px;padding:28px;width:520px;max-width:90vw;max-height:90vh;overflow-y:auto}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:12px;color:var(--text2);margin-bottom:6px;display:block}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:10px 12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none}
+.form-input:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{resize:vertical;min-height:80px}
+.form-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.color-selector{display:flex;gap:8px;flex-wrap:wrap}
+.color-opt{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.color-opt.selected{border-color:white;transform:scale(1.15)}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-sm);padding:12px 18px;font-size:13px;z-index:9999;transform:translateY(80px);opacity:0;transition:all .3s}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:rgba(92,175,138,.4)}
+/* CLIENT VIEW */
+.cv-wrapper{min-height:100vh;background:#F5F2ED;font-family:'DM Sans',sans-serif}
+.cv-hero{padding:48px 40px;color:white}
+.cv-hero-title{font-family:'DM Serif Display',serif;font-size:36px;margin-bottom:6px}
+.cv-hero-sub{font-size:15px;opacity:.7}
+.cv-body{padding:32px 40px}
+.cv-section{margin-bottom:32px}
+.cv-section-title{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#999;margin-bottom:16px}
+.cv-task{background:white;border-radius:10px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.cv-task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.cv-task-name{font-size:14px;color:#1a1a1a}
+.cv-task-tag{font-size:11px;padding:2px 8px;border-radius:20px;margin-left:auto;white-space:nowrap;flex-shrink:0}
+.cv-milestone{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.cv-ms-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;margin-top:2px}
+.cv-ms-name{font-size:14px;font-weight:500}
+.cv-ms-date{font-size:11px;color:#999;margin-bottom:2px}
+@media(max-width:768px){.sidebar{display:none}.main{margin-left:0}.stats-row{grid-template-columns:repeat(2,1fr)}.kanban{grid-template-columns:1fr}.strategy-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<div class="app">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-text">Studio AY</div>
-      <div class="logo-sub">Project Manager</div>
-    </div>
+<div class="app" id="app-internal">
+  <aside class="sidebar">
+    <div class="sidebar-logo"><div class="logo-text">Studio AY</div><div class="logo-sub">Project Manager</div></div>
     <nav class="sidebar-nav">
       <div class="nav-section">Navigation</div>
       <div class="nav-item active" onclick="showView('dashboard')">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Tableau de bord
       </div>
       <div class="nav-item" onclick="showView('projects')">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
-        Projets
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
+        Tous les projets
       </div>
-      <div class="nav-item" onclick="showView('calendar')">
-        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-        Calendrier
-      </div>
-
-      <div class="nav-section" style="margin-top:8px;">Mes Projets</div>
+      <div class="nav-section" style="margin-top:8px">Mes Projets</div>
       <div id="sidebar-projects"></div>
     </nav>
     <div class="sidebar-footer">
       <div class="user-card">
         <div class="user-avatar">AY</div>
-        <div>
-          <div class="user-name">Ayoub</div>
-          <div class="user-role">Directeur créatif</div>
-        </div>
+        <div><div class="user-name">Ayoub</div><div class="user-role">Directeur créatif</div></div>
       </div>
     </div>
   </aside>
-
-  <!-- MAIN -->
   <main class="main">
-    <!-- DASHBOARD VIEW -->
     <div id="view-dashboard" class="view active">
-      <div class="topbar">
-        <div class="topbar-title">Tableau de bord</div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button>
-        </div>
-      </div>
-      <div style="padding:32px;">
-        <div class="stats-row" id="stats-row"></div>
-        <div class="section-header">
-          <div class="section-title">Projets actifs</div>
-          <button class="btn btn-ghost" onclick="showView('projects')">Voir tous →</button>
-        </div>
-        <div class="projects-grid" id="dashboard-projects"></div>
-      </div>
+      <div class="topbar"><div class="topbar-title">Tableau de bord</div><div class="topbar-actions"><button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button></div></div>
+      <div style="padding:32px"><div class="stats-row" id="stats-row"></div><div class="section-header"><div class="section-title">Projets actifs</div><button class="btn btn-ghost" onclick="showView('projects')">Voir tous →</button></div><div class="projects-grid" id="dashboard-projects"></div></div>
     </div>
-
-    <!-- PROJECTS VIEW -->
     <div id="view-projects" class="view">
-      <div class="topbar">
-        <div class="topbar-title">Tous les projets</div>
-        <div class="topbar-actions">
-          <button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button>
-        </div>
-      </div>
-      <div style="padding:32px;">
-        <div class="projects-grid" id="all-projects"></div>
-      </div>
+      <div class="topbar"><div class="topbar-title">Tous les projets</div><div class="topbar-actions"><button class="btn btn-primary" onclick="openNewProjectModal()">+ Nouveau projet</button></div></div>
+      <div style="padding:32px"><div class="projects-grid" id="all-projects"></div></div>
     </div>
-
-    <!-- CALENDAR VIEW -->
-    <div id="view-calendar" class="view">
+    <div id="view-project-detail" class="view" style="padding:0">
       <div class="topbar">
-        <div class="topbar-title">Calendrier contenu</div>
-        <div class="topbar-actions">
-          <button class="btn btn-ghost">Avril 2026</button>
+        <div style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text2);font-size:13px" onclick="goBack()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>Retour
         </div>
-      </div>
-      <div style="padding:32px;">
-        <div style="display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap;">
-          <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);"></span>Instagram</span>
-          <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--blue);"></span>LinkedIn</span>
-          <span style="font-size:12px; color:var(--text2); display:flex; align-items:center; gap:6px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);"></span>TikTok</span>
-        </div>
-        <div class="calendar-grid">
-          <div class="cal-header">Lun</div><div class="cal-header">Mar</div><div class="cal-header">Mer</div><div class="cal-header">Jeu</div><div class="cal-header">Ven</div><div class="cal-header">Sam</div><div class="cal-header">Dim</div>
-        </div>
-        <div class="calendar-grid" id="calendar-body"></div>
-      </div>
-    </div>
-
-    <!-- PROJECT DETAIL VIEW -->
-    <div id="view-project-detail" class="view">
-      <div class="topbar">
-        <div class="back-btn" onclick="goBack()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-          Retour
-        </div>
-        <div class="topbar-actions">
-          <button class="btn btn-ghost" onclick="shareProject()">Partager avec client</button>
-          <button class="btn btn-primary" onclick="openAddTaskModal()">+ Tâche</button>
-        </div>
+        <div class="topbar-actions" id="detail-topbar-actions"></div>
       </div>
       <div id="project-detail-content"></div>
     </div>
   </main>
 </div>
 
-<!-- NEW PROJECT MODAL -->
+<div id="client-view" style="display:none"><div class="cv-wrapper" id="cv-content"></div></div>
+
+<!-- MODALS -->
 <div class="modal-overlay" id="modal-new-project">
   <div class="modal">
     <div class="modal-title">Nouveau projet</div>
-    <div class="form-group">
-      <label class="form-label">Nom du projet</label>
-      <input type="text" class="form-input" id="np-name" placeholder="ex: Grandiose Paris">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Client</label>
-      <input type="text" class="form-input" id="np-client" placeholder="Nom du client ou entreprise">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Description</label>
-      <textarea class="form-textarea" id="np-desc" placeholder="Résumé du projet..."></textarea>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Statut</label>
-      <select class="form-select" id="np-status">
-        <option value="active">En cours</option>
-        <option value="planning">Planification</option>
-        <option value="pending">En attente</option>
-        <option value="urgent">Urgent</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Couleur</label>
-      <div class="color-selector">
-        <div class="color-opt selected" style="background:#C9A86C;" data-color="#C9A86C" onclick="selectColor(this)"></div>
-        <div class="color-opt" style="background:#5B8FD4;" data-color="#5B8FD4" onclick="selectColor(this)"></div>
-        <div class="color-opt" style="background:#5CAF8A;" data-color="#5CAF8A" onclick="selectColor(this)"></div>
-        <div class="color-opt" style="background:#E05C5C;" data-color="#E05C5C" onclick="selectColor(this)"></div>
-        <div class="color-opt" style="background:#9B7FD4;" data-color="#9B7FD4" onclick="selectColor(this)"></div>
-      </div>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-new-project')">Annuler</button>
-      <button class="btn btn-primary" onclick="createProject()">Créer le projet</button>
-    </div>
+    <div class="form-group"><label class="form-label">Nom du projet</label><input type="text" class="form-input" id="np-name" placeholder="ex: La Guestation"></div>
+    <div class="form-group"><label class="form-label">Client</label><input type="text" class="form-input" id="np-client" placeholder="Nom du client"></div>
+    <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="np-desc" placeholder="Résumé du projet..."></textarea></div>
+    <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="np-status"><option value="active">En cours</option><option value="planning">Planification</option><option value="pending">En attente</option><option value="urgent">Urgent</option></select></div>
+    <div class="form-group"><label class="form-label">Couleur</label><div class="color-selector">
+      <div class="color-opt selected" style="background:#C9A86C" data-color="#C9A86C" onclick="selectColor(this)"></div>
+      <div class="color-opt" style="background:#6E0E10" data-color="#6E0E10" onclick="selectColor(this)"></div>
+      <div class="color-opt" style="background:#5B8FD4" data-color="#5B8FD4" onclick="selectColor(this)"></div>
+      <div class="color-opt" style="background:#5CAF8A" data-color="#5CAF8A" onclick="selectColor(this)"></div>
+      <div class="color-opt" style="background:#E05C5C" data-color="#E05C5C" onclick="selectColor(this)"></div>
+      <div class="color-opt" style="background:#9B7FD4" data-color="#9B7FD4" onclick="selectColor(this)"></div>
+    </div></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-new-project')">Annuler</button><button class="btn btn-primary" onclick="createProject()">Créer</button></div>
   </div>
 </div>
 
-<!-- ADD TASK MODAL -->
 <div class="modal-overlay" id="modal-add-task">
   <div class="modal">
     <div class="modal-title">Nouvelle tâche</div>
-    <div class="form-group">
-      <label class="form-label">Nom de la tâche</label>
-      <input type="text" class="form-input" id="task-name" placeholder="ex: Créer le catalogue produits">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Catégorie</label>
-      <select class="form-select" id="task-tag">
-        <option value="web">Site internet</option>
-        <option value="app">Application</option>
-        <option value="content">Contenu</option>
-        <option value="marketing">Marketing</option>
-        <option value="design">Design</option>
-        <option value="video">Vidéo</option>
-        <option value="other">Autre</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Statut</label>
-      <select class="form-select" id="task-status">
-        <option value="todo">À faire</option>
-        <option value="inprogress">En cours</option>
-        <option value="done">Terminé</option>
-      </select>
-    </div>
-    <div class="form-actions">
-      <button class="btn btn-ghost" onclick="closeModal('modal-add-task')">Annuler</button>
-      <button class="btn btn-primary" onclick="addTask()">Ajouter</button>
-    </div>
+    <div class="form-group"><label class="form-label">Nom</label><input type="text" class="form-input" id="task-name" placeholder="ex: Créer le site internet"></div>
+    <div class="form-group"><label class="form-label">Catégorie</label><select class="form-select" id="task-tag"><option value="web">Site internet</option><option value="app">Application</option><option value="content">Contenu</option><option value="marketing">Marketing</option><option value="design">Design</option><option value="video">Vidéo</option><option value="photo">Photo</option><option value="other">Autre</option></select></div>
+    <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="task-status"><option value="todo">À faire</option><option value="inprogress">En cours</option><option value="done">Terminé</option></select></div>
+    <div class="form-group"><label class="form-label">Note (optionnel)</label><input type="text" class="form-input" id="task-note" placeholder="ex: Attendre textes de Mourad"></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-add-task')">Annuler</button><button class="btn btn-primary" onclick="addTask()">Ajouter</button></div>
   </div>
 </div>
 
-<!-- TOAST -->
+<div class="modal-overlay" id="modal-share">
+  <div class="modal">
+    <div class="modal-title">🔗 Lien client</div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">Partage ce lien avec ton client. Il verra <strong>uniquement son projet</strong> — sans accès aux autres clients ni à ton espace de travail.</p>
+    <div style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:14px;font-family:monospace;font-size:12px;color:var(--accent);word-break:break-all" id="share-url-display"></div>
+    <div class="form-actions"><button class="btn btn-ghost" onclick="closeModal('modal-share')">Fermer</button><button class="btn btn-primary" onclick="copyShareUrl()">Copier le lien</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ====== DATA STORE ======
-let state = {
-  projects: [],
-  selectedColor: '#C9A86C',
-  currentProject: null,
-  currentTab: 'overview'
-};
+let state={projects:[],currentProject:null,currentTab:'overview',selectedColor:'#C9A86C'};
+const TC={web:{bg:'rgba(91,143,212,.15)',text:'#5B8FD4'},app:{bg:'rgba(155,127,212,.15)',text:'#9B7FD4'},content:{bg:'rgba(201,168,108,.15)',text:'#C9A86C'},marketing:{bg:'rgba(92,175,138,.15)',text:'#5CAF8A'},design:{bg:'rgba(201,168,108,.12)',text:'#C49346'},video:{bg:'rgba(224,92,92,.12)',text:'#E05C5C'},photo:{bg:'rgba(155,127,212,.12)',text:'#9B7FD4'},other:{bg:'rgba(136,135,130,.15)',text:'#888882'}};
+const SM={active:{label:'En cours',cls:'status-active'},planning:{label:'Planification',cls:'status-planning'},pending:{label:'En attente',cls:'status-pending'},urgent:{label:'Urgent',cls:'status-urgent'}};
 
-const TAG_COLORS = {
-  web: { bg: 'rgba(91,143,212,0.15)', text: '#5B8FD4' },
-  app: { bg: 'rgba(155,127,212,0.15)', text: '#9B7FD4' },
-  content: { bg: 'rgba(201,168,108,0.15)', text: '#C9A86C' },
-  marketing: { bg: 'rgba(92,175,138,0.15)', text: '#5CAF8A' },
-  design: { bg: 'rgba(224,92,92,0.15)', text: '#E05C5C' },
-  video: { bg: 'rgba(201,168,108,0.15)', text: '#C9A86C' },
-  other: { bg: 'rgba(136,135,130,0.15)', text: '#888882' }
-};
+function loadData(){
+  state.projects=[
+    {id:'grandiose',name:'Grandiose Paris',client:'Mourad — Grandiose Paris',color:'#C9A86C',status:'active',deadline:'Juin 2026',instagram:'@grandiose_gastronomie',
+     desc:'Brand premium halal — charcuteries & gastronomie. Site Shopify, catalogue HTML luxe, app mobile React Native et stratégie réseaux sociaux.',
+     tasks:[
+       {id:'t1',name:'Site Shopify complet',tag:'web',status:'done'},
+       {id:'t2',name:'Catalogue HTML luxe multi-langue',tag:'design',status:'done'},
+       {id:'t3',name:'Page certification halal',tag:'web',status:'done'},
+       {id:'t4',name:'Signature email directeur',tag:'design',status:'done'},
+       {id:'t5',name:'App mobile React Native (base)',tag:'app',status:'done'},
+       {id:'t6',name:'Page Production — vidéo + textes',tag:'video',status:'inprogress',note:'Attendre vidéo + textes de Mourad'},
+       {id:'t7',name:'Catalogue — modifications Hassna',tag:'design',status:'inprogress',note:'Modifications reçues, en cours'},
+       {id:'t8',name:'Photos produits pour catalogue',tag:'photo',status:'inprogress',note:'Photos à prendre'},
+       {id:'t9',name:'Catalogue — partie viandes',tag:'design',status:'inprogress',note:'Attendre retour Mourad'},
+       {id:'t10',name:'App → Expo Go sharing',tag:'app',status:'inprogress'},
+       {id:'t11',name:'Connexion Shopify API',tag:'app',status:'inprogress'},
+       {id:'t12',name:'Contenu Instagram',tag:'content',status:'inprogress'},
+       {id:'t13',name:'Contenu LinkedIn',tag:'content',status:'todo'},
+       {id:'t14',name:'Stratégie TikTok',tag:'marketing',status:'todo'},
+       {id:'t15',name:'App → Google Play',tag:'app',status:'todo'},
+       {id:'t16',name:'App → App Store',tag:'app',status:'todo'},
+     ],
+     milestones:[
+       {date:'Déc 2024',name:'Site Shopify lancé',done:true},
+       {date:'Jan 2025',name:'Catalogue HTML v1',done:true},
+       {date:'Fév 2025',name:'App mobile prototype',done:true},
+       {date:'Avr 2026',name:'Page Production + Catalogue final',current:true},
+       {date:'Avr 2026',name:'App partagée via Expo Go',current:true},
+       {date:'Mai 2026',name:'Stratégie contenu réseaux sociaux',done:false},
+       {date:'Juin 2026',name:'App publiée sur les stores',done:false},
+     ],
+     marketing:{
+       target:'Professionnels (chefs, restaurateurs, épiceries fines) et particuliers CSP+ amateurs de charcuterie premium halal. 28–55 ans, Paris & grandes villes françaises.',
+       platforms:['Instagram — visuels luxe produits, lifestyle','LinkedIn — approche B2B, restaurateurs, professionnels','TikTok — behind the scenes, dégustations, recettes'],
+       tone:'Luxe, raffinement, authenticité halal. Codes visuels premium : fond sombre, accents dorés, typographie élégante. Jamais cheap.',
+       kpis:['10k followers Instagram en 6 mois','3 publications/semaine minimum','Taux d\'engagement > 3%','Partenariats influenceurs food halal','100 téléchargements app dans le 1er mois'],
+       content:['Visuels produits studio fond sombre','Vidéos process artisanal','Stories coulisses atelier','Recettes avec les produits','Témoignages clients','Reels avant/après dressage','Posts certification halal']
+     },
+     files:[
+       {name:'Site Shopify Grandiose Paris',type:'🌐',size:'En ligne',date:'Déc 2024',url:'https://grandioseparis.com'},
+       {name:'Catalogue HTML final',type:'📄',size:'2.3 MB',date:'Mar 2026'},
+       {name:'App React Native (Expo)',type:'📱',size:'GitHub',date:'Avr 2026'},
+     ],
+     notes:'→ Page Production : attendre vidéo + textes de Mourad avant de finaliser.\n→ Catalogue : modifications Hassna en cours + photos produits à prendre + attendre retour Mourad sur la partie viandes.\n→ App : connecter API Shopify pour afficher vrais produits, puis publier Google Play et App Store.'},
 
-const STATUS_MAP = {
-  active: { label: 'En cours', cls: 'status-active' },
-  planning: { label: 'Planification', cls: 'status-planning' },
-  pending: { label: 'En attente', cls: 'status-pending' },
-  urgent: { label: 'Urgent', cls: 'status-urgent' }
-};
+    {id:'guestation',name:'LA guestation',client:'Chef Wii — La Guestation',color:'#6E0E10',status:'planning',deadline:'À définir',instagram:'@guestation',
+     desc:'Gastronomie privée de luxe — Paris & Dubai. Chef Wii, Le Cordon Bleu. Dîners privés, corporate events, chef à domicile pour clientèle ultra-premium.',
+     tasks:[
+       {id:'g1',name:'Brief complet & cadrage projet',tag:'other',status:'todo'},
+       {id:'g2',name:'Site internet laguestation.com',tag:'web',status:'todo',note:'Refonte ou amélioration du site existant'},
+       {id:'g3',name:'Catalogue services digital',tag:'design',status:'todo',note:'Basé sur le catalogue existant'},
+       {id:'g4',name:'Shooting photo des plats & ambiances',tag:'photo',status:'todo'},
+       {id:'g5',name:'Vidéo de présentation Chef Wii',tag:'video',status:'todo'},
+       {id:'g6',name:'Stratégie contenu Instagram',tag:'marketing',status:'todo'},
+       {id:'g7',name:'Création contenu réseaux sociaux',tag:'content',status:'todo'},
+     ],
+     milestones:[
+       {date:'Avr 2026',name:'Brief & cadrage',current:true},
+       {date:'Mai 2026',name:'Site internet en ligne',done:false},
+       {date:'Mai 2026',name:'Shooting photo/vidéo',done:false},
+       {date:'Juin 2026',name:'Stratégie contenu active',done:false},
+     ],
+     marketing:{
+       target:'CEOs, dirigeants, célébrités, travel concierge, hôtels de luxe. Clientèle internationale Paris & Dubai. Budget élevé, exigence maximale, discrétion totale.',
+       platforms:['Instagram — gastronomique d\'exception, lifestyle ultra-luxe','LinkedIn — approche B2B corporate events, luxury hotels'],
+       tone:'Silence du luxe. Épuré, élégant, mystérieux. Couleurs bordeaux & or. Photos cinématographiques. Jamais de bruit, toujours de l\'émotion.',
+       kpis:['Compte Instagram soigné et cohérent','2 publications/semaine premium','Ciblage clientèle internationale','Partenariats hôtels & concierges de luxe','Mentions presse food & lifestyle'],
+       content:['Plats dressés en close-up cinématographique','Ambiances dîners privés (chandeliers, fleurs)','Behind the scenes du Chef','Résidences Haussmanniennes Paris','Tableaux de setting luxe','Portraits Chef Wii']
+     },
+     files:[
+       {name:'Company Identity — Brand Book',type:'📘',size:'PDF',date:'Avr 2026'},
+       {name:'Catalogue Services (Booklet)',type:'📄',size:'PDF',date:'Avr 2026'},
+     ],
+     notes:'Brand colors: Bordeaux #6E0E10 · Or #C49346 · Or clair #F1B356\nPolices: Roller Coaster (guestation) + Aileron (LA)\nSite: laguestation.com · Instagram: @guestation\n\nClientèle : CEOs, célébrités fashion, hôtels & résidences de luxe, concierge travel.\nDisponible Paris (7e arr., résidence Haussmannienne) + Dubai (saisonnier).\nRéservations 6–30 personnes, 96h minimum à l\'avance.'},
 
-// ====== LOAD DEMO DATA ======
-function loadDemoData() {
-  state.projects = [
-    {
-      id: 'grandiose', name: 'Grandiose Paris', client: 'Grandiose Paris',
-      color: '#C9A86C', status: 'active', progress: 65,
-      desc: 'Brand premium halal — site Shopify, catalogue, app mobile et stratégie réseaux sociaux.',
-      deadline: 'Juin 2026',
-      tasks: [
-        { id: 't1', name: 'Site Shopify complet', tag: 'web', status: 'done' },
-        { id: 't2', name: 'Catalogue HTML luxe', tag: 'design', status: 'done' },
-        { id: 't3', name: 'Page certification halal', tag: 'web', status: 'done' },
-        { id: 't4', name: 'App mobile React Native', tag: 'app', status: 'done' },
-        { id: 't5', name: 'Expo Go sharing', tag: 'app', status: 'inprogress' },
-        { id: 't6', name: 'Connexion Shopify API', tag: 'app', status: 'inprogress' },
-        { id: 't7', name: 'Contenu Instagram', tag: 'content', status: 'inprogress' },
-        { id: 't8', name: 'Contenu LinkedIn', tag: 'content', status: 'todo' },
-        { id: 't9', name: 'Stratégie TikTok', tag: 'marketing', status: 'todo' },
-        { id: 't10', name: 'Publication Google Play', tag: 'app', status: 'todo' },
-        { id: 't11', name: 'Publication App Store', tag: 'app', status: 'todo' },
-      ],
-      milestones: [
-        { date: 'Déc 2024', name: 'Site Shopify lancé', done: true },
-        { date: 'Jan 2025', name: 'Catalogue HTML v1', done: true },
-        { date: 'Fév 2025', name: 'App mobile prototype', done: true },
-        { date: 'Avr 2026', name: 'App publiée (Expo Go)', current: true },
-        { date: 'Mai 2026', name: 'Stratégie contenu complète', done: false },
-        { date: 'Juin 2026', name: 'App sur les stores', done: false },
-      ],
-      marketing: {
-        target: 'Professionnels, chefs et particuliers amateurs de charcuterie premium halal. 28–50 ans, CSP+, Paris & grandes villes.',
-        platforms: ['Instagram (visuels luxe produits)', 'LinkedIn (B2B, restaurants, épiceries)', 'TikTok (behind the scenes, dégustation)'],
-        tone: 'Luxe, raffinement, authenticité. Codes visuels premium — fond sombre, dorés, typographie élégante.',
-        kpis: ['10k followers Instagram dans 6 mois', '3 publications/semaine minimum', 'Taux engagement > 3%', 'Partenariats influenceurs food halal'],
-        content: ['Visuels produits studio', 'Vidéos process artisanal', 'Stories coulisses', 'Recettes avec les produits', 'Témoignages clients']
-      },
-      files: [
-        { name: 'grandiose-FINAL.html', type: '🌐', size: '2.3 MB', date: 'Mar 2026' },
-        { name: 'Catalogue produits v3.pdf', type: '📄', size: '8.1 MB', date: 'Fév 2026' },
-        { name: 'App React Native (Expo)', type: '📱', size: 'GitHub', date: 'Avr 2026' },
-      ],
-      notes: 'App actuellement visible sur iPhone via Expo Go. Prochaine étape : connecter à l\'API Shopify pour afficher les vrais produits, puis publier sur Google Play et App Store.\n\nPenser à demander les accès API Shopify complets.'
-    },
-    {
-      id: 'mariage', name: 'Montage Mariage', client: 'Client privé',
-      color: '#E05C5C', status: 'urgent', progress: 20,
-      desc: 'Montage vidéo professionnel d\'un mariage. Livraison client à planifier.',
-      deadline: 'À confirmer',
-      tasks: [
-        { id: 'm1', name: 'Récupérer tous les rushes', tag: 'video', status: 'inprogress' },
-        { id: 'm2', name: 'Sélection des meilleures scènes', tag: 'video', status: 'todo' },
-        { id: 'm3', name: 'Montage principal', tag: 'video', status: 'todo' },
-        { id: 'm4', name: 'Étalonnage couleur', tag: 'video', status: 'todo' },
-        { id: 'm5', name: 'Mixage audio & musique', tag: 'video', status: 'todo' },
-        { id: 'm6', name: 'Export & livraison', tag: 'video', status: 'todo' },
-      ],
-      milestones: [
-        { date: 'Avr 2026', name: 'Récupération rushes', current: true },
-        { date: 'Avr 2026', name: 'Montage rough cut', done: false },
-        { date: 'Mai 2026', name: 'Livraison finale', done: false },
-      ],
-      marketing: null,
-      files: [],
-      notes: 'URGENT — fixer la deadline de livraison avec le client dès cette semaine.'
-    },
-    {
-      id: 'gestion', name: 'Projet Gestion', client: 'Nouveau client',
-      color: '#5B8FD4', status: 'planning', progress: 0,
-      desc: 'Nouveau projet à démarrer — site internet, catalogue, création de contenu et stratégie marketing.',
-      deadline: 'À définir',
-      tasks: [
-        { id: 'g1', name: 'Brief client complet', tag: 'other', status: 'todo' },
-        { id: 'g2', name: 'Site internet', tag: 'web', status: 'todo' },
-        { id: 'g3', name: 'Catalogue', tag: 'design', status: 'todo' },
-        { id: 'g4', name: 'Stratégie marketing', tag: 'marketing', status: 'todo' },
-        { id: 'g5', name: 'Création contenu réseaux', tag: 'content', status: 'todo' },
-      ],
-      milestones: [
-        { date: 'Avr 2026', name: 'Brief & cadrage', current: true },
-        { date: 'Mai 2026', name: 'Site internet en ligne', done: false },
-        { date: 'Juin 2026', name: 'Stratégie contenu active', done: false },
-      ],
-      marketing: {
-        target: 'À définir selon le brief client',
-        platforms: ['À définir'],
-        tone: 'À définir',
-        kpis: ['À définir après brief'],
-        content: ['À définir']
-      },
-      files: [],
-      notes: 'Planifier la réunion de brief dès que possible.'
-    },
-    {
-      id: 'portfolio', name: 'Portfolio Ayoub', client: 'Personnel',
-      color: '#9B7FD4', status: 'planning', progress: 0,
-      desc: 'Site vitrine personnel photo/vidéo + compte Instagram personnel avec stratégie de contenu.',
-      deadline: 'À définir',
-      tasks: [
-        { id: 'p1', name: 'Définir le positionnement', tag: 'marketing', status: 'todo' },
-        { id: 'p2', name: 'Design site vitrine', tag: 'design', status: 'todo' },
-        { id: 'p3', name: 'Développement site', tag: 'web', status: 'todo' },
-        { id: 'p4', name: 'Sélection portfolio photos', tag: 'content', status: 'todo' },
-        { id: 'p5', name: 'Stratégie Instagram perso', tag: 'marketing', status: 'todo' },
-        { id: 'p6', name: 'Premiers posts Instagram', tag: 'content', status: 'todo' },
-      ],
-      milestones: [
-        { date: 'Avr 2026', name: 'Positionnement défini', current: true },
-        { date: 'Mai 2026', name: 'Site en ligne', done: false },
-        { date: 'Mai 2026', name: 'Instagram actif', done: false },
-      ],
-      marketing: {
-        target: 'Entreprises et particuliers cherchant un photographe/vidéaste professionnel à Paris.',
-        platforms: ['Instagram (portfolio visuel)', 'LinkedIn (approche B2B)'],
-        tone: 'Professionnel, créatif, authentique. Montrer le regard unique du photographe.',
-        kpis: ['Site en ligne avant fin mai', '1 post/jour sur Instagram', 'Premier client via Instagram'],
-        content: ['Portfolio photos best-of', 'Behind the scenes tournages', 'Process créatif', 'Projets récents']
-      },
-      files: [],
-      notes: 'Commencer par sélectionner les meilleures photos du portfolio avant de lancer le site.'
-    }
+    {id:'mariage',name:'Montage Mariage',client:'Client privé',color:'#E05C5C',status:'urgent',deadline:'⚠️ À confirmer URGENT',instagram:null,
+     desc:'Montage vidéo professionnel d\'un mariage. Deadline de livraison à fixer de toute urgence avec le client.',
+     tasks:[
+       {id:'m1',name:'Récupérer tous les rushes',tag:'video',status:'inprogress'},
+       {id:'m2',name:'Fixer la deadline avec le client',tag:'other',status:'inprogress',note:'URGENT — à faire cette semaine'},
+       {id:'m3',name:'Sélection des meilleures scènes',tag:'video',status:'todo'},
+       {id:'m4',name:'Montage principal',tag:'video',status:'todo'},
+       {id:'m5',name:'Étalonnage couleur',tag:'video',status:'todo'},
+       {id:'m6',name:'Mixage audio & musique',tag:'video',status:'todo'},
+       {id:'m7',name:'Export & livraison client',tag:'video',status:'todo'},
+     ],
+     milestones:[
+       {date:'Avr 2026',name:'Rushes récupérés + deadline fixée',current:true},
+       {date:'Avr 2026',name:'Montage rough cut',done:false},
+       {date:'À confirmer',name:'Livraison finale',done:false},
+     ],
+     marketing:null,files:[],
+     notes:'⚠️ URGENT — contacter le client cette semaine pour fixer une date de livraison précise avant de commencer le montage.'},
+
+    {id:'portfolio',name:'Portfolio Ayoub',client:'Personnel — @hamouni.ay',color:'#9B7FD4',status:'planning',deadline:'Mai 2026',instagram:'@hamouni.ay',
+     desc:'Site vitrine personnel photo/vidéo + stratégie de contenu Instagram. Montrer ton regard unique de créatif parisien.',
+     tasks:[
+       {id:'p1',name:'Définir le positionnement créatif',tag:'marketing',status:'todo'},
+       {id:'p2',name:'Sélection portfolio photos/vidéos',tag:'content',status:'todo'},
+       {id:'p3',name:'Design site vitrine',tag:'design',status:'todo'},
+       {id:'p4',name:'Développement site',tag:'web',status:'todo'},
+       {id:'p5',name:'Stratégie contenu Instagram perso',tag:'marketing',status:'todo'},
+       {id:'p6',name:'Premiers posts Instagram',tag:'content',status:'todo'},
+     ],
+     milestones:[
+       {date:'Avr 2026',name:'Positionnement & sélection portfolio',current:true},
+       {date:'Mai 2026',name:'Site en ligne',done:false},
+       {date:'Mai 2026',name:'Instagram actif',done:false},
+     ],
+     marketing:{
+       target:'Entreprises et particuliers cherchant un photographe/vidéaste créatif à Paris. Agences, clients luxe qui cherchent un œil artistique.',
+       platforms:['Instagram — portfolio visuel, style éditorial','LinkedIn — approche B2B, agences, marques'],
+       tone:'Créatif, authentique, artistique. Montrer ton regard unique. Pas un technicien — un artiste.',
+       kpis:['Site en ligne avant fin mai','1 post/jour Instagram','Premier client via Instagram','Cohérence visuelle du feed'],
+       content:['Portfolio photos best-of','Behind the scenes tournages clients','Process créatif','Projets Grandiose & Guestation','Portraits & reportages']
+     },
+     files:[],
+     notes:'Commencer par sélectionner les 20 meilleures photos/vidéos avant de lancer le site.\nStyle à définir : éditorial, sombre, contrasté — en accord avec tes clients luxury.'}
   ];
 }
 
-// ====== VIEWS ======
-function showView(name) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  const view = document.getElementById('view-' + name);
-  if (view) view.classList.add('active');
-  if (name === 'dashboard') { renderDashboard(); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
-  else if (name === 'projects') { renderAllProjects(); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
-  else if (name === 'calendar') { renderCalendar(); document.querySelectorAll('.nav-item')[2].classList.add('active'); }
+function checkClientView(){
+  const p=new URLSearchParams(window.location.search).get('client');
+  if(p){const proj=state.projects.find(x=>x.id===p);if(proj){document.getElementById('app-internal').style.display='none';document.getElementById('client-view').style.display='block';renderClientView(proj);return true;}}
+  return false;
 }
 
-function openProject(id) {
-  state.currentProject = id;
-  state.currentTab = 'overview';
-  showView('project-detail');
-  renderProjectDetail(id);
-}
-
-function goBack() {
-  showView('projects');
-}
-
-// ====== RENDER DASHBOARD ======
-function renderDashboard() {
-  const total = state.projects.length;
-  const active = state.projects.filter(p => p.status === 'active').length;
-  const urgent = state.projects.filter(p => p.status === 'urgent').length;
-  const totalTasks = state.projects.flatMap(p => p.tasks).length;
-  const doneTasks = state.projects.flatMap(p => p.tasks).filter(t => t.status === 'done').length;
-
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">${total}</div><div class="stat-sub">total</div></div>
-    <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">${active}</div><div class="stat-sub">actifs</div></div>
-    <div class="stat-card"><div class="stat-label">Urgent</div><div class="stat-value" style="color:var(--red)">${urgent}</div><div class="stat-sub">à traiter</div></div>
-    <div class="stat-card"><div class="stat-label">Tâches complétées</div><div class="stat-value">${doneTasks}/${totalTasks}</div><div class="stat-sub">${Math.round(doneTasks/totalTasks*100)}%</div></div>
-  `;
-  document.getElementById('dashboard-projects').innerHTML = state.projects.map(p => projectCardHTML(p)).join('');
-  renderSidebarProjects();
-}
-
-function renderAllProjects() {
-  document.getElementById('all-projects').innerHTML = state.projects.map(p => projectCardHTML(p)).join('');
-}
-
-function projectCardHTML(p) {
-  const done = p.tasks.filter(t => t.status === 'done').length;
-  const total = p.tasks.length;
-  const pct = total ? Math.round(done/total*100) : 0;
-  const s = STATUS_MAP[p.status];
-  return `
-    <div class="project-card" style="--project-color:${p.color}" onclick="openProject('${p.id}')">
-      <div class="pc-header">
+function renderClientView(p){
+  const done=p.tasks.filter(t=>t.status==='done').length;
+  const inprog=p.tasks.filter(t=>t.status==='inprogress').length;
+  const total=p.tasks.length;
+  const pct=total?Math.round(done/total*100):0;
+  const ac=p.color;
+  const heroBg=p.id==='guestation'?'background:linear-gradient(135deg,#3d0508,#1a0203)':p.id==='grandiose'?'background:linear-gradient(135deg,#1a1209,#2d2000)':'background:linear-gradient(135deg,#1a1a1a,#2a2a2a)';
+  document.getElementById('cv-content').innerHTML=`
+    <div class="cv-hero" style="${heroBg}">
+      <div style="max-width:700px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:20px">
         <div>
-          <div class="pc-name">${p.name}</div>
-          <div class="pc-client">${p.client}</div>
+          <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.4;margin-bottom:10px">Studio AY — Suivi projet</div>
+          <div class="cv-hero-title">${p.name}</div>
+          <div class="cv-hero-sub">${p.client}</div>
+          ${p.instagram?`<div style="margin-top:8px;font-size:12px;opacity:.4">${p.instagram}</div>`:''}
         </div>
-        <span class="status-badge ${s.cls}">${s.label}</span>
-      </div>
-      <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5;">${p.desc.length > 90 ? p.desc.slice(0,90)+'…' : p.desc}</div>
-      <div class="pc-progress">
-        <div class="progress-label"><span>Avancement</span><span>${pct}%</span></div>
-        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
-      </div>
-      <div class="pc-meta">
-        <div class="pc-meta-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          ${done}/${total} tâches
-        </div>
-        <div class="pc-meta-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-          ${p.deadline}
+        <div style="text-align:right">
+          <div style="font-size:48px;font-weight:200;color:${ac}">${pct}%</div>
+          <div style="font-size:11px;opacity:.4;margin-bottom:10px">avancement global</div>
+          <div style="width:160px;height:4px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;margin-left:auto"><div style="width:${pct}%;height:100%;background:${ac};border-radius:2px"></div></div>
         </div>
       </div>
     </div>
-  `;
+    <div class="cv-body" style="max-width:700px;margin:0 auto">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:32px 0">
+        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:${ac}">${done}</div><div style="font-size:11px;color:#999;margin-top:2px">Terminé</div></div>
+        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#5B8FD4">${inprog}</div><div style="font-size:11px;color:#999;margin-top:2px">En cours</div></div>
+        <div style="background:white;border-radius:10px;padding:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)"><div style="font-size:28px;font-weight:300;color:#1a1a1a">${total-done-inprog}</div><div style="font-size:11px;color:#999;margin-top:2px">À venir</div></div>
+      </div>
+      ${['inprogress','todo','done'].map(s=>{
+        const tasks=p.tasks.filter(t=>t.status===s);if(!tasks.length)return'';
+        const label=s==='done'?'✓ Terminé':s==='inprogress'?'→ En cours':'○ À venir';
+        const dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
+        return`<div class="cv-section"><div class="cv-section-title">${label}</div>${tasks.map(t=>{const c=TC[t.tag]||TC.other;return`<div class="cv-task"><div class="cv-task-dot" style="background:${dc}"></div><div style="flex:1"><div class="cv-task-name" style="${s==='done'?'text-decoration:line-through;color:#aaa':''}">${t.name}</div>${t.note?`<div style="font-size:11px;color:#aaa;margin-top:3px;font-style:italic">↳ ${t.note}</div>`:''}</div><span class="cv-task-tag" style="background:${c.bg};color:${c.text}">${t.tag}</span></div>`}).join('')}</div>`;
+      }).join('')}
+      <div class="cv-section"><div class="cv-section-title">Jalons & roadmap</div>
+        ${p.milestones.map(m=>`<div class="cv-milestone"><div class="cv-ms-dot" style="background:${m.done?'#5CAF8A':m.current?ac:'#ddd'};${m.current?`box-shadow:0 0 0 4px ${ac}33`:''};margin-top:3px"></div><div><div class="cv-ms-date">${m.date}</div><div class="cv-ms-name" style="color:${m.done?'#5CAF8A':m.current?ac:'#1a1a1a'}">${m.name}</div></div></div>`).join('')}
+      </div>
+      <div style="background:white;border-radius:12px;padding:20px;margin-top:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)">
+        <div style="font-size:12px;color:#999;margin-bottom:4px">Suivi assuré par</div>
+        <div style="font-size:16px;font-weight:500;color:#1a1a1a">Ayoub — Studio AY</div>
+        <div style="font-size:12px;color:#aaa;margin-top:4px">@hamouni.ay · Directeur créatif</div>
+      </div>
+    </div>`;
 }
 
-function renderSidebarProjects() {
-  document.getElementById('sidebar-projects').innerHTML = state.projects.map(p => `
-    <div class="nav-item" onclick="openProject('${p.id}')">
-      <div class="project-dot" style="background:${p.color}"></div>
-      ${p.name}
-    </div>
-  `).join('');
+function showView(n){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('view-'+n)?.classList.add('active');
+  if(n==='dashboard'){renderDashboard();document.querySelectorAll('.nav-item')[0].classList.add('active');}
+  else if(n==='projects'){renderAllProjects();document.querySelectorAll('.nav-item')[1].classList.add('active');}
+}
+function openProject(id){state.currentProject=id;state.currentTab='overview';showView('project-detail');renderProjectDetail(id);}
+function goBack(){showView('projects');}
+
+function renderDashboard(){
+  const allT=state.projects.flatMap(p=>p.tasks);
+  const done=allT.filter(t=>t.status==='done').length;
+  document.getElementById('stats-row').innerHTML=`
+    <div class="stat-card accent-card"><div class="stat-label">Projets</div><div class="stat-value">${state.projects.length}</div><div class="stat-sub">total</div></div>
+    <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value">${state.projects.filter(p=>p.status==='active').length}</div></div>
+    <div class="stat-card"><div class="stat-label" style="color:var(--red)">Urgent</div><div class="stat-value" style="color:var(--red)">${state.projects.filter(p=>p.status==='urgent').length}</div></div>
+    <div class="stat-card"><div class="stat-label">Tâches</div><div class="stat-value">${done}/${allT.length}</div><div class="stat-sub">${Math.round(done/allT.length*100)}% done</div></div>`;
+  document.getElementById('dashboard-projects').innerHTML=state.projects.map(pCard).join('');
+  document.getElementById('sidebar-projects').innerHTML=state.projects.map(p=>`<div class="nav-item" onclick="openProject('${p.id}')"><div class="project-dot" style="background:${p.color}"></div>${p.name}</div>`).join('');
+}
+function renderAllProjects(){document.getElementById('all-projects').innerHTML=state.projects.map(pCard).join('');}
+function pCard(p){
+  const done=p.tasks.filter(t=>t.status==='done').length;
+  const pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+  const s=SM[p.status];
+  return`<div class="project-card" style="--project-color:${p.color}" onclick="openProject('${p.id}')">
+    <div class="pc-header"><div><div class="pc-name">${p.name}</div><div class="pc-client">${p.client}</div></div><span class="status-badge ${s.cls}">${s.label}</span></div>
+    <div style="font-size:12px;color:var(--text2);margin-bottom:12px;line-height:1.5">${p.desc.length>90?p.desc.slice(0,90)+'…':p.desc}</div>
+    <div class="pc-progress"><div class="progress-label"><span>Avancement</span><span>${pct}%</span></div><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div></div>
+    <div class="pc-meta"><div class="pc-meta-item">${done}/${p.tasks.length} tâches</div>${p.instagram?`<div class="pc-meta-item" style="color:var(--accent)">${p.instagram}</div>`:''}<div class="pc-meta-item" style="margin-left:auto">${p.deadline}</div></div>
+  </div>`;
 }
 
-// ====== RENDER PROJECT DETAIL ======
-function renderProjectDetail(id) {
-  const p = state.projects.find(x => x.id === id);
-  if (!p) return;
-  const pct = p.tasks.length ? Math.round(p.tasks.filter(t=>t.status==='done').length/p.tasks.length*100) : 0;
-  const s = STATUS_MAP[p.status];
-
-  const tabs = ['overview','tasks','milestones','marketing','files','notes'];
-  const tabLabels = ['Vue générale','Tâches','Jalons','Stratégie marketing','Fichiers','Notes'];
-
-  document.getElementById('project-detail-content').innerHTML = `
+function renderProjectDetail(id){
+  const p=state.projects.find(x=>x.id===id);if(!p)return;
+  const done=p.tasks.filter(t=>t.status==='done').length;
+  const pct=p.tasks.length?Math.round(done/p.tasks.length*100):0;
+  const s=SM[p.status];
+  const tabs=['overview','tasks','milestones','marketing','files','notes'];
+  const tl=['Vue générale','Tâches','Jalons','Stratégie','Fichiers','Notes'];
+  document.getElementById('detail-topbar-actions').innerHTML=`<button class="btn btn-ghost" onclick="openShareModal('${p.id}')">🔗 Lien client</button><button class="btn btn-primary" onclick="openAddTaskModal()">+ Tâche</button>`;
+  document.getElementById('project-detail-content').innerHTML=`
     <div class="detail-hero" style="border-top:3px solid ${p.color}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px">
         <div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap">
             <span class="status-badge ${s.cls}">${s.label}</span>
             <span style="font-size:12px;color:var(--text3)">Deadline : ${p.deadline}</span>
+            ${p.instagram?`<span style="font-size:12px;color:var(--accent)">${p.instagram}</span>`:''}
           </div>
           <div class="detail-title">${p.name}</div>
-          <div class="detail-client">Client : ${p.client}</div>
+          <div class="detail-client">${p.client}</div>
         </div>
-        <div style="text-align:right;">
-          <div style="font-size:28px;font-weight:300;color:${p.color}">${pct}%</div>
-          <div style="font-size:11px;color:var(--text3);margin-bottom:8px;">complété</div>
+        <div style="text-align:right">
+          <div style="font-size:32px;font-weight:300;color:${p.color}">${pct}%</div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:8px">complété</div>
           <div class="progress-bar" style="width:180px;--project-color:${p.color}"><div class="progress-fill" style="width:${pct}%"></div></div>
         </div>
       </div>
-      <div class="detail-tabs">
-        ${tabs.map((t,i) => `<div class="tab ${t===state.currentTab?'active':''}" onclick="switchTab('${id}','${t}')">${tabLabels[i]}</div>`).join('')}
-      </div>
+      <div class="detail-tabs">${tabs.map((t,i)=>`<div class="tab ${t===state.currentTab?'active':''}" onclick="switchTab('${id}','${t}',this)">${tl[i]}</div>`).join('')}</div>
     </div>
     <div class="detail-content">
-      ${renderOverviewTab(p)}
-      ${renderTasksTab(p)}
-      ${renderMilestonesTab(p)}
-      ${renderMarketingTab(p)}
-      ${renderFilesTab(p)}
-      ${renderNotesTab(p)}
-    </div>
-  `;
-  document.querySelector(`.tab-panel[data-tab="${state.currentTab}"]`).classList.add('active');
-}
-
-function switchTab(projectId, tab) {
-  state.currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.querySelector(`.tab-panel[data-tab="${tab}"]`).classList.add('active');
-}
-
-function renderOverviewTab(p) {
-  const done = p.tasks.filter(t=>t.status==='done').length;
-  const inprog = p.tasks.filter(t=>t.status==='inprogress').length;
-  const todo = p.tasks.filter(t=>t.status==='todo').length;
-  return `
-    <div class="tab-panel" data-tab="overview">
-      <div class="share-bar">
-        <div>
-          <div style="font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;">Partager avec le client</div>
-          <div class="share-text">Le client peut suivre l'avancement en temps réel sans modifier quoi que ce soit.</div>
+      <div class="tab-panel ${state.currentTab==='overview'?'active':''}" data-tab="overview">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px">
+          <div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">${done}</div></div>
+          <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">${p.tasks.filter(t=>t.status==='inprogress').length}</div></div>
+          <div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">${p.tasks.filter(t=>t.status==='todo').length}</div></div>
         </div>
-        <div>
-          <div class="share-link">studio-ay.com/client/${p.id}</div>
-          <button class="btn btn-ghost" style="margin-top:8px;font-size:12px;" onclick="shareProject()">Copier le lien</button>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px">
+          <div style="font-size:13px;font-weight:500;margin-bottom:8px">Description</div>
+          <div style="font-size:14px;color:var(--text2);line-height:1.7">${p.desc}</div>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
-        <div class="stat-card"><div class="stat-label">Terminé</div><div class="stat-value" style="color:var(--green)">${done}</div></div>
-        <div class="stat-card"><div class="stat-label">En cours</div><div class="stat-value" style="color:var(--blue)">${inprog}</div></div>
-        <div class="stat-card"><div class="stat-label">À faire</div><div class="stat-value">${todo}</div></div>
+      <div class="tab-panel ${state.currentTab==='tasks'?'active':''}" data-tab="tasks">
+        <div class="kanban">${['todo','inprogress','done'].map(s=>{
+          const tasks=p.tasks.filter(t=>t.status===s);
+          const label=s==='todo'?'À faire':s==='inprogress'?'En cours':'Terminé';
+          return`<div class="kanban-col"><div class="kanban-col-title">${label}<span class="kanban-col-count">${tasks.length}</span></div>${tasks.map(t=>{const c=TC[t.tag]||TC.other;return`<div class="task-item"><div class="task-name">${t.name}</div>${t.note?`<div class="task-note">↳ ${t.note}</div>`:''}<span class="task-tag" style="background:${c.bg};color:${c.text}">${t.tag}</span></div>`;}).join('')}<button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter</button></div>`;
+        }).join('')}</div>
       </div>
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
-        <div style="font-size:13px;font-weight:500;margin-bottom:8px;">Description du projet</div>
-        <div style="font-size:14px;color:var(--text2);line-height:1.7;">${p.desc}</div>
+      <div class="tab-panel ${state.currentTab==='milestones'?'active':''}" data-tab="milestones">
+        <div style="max-width:600px"><div class="timeline">${p.milestones.map(m=>`<div class="milestone ${m.done?'done':''} ${m.current?'current':''}"><div class="milestone-date">${m.date}</div><div class="milestone-name">${m.name}</div></div>`).join('')}</div></div>
       </div>
-    </div>
-  `;
-}
-
-function renderTasksTab(p) {
-  const cols = [
-    { key: 'todo', label: 'À faire' },
-    { key: 'inprogress', label: 'En cours' },
-    { key: 'done', label: 'Terminé' }
-  ];
-  return `
-    <div class="tab-panel" data-tab="tasks">
-      <div class="kanban">
-        ${cols.map(col => {
-          const tasks = p.tasks.filter(t => t.status === col.key);
-          return `
-            <div class="kanban-col">
-              <div class="kanban-col-title">${col.label}<span class="kanban-col-count">${tasks.length}</span></div>
-              ${tasks.map(t => {
-                const tc = TAG_COLORS[t.tag] || TAG_COLORS.other;
-                return `<div class="task-item">
-                  <div class="task-name">${t.name}</div>
-                  <span class="task-tag" style="background:${tc.bg};color:${tc.text}">${t.tag}</span>
-                </div>`;
-              }).join('')}
-              <button class="add-task-btn" onclick="openAddTaskModal()">+ Ajouter une tâche</button>
-            </div>
-          `;
-        }).join('')}
+      <div class="tab-panel ${state.currentTab==='marketing'?'active':''}" data-tab="marketing">
+        ${!p.marketing?`<div style="color:var(--text3);padding:20px">Pas de stratégie marketing pour ce projet.</div>`:`
+        <div class="strategy-grid">
+          <div class="strategy-card"><div class="strategy-card-title">🎯 Cible</div><div style="font-size:13px;color:var(--text2);line-height:1.6">${p.marketing.target}</div></div>
+          <div class="strategy-card"><div class="strategy-card-title">📱 Plateformes</div>${p.marketing.platforms.map(x=>`<div class="strategy-item">${x}</div>`).join('')}</div>
+          <div class="strategy-card"><div class="strategy-card-title">🎨 Ton & identité</div><div style="font-size:13px;color:var(--text2);line-height:1.6">${p.marketing.tone}</div></div>
+          <div class="strategy-card"><div class="strategy-card-title">📊 KPIs</div>${p.marketing.kpis.map(x=>`<div class="strategy-item">${x}</div>`).join('')}</div>
+          <div class="strategy-card strategy-full"><div class="strategy-card-title">📝 Types de contenu</div><div style="margin-top:8px">${p.marketing.content.map(c=>`<span class="tag-pill">${c}</span>`).join('')}</div></div>
+        </div>`}
       </div>
-    </div>
-  `;
-}
-
-function renderMilestonesTab(p) {
-  return `
-    <div class="tab-panel" data-tab="milestones">
-      <div style="max-width:600px;">
-        <div class="timeline">
-          ${p.milestones.map(m => `
-            <div class="milestone ${m.done?'done':''} ${m.current?'current':''}">
-              <div class="milestone-date">${m.date}</div>
-              <div class="milestone-name">${m.name}</div>
-            </div>
-          `).join('')}
-        </div>
+      <div class="tab-panel ${state.currentTab==='files'?'active':''}" data-tab="files">
+        ${p.files.length===0?`<div style="color:var(--text3);padding:20px">Aucun fichier ajouté.</div>`:`<div class="files-list">${p.files.map(f=>`<div class="file-item"><div class="file-icon">${f.type}</div><div><div class="file-name">${f.name}</div><div class="file-meta">${f.size} · ${f.date}</div></div>${f.url?`<a href="${f.url}" target="_blank" class="file-action">Ouvrir →</a>`:`<div class="file-action">Ouvrir →</div>`}</div>`).join('')}</div>`}
+        <button class="btn btn-ghost" style="margin-top:16px">+ Ajouter un fichier</button>
       </div>
-    </div>
-  `;
-}
-
-function renderMarketingTab(p) {
-  if (!p.marketing) return `<div class="tab-panel" data-tab="marketing"><div style="color:var(--text3);padding:20px;">Pas de stratégie marketing pour ce projet.</div></div>`;
-  const m = p.marketing;
-  return `
-    <div class="tab-panel" data-tab="marketing">
-      <div class="strategy-grid">
-        <div class="strategy-card">
-          <div class="strategy-card-title">🎯 Cible</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.6;">${m.target}</div>
-        </div>
-        <div class="strategy-card">
-          <div class="strategy-card-title">📱 Plateformes</div>
-          ${m.platforms.map(pl => `<div class="strategy-item">${pl}</div>`).join('')}
-        </div>
-        <div class="strategy-card">
-          <div class="strategy-card-title">🎨 Ton & identité</div>
-          <div style="font-size:13px;color:var(--text2);line-height:1.6;">${m.tone}</div>
-        </div>
-        <div class="strategy-card">
-          <div class="strategy-card-title">📊 Objectifs (KPIs)</div>
-          ${m.kpis.map(k => `<div class="strategy-item">${k}</div>`).join('')}
-        </div>
-        <div class="strategy-card strategy-full">
-          <div class="strategy-card-title">📝 Types de contenu</div>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
-            ${m.content.map(c => `<span style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--text2);">${c}</span>`).join('')}
-          </div>
-        </div>
+      <div class="tab-panel ${state.currentTab==='notes'?'active':''}" data-tab="notes">
+        <div class="notes-area"><textarea class="notes-textarea" onchange="saveNote('${p.id}',this.value)">${p.notes||''}</textarea></div>
       </div>
-    </div>
-  `;
-}
-
-function renderFilesTab(p) {
-  return `
-    <div class="tab-panel" data-tab="files">
-      ${p.files.length === 0 ? `<div style="color:var(--text3);padding:20px;">Aucun fichier ajouté.</div>` : `
-        <div class="files-list">
-          ${p.files.map(f => `
-            <div class="file-item">
-              <div class="file-icon" style="background:var(--bg3);">${f.type}</div>
-              <div>
-                <div class="file-name">${f.name}</div>
-                <div class="file-meta">${f.size} · ${f.date}</div>
-              </div>
-              <div class="file-action">Ouvrir →</div>
-            </div>
-          `).join('')}
-        </div>
-      `}
-      <button class="btn btn-ghost" style="margin-top:16px;">+ Ajouter un fichier</button>
-    </div>
-  `;
-}
-
-function renderNotesTab(p) {
-  return `
-    <div class="tab-panel" data-tab="notes">
-      <div class="notes-area">
-        <textarea class="notes-textarea" placeholder="Notes internes..." onchange="saveNote('${p.id}',this.value)">${p.notes || ''}</textarea>
-      </div>
-    </div>
-  `;
-}
-
-// ====== CALENDAR ======
-function renderCalendar() {
-  const body = document.getElementById('calendar-body');
-  const posts = [
-    { day: 1, type: 'ig', label: 'Grandiose — produit' },
-    { day: 3, type: 'li', label: 'Grandiose — B2B' },
-    { day: 5, type: 'ig', label: 'Portfolio — behind' },
-    { day: 7, type: 'tt', label: 'Grandiose — recette' },
-    { day: 8, type: 'ig', label: 'Grandiose — story' },
-    { day: 10, type: 'li', label: 'Portfolio — projet' },
-    { day: 12, type: 'ig', label: 'Grandiose — vidéo' },
-    { day: 14, type: 'tt', label: 'Grandiose — teaser' },
-    { day: 15, type: 'ig', label: 'Portfolio — photo' },
-    { day: 17, type: 'li', label: 'Grandiose — article' },
-    { day: 19, type: 'ig', label: 'Grandiose — produit' },
-    { day: 21, type: 'tt', label: 'Portfolio — reel' },
-    { day: 22, type: 'ig', label: 'Grandiose — coulisses' },
-    { day: 24, type: 'li', label: 'Portfolio — B2B' },
-    { day: 26, type: 'ig', label: 'Grandiose — story' },
-    { day: 28, type: 'tt', label: 'Grandiose — viral' },
-    { day: 29, type: 'ig', label: 'Portfolio — best-of' },
-  ];
-  // April 2026 starts on Wednesday
-  let html = '';
-  for (let i = 0; i < 1; i++) html += `<div class="cal-day" style="background:transparent;border:none;"></div>`;
-  for (let i = 0; i < 1; i++) html += `<div class="cal-day" style="background:transparent;border:none;"></div>`;
-  for (let d = 1; d <= 30; d++) {
-    const dayPosts = posts.filter(p => p.day === d);
-    html += `<div class="cal-day">
-      <div class="cal-day-num">${d}</div>
-      ${dayPosts.map(p => `<div class="cal-post post-${p.type}">${p.label}</div>`).join('')}
     </div>`;
-  }
-  body.innerHTML = html;
 }
 
-// ====== MODALS ======
-function openNewProjectModal() {
-  document.getElementById('modal-new-project').classList.add('open');
-}
-function openAddTaskModal() {
-  document.getElementById('modal-add-task').classList.add('open');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
+function switchTab(pid,tab,el){
+  state.currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.tab-panel[data-tab="${tab}"]`)?.classList.add('active');
 }
 
-function selectColor(el) {
-  document.querySelectorAll('.color-opt').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.selectedColor = el.dataset.color;
+function openShareModal(id){
+  const url=`${window.location.origin}${window.location.pathname}?client=${id}`;
+  document.getElementById('share-url-display').textContent=url;
+  document.getElementById('modal-share').classList.add('open');
 }
-
-function createProject() {
-  const name = document.getElementById('np-name').value.trim();
-  const client = document.getElementById('np-client').value.trim();
-  const desc = document.getElementById('np-desc').value.trim();
-  const status = document.getElementById('np-status').value;
-  if (!name) { showToast('Donne un nom au projet', false); return; }
-  const id = 'proj_' + Date.now();
-  state.projects.push({
-    id, name, client: client || 'Non défini', desc: desc || 'Projet en cours de définition.', color: state.selectedColor,
-    status, progress: 0, deadline: 'À définir', tasks: [], milestones: [], marketing: null, files: [], notes: ''
-  });
-  closeModal('modal-new-project');
-  document.getElementById('np-name').value = '';
-  document.getElementById('np-client').value = '';
-  document.getElementById('np-desc').value = '';
-  showToast('Projet créé !', true);
-  renderDashboard();
-  renderAllProjects();
+function copyShareUrl(){
+  const url=document.getElementById('share-url-display').textContent;
+  navigator.clipboard.writeText(url).then(()=>{showToast('Lien copié !',true);closeModal('modal-share');});
 }
-
-function addTask() {
-  const name = document.getElementById('task-name').value.trim();
-  const tag = document.getElementById('task-status').value;
-  const status = document.getElementById('task-status').value;
-  if (!name) { showToast('Donne un nom à la tâche', false); return; }
-  const p = state.projects.find(x => x.id === state.currentProject);
-  if (!p) return;
-  p.tasks.push({ id: 't_' + Date.now(), name, tag: document.getElementById('task-tag').value, status });
-  closeModal('modal-add-task');
-  document.getElementById('task-name').value = '';
-  showToast('Tâche ajoutée !', true);
-  renderProjectDetail(state.currentProject);
+function openNewProjectModal(){document.getElementById('modal-new-project').classList.add('open');}
+function openAddTaskModal(){document.getElementById('modal-add-task').classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function selectColor(el){document.querySelectorAll('.color-opt').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');state.selectedColor=el.dataset.color;}
+function createProject(){
+  const name=document.getElementById('np-name').value.trim();
+  if(!name){showToast('Donne un nom au projet',false);return;}
+  state.projects.push({id:'proj_'+Date.now(),name,client:document.getElementById('np-client').value.trim()||'Non défini',desc:document.getElementById('np-desc').value.trim()||'Projet en cours.',color:state.selectedColor,status:document.getElementById('np-status').value,deadline:'À définir',instagram:null,tasks:[],milestones:[],marketing:null,files:[],notes:''});
+  closeModal('modal-new-project');['np-name','np-client','np-desc'].forEach(id=>document.getElementById(id).value='');
+  showToast('Projet créé !',true);renderDashboard();renderAllProjects();
 }
-
-function saveNote(id, val) {
-  const p = state.projects.find(x => x.id === id);
-  if (p) p.notes = val;
+function addTask(){
+  const name=document.getElementById('task-name').value.trim();
+  if(!name){showToast('Donne un nom à la tâche',false);return;}
+  const p=state.projects.find(x=>x.id===state.currentProject);if(!p)return;
+  const note=document.getElementById('task-note').value.trim();
+  p.tasks.push({id:'t_'+Date.now(),name,tag:document.getElementById('task-tag').value,status:document.getElementById('task-status').value,note:note||null});
+  closeModal('modal-add-task');document.getElementById('task-name').value='';document.getElementById('task-note').value='';
+  showToast('Tâche ajoutée !',true);renderProjectDetail(state.currentProject);
 }
-
-function shareProject() {
-  showToast('Lien copié — à configurer avec ton domaine', true);
-}
-
-function showToast(msg, success) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast' + (success ? ' success' : '');
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2800);
-}
-
-// Close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(overlay => {
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
-});
-
-// ====== INIT ======
-loadDemoData();
-renderDashboard();
-renderCalendar();
+function saveNote(id,val){const p=state.projects.find(x=>x.id===id);if(p)p.notes=val;}
+function showToast(msg,ok){const t=document.getElementById('toast');t.textContent=msg;t.className='toast'+(ok?' success':'');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+loadData();
+if(!checkClientView())renderDashboard();
 </script>
 </body>
 </html>
