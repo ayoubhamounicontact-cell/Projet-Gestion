@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Studio AY — Project Manager</title>
+<title>Studio HAMOUNI — Project Manager</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -178,115 +178,123 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 .toast.show{transform:translateY(0);opacity:1}
 .toast.ok{border-color:rgba(92,175,138,.4)}
 
-/* ========= CLIENT VIEW ========= */
-/* Auto-refresh indicator */
-.cv-live-badge{position:fixed;top:16px;right:16px;background:rgba(92,175,138,.95);color:white;font-size:11px;padding:6px 12px;border-radius:20px;display:flex;align-items:center;gap:6px;font-family:"DM Sans",sans-serif;box-shadow:0 2px 12px rgba(92,175,138,.3);z-index:999;animation:slideInRight .5s ease}
-.cv-live-dot{width:7px;height:7px;border-radius:50%;background:white;animation:livepulse 2s infinite}
-@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-@keyframes slideInRight{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
-.cv-update-flash{animation:updateFlash .8s ease}
-@keyframes updateFlash{0%{background:rgba(92,175,138,.15)}100%{background:transparent}}
-/* Enhanced card animations */
-.cv-tc{animation:cvSlideUp .45s cubic-bezier(.34,1.56,.64,1) both}
-@keyframes cvSlideUp{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
-.cv-etape-card-wrap{animation:cvSlideUp .45s cubic-bezier(.34,1.56,.64,1) both}
-/* Progress ring */
-.cv-ring-wrap{position:relative;width:120px;height:120px;flex-shrink:0}
-.cv-ring-svg{transform:rotate(-90deg)}
-.cv-ring-bg{fill:none;stroke:rgba(255,255,255,.1);stroke-width:8}
-.cv-ring-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
-.cv-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white}
-.cv-ring-pct{font-size:28px;font-weight:200;line-height:1}
-.cv-ring-lbl{font-size:10px;opacity:.5;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+/* ========= CLIENT VIEW — PREMIUM ENGINEERING ========= */
 #cv{display:none}
-.cv-page{min-height:100vh;background:#F5F2ED;font-family:'DM Sans',sans-serif}
+.cv-page{min-height:100vh;background:#0E0E0E;font-family:"DM Sans",sans-serif;color:#fff}
 
-/* CV HERO */
-.cv-hero{position:relative;overflow:hidden;min-height:380px;display:flex;flex-direction:column;justify-content:flex-end}
+/* LIVE BADGE */
+.cv-live{position:fixed;top:20px;right:20px;z-index:999;display:flex;align-items:center;gap:8px;background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.35);backdrop-filter:blur(12px);padding:7px 14px;border-radius:20px;font-size:11px;color:#10b981;font-family:"DM Sans",sans-serif;letter-spacing:.04em;animation:liveBadgeIn .6s cubic-bezier(.34,1.56,.64,1)}
+.cv-live-ring{width:8px;height:8px;border-radius:50%;background:#10b981;position:relative}
+.cv-live-ring::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:1.5px solid #10b981;animation:livering 2s ease-out infinite}
+@keyframes livering{0%{opacity:.8;transform:scale(1)}100%{opacity:0;transform:scale(2.5)}}
+@keyframes liveBadgeIn{from{opacity:0;transform:translateX(20px) scale(.9)}to{opacity:1;transform:none}}
+
+/* HERO */
+.cv-hero{position:relative;overflow:hidden;min-height:420px;display:flex;align-items:flex-end}
 .cv-hero-bg{position:absolute;inset:0}
-.cv-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.6) 100%)}
-.cv-hero-particles{position:absolute;inset:0;overflow:hidden}
-.cv-particle{position:absolute;border-radius:50%;opacity:.08;animation:float linear infinite}
-@keyframes float{0%{transform:translateY(100%) rotate(0deg)}100%{transform:translateY(-100vh) rotate(360deg)}}
-.cv-hero-inner{position:relative;padding:48px 48px 40px;color:white}
-.cv-hero-eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.45;margin-bottom:18px;display:flex;align-items:center;gap:10px}
-.cv-hero-eyebrow::before{content:'';width:24px;height:1px;background:currentColor}
-.cv-hero-title{font-family:'DM Serif Display',serif;font-size:42px;line-height:1.05;margin-bottom:8px}
-.cv-hero-client{font-size:15px;opacity:.55;margin-bottom:32px}
-.cv-progress-area{margin-top:auto}
-.cv-progress-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px}
-.cv-pct{font-size:52px;font-weight:200;line-height:1}
-.cv-pct-sub{font-size:12px;opacity:.45;text-align:right}
-.cv-pbar-bg{height:3px;background:rgba(255,255,255,.15);border-radius:2px;overflow:hidden}
-.cv-pbar-fill{height:100%;border-radius:2px;transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.cv-hero-noise{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");opacity:.4}
+.cv-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:48px 48px}
+.cv-hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;filter:blur(120px);opacity:.25;top:-100px;right:-100px}
+.cv-hero-inner{position:relative;padding:60px 52px 52px;width:100%;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:32px}
+.cv-hero-left{}
+.cv-hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.cv-hero-eyebrow::before{content:"";width:32px;height:1px;background:rgba(255,255,255,.25)}
+.cv-hero-name{font-family:"DM Serif Display",serif;font-size:48px;line-height:1.0;letter-spacing:-.02em;margin-bottom:10px}
+.cv-hero-client{font-size:14px;color:rgba(255,255,255,.45);margin-bottom:6px;font-weight:300}
+.cv-hero-ig{font-size:12px;color:rgba(255,255,255,.25);font-weight:300}
+.cv-hero-meta{display:flex;align-items:center;gap:16px;margin-top:28px;flex-wrap:wrap}
+.cv-hero-tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(255,255,255,.12);border-radius:20px;color:rgba(255,255,255,.4)}
+.cv-hero-updated{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.06em}
 
-/* CV STATS STRIP */
-.cv-strip{display:grid;grid-template-columns:repeat(3,1fr);background:white;border-bottom:1px solid #e8e4de}
-.cv-strip-item{padding:20px 24px;border-right:1px solid #e8e4de;text-align:center}
-.cv-strip-item:last-child{border-right:none}
-.cv-strip-val{font-size:28px;font-weight:300;line-height:1;margin-bottom:4px}
-.cv-strip-lbl{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aaa}
+/* RING */
+.cv-ring-wrap{position:relative;width:130px;height:130px;flex-shrink:0}
+.cv-ring-svg{transform:rotate(-90deg)}
+.cv-ring-track{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6}
+.cv-ring-fill{fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 0 8px currentColor)}
+.cv-ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cv-ring-pct{font-size:30px;font-weight:200;line-height:1;color:#fff}
+.cv-ring-lbl{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:3px}
 
-/* CV MAIN BODY */
-.cv-body{padding:40px 48px}
-.cv-section{margin-bottom:36px}
-.cv-sh{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.cv-sh-line{flex:1;height:1px;background:#e8e4de}
-.cv-sh-title{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#aaa;white-space:nowrap}
+/* STATS ROW */
+.cv-stats{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid rgba(255,255,255,.06)}
+.cv-stat{padding:24px 36px;border-right:1px solid rgba(255,255,255,.06);position:relative;overflow:hidden}
+.cv-stat:last-child{border-right:none}
+.cv-stat-val{font-size:36px;font-weight:200;line-height:1;margin-bottom:6px}
+.cv-stat-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3)}
+.cv-stat-bar{position:absolute;bottom:0;left:0;height:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
 
-/* CV FILTERS */
-.cv-filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.cv-fb{padding:7px 18px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #e0ddd8;background:white;color:#777;transition:all .18s;font-family:'DM Sans',sans-serif}
-.cv-fb.active{background:#1a1a1a;color:white;border-color:#1a1a1a}
-.cv-fb:hover:not(.active){background:#f5f2ed;border-color:#ccc}
+/* BODY */
+.cv-body{padding:48px 52px;background:#0E0E0E}
 
-/* CV TASK CARD */
-.cv-tc{background:white;border-radius:14px;padding:16px 20px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,.06),0 2px 12px rgba(0,0,0,.04);transition:all .2s;animation:cvUp .4s ease both}
-.cv-tc:hover{transform:translateY(-2px);box-shadow:0 4px 20px rgba(0,0,0,.1)}
-@keyframes cvUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.cv-tc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px}
+/* FILTERS */
+.cv-filters{display:flex;gap:8px;margin-bottom:36px;flex-wrap:wrap}
+.cv-fb{padding:8px 20px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.4);transition:all .2s;font-family:"DM Sans",sans-serif;letter-spacing:.04em}
+.cv-fb:hover{border-color:rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
+.cv-fb.active{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff}
+
+/* SECTION HEADER */
+.cv-sh{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.cv-sh-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.25);white-space:nowrap}
+.cv-sh-line{flex:1;height:1px;background:rgba(255,255,255,.06)}
+.cv-sh-count{font-size:10px;color:rgba(255,255,255,.2);white-space:nowrap}
+.cv-section{margin-bottom:40px}
+
+/* TASK CARD */
+.cv-tc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px 20px;margin-bottom:8px;display:flex;align-items:flex-start;gap:14px;transition:all .25s cubic-bezier(.4,0,.2,1);animation:cvSlide .5s cubic-bezier(.34,1.56,.64,1) both;cursor:default}
+.cv-tc:hover{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12);transform:translateX(4px)}
+@keyframes cvSlide{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:none}}
+.cv-tc-status{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
 .cv-tc-body{flex:1}
-.cv-tc-name{font-size:14px;color:#1a1a1a;line-height:1.4;font-weight:400}
-.cv-tc-note{font-size:11px;color:#aaa;font-style:italic;margin-top:4px}
-.cv-tc-tag{font-size:10px;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0;align-self:flex-start;font-weight:500}
+.cv-tc-name{font-size:14px;color:rgba(255,255,255,.85);line-height:1.4;font-weight:400}
+.cv-tc-name.done{text-decoration:line-through;color:rgba(255,255,255,.3)}
+.cv-tc-note{font-size:11px;color:rgba(255,255,255,.28);font-style:italic;margin-top:4px}
+.cv-tc-tag{font-size:9px;padding:3px 9px;border-radius:4px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;flex-shrink:0;align-self:flex-start}
 
-/* CV ÉTAPE TIMELINE */
-.cv-etapes{position:relative}
-.cv-et{display:flex;gap:20px;margin-bottom:0;animation:cvUp .4s ease both}
-.cv-et-left{display:flex;flex-direction:column;align-items:center;width:20px;flex-shrink:0}
-.cv-et-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;transition:all .3s}
-.cv-et-line{width:2px;flex:1;min-height:20px;background:#e8e4de;margin:4px 0}
-.cv-et-content{background:white;border-radius:14px;padding:16px 20px;margin-bottom:12px;flex:1;box-shadow:0 1px 4px rgba(0,0,0,.06);transition:all .2s}
-.cv-et-content:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,.09)}
-.cv-et-date{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;margin-bottom:6px}
-.cv-et-name{font-size:15px;font-weight:500;margin-bottom:4px}
-.cv-et-desc{font-size:13px;color:#777;line-height:1.5;margin-bottom:8px}
-.cv-et-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:4px 10px;border-radius:20px;font-weight:500}
-.cv-et-badge.done{background:#f0faf5;color:#5CAF8A}
-.cv-et-badge.curr{background:#fdf8f0;color:#C9A86C}
-.cv-et-badge.todo{background:#f5f5f5;color:#aaa}
+/* ÉTAPES TIMELINE */
+.cv-timeline{position:relative}
+.cv-te{display:flex;gap:20px;animation:cvSlide .5s cubic-bezier(.34,1.56,.64,1) both}
+.cv-te-track{display:flex;flex-direction:column;align-items:center;width:24px;flex-shrink:0;padding-top:4px}
+.cv-te-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;position:relative;z-index:1;transition:all .3s}
+.cv-te-dot.active{box-shadow:0 0 0 4px rgba(255,255,255,.06),0 0 16px currentColor}
+.cv-te-line{width:1px;flex:1;min-height:16px;background:rgba(255,255,255,.08);margin:4px 0}
+.cv-te-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px 22px;margin-bottom:12px;flex:1;transition:all .25s}
+.cv-te-card:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.12)}
+.cv-te-card.active-card{border-color:rgba(255,255,255,.15);background:rgba(255,255,255,.04)}
+.cv-te-date{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.cv-te-name{font-size:15px;font-weight:500;margin-bottom:6px}
+.cv-te-desc{font-size:13px;color:rgba(255,255,255,.45);line-height:1.5;margin-bottom:10px}
+.cv-te-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;padding:4px 10px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
 
-/* CV FOOTER */
-.cv-footer{background:#1a1a1a;color:white;padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
-.cv-footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--accent);margin-bottom:4px}
-.cv-footer-sub{font-size:12px;opacity:.4}
-.cv-footer-right{text-align:right;font-size:12px;opacity:.4}
-.cv-last-update{font-size:10px;opacity:.35;margin-top:4px}
+/* LIVRABLES */
+.cv-dl{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:16px 20px;margin-bottom:8px;display:flex;align-items:center;gap:14px;transition:all .25s;animation:cvSlide .5s cubic-bezier(.34,1.56,.64,1) both}
+.cv-dl:hover{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.12)}
+.cv-dl-icon{width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cv-dl-name{font-size:13.5px;color:rgba(255,255,255,.8);font-weight:400}
+.cv-dl-date{font-size:11px;color:rgba(255,255,255,.28);margin-top:3px}
+.cv-dl-badge{font-size:10px;padding:4px 10px;border-radius:4px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-left:auto;white-space:nowrap;flex-shrink:0}
+.dl-validated{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)}
+.dl-inreview{background:rgba(245,158,11,.1);color:#f59e0b;border:1px solid rgba(245,158,11,.2)}
+.dl-pending{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1)}
 
-/* RESPONSIVE */
-@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.kb{grid-template-columns:1fr}}
+/* FOOTER */
+.cv-footer{border-top:1px solid rgba(255,255,255,.06);padding:40px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px}
+.cv-footer-brand{font-family:"DM Serif Display",serif;font-size:22px;color:#C9A86C;margin-bottom:5px}
+.cv-footer-sub{font-size:12px;color:rgba(255,255,255,.25);line-height:1.6}
+.cv-footer-right{text-align:right}
+.cv-footer-project{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:4px}
+.cv-footer-deadline{font-size:11px;color:rgba(255,255,255,.25)}
+
+/* MOBILE */
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:none}
-  .overlay.open{display:block}.s-close{display:block}
-  .main{margin-left:0}.hamburger{display:flex}
-  .view{padding:16px}.dh{padding:18px 16px}.dc{padding:16px}
-  .stats-grid{grid-template-columns:1fr 1fr;gap:10px}.pg{grid-template-columns:1fr}
-  .topbar{padding:12px 16px}.tb-title{font-size:15px}
-  .cv-hero-inner{padding:28px 20px 28px}.cv-hero-title{font-size:28px}
-  .cv-strip-item{padding:14px 12px}.cv-body{padding:24px 20px}
-  .cv-footer{padding:24px 20px}
+  .cv-hero-inner{padding:32px 24px 36px;flex-direction:column;gap:24px}
+  .cv-hero-name{font-size:32px}
+  .cv-stats{grid-template-columns:repeat(3,1fr)}
+  .cv-stat{padding:16px 18px}
+  .cv-stat-val{font-size:26px}
+  .cv-body{padding:28px 24px}
+  .cv-footer{padding:28px 24px;flex-direction:column;align-items:flex-start}
+  .cv-footer-right{text-align:left}
 }
-@media(max-width:480px){.stats-grid{grid-template-columns:1fr 1fr}}
 @media print{.no-print{display:none!important}body{background:white!important}}
 </style>
 </head>
@@ -298,7 +306,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min
 <div class="app" id="admin">
   <aside class="sidebar" id="sidebar">
     <div class="s-logo">
-      <div><div class="s-logo-text">Studio AY</div><div class="s-logo-sub">Project Manager</div></div>
+      <div><div class="s-logo-text">Studio HAMOUNI</div><div class="s-logo-sub">Project Manager</div></div>
       <button class="s-close" onclick="closeSB()">✕</button>
     </div>
     <nav class="s-nav">
@@ -530,8 +538,8 @@ function checkCV(){
 // ============= CLIENT VIEW RENDER =============
 function renderCV(pid){
   var p=S.projects.find(function(x){return x.id===pid;});
-  if(!p){document.getElementById('cv-page').innerHTML='<div style="padding:40px;text-align:center;color:#999">Projet introuvable</div>';return;}
-  
+  if(!p){document.getElementById('cv-page').innerHTML='<div style="padding:60px;text-align:center;color:rgba(255,255,255,.3)">Projet introuvable</div>';return;}
+
   var done=p.tasks.filter(function(t){return t.status==='done';}).length;
   var prog=p.tasks.filter(function(t){return t.status==='inprogress';}).length;
   var total=p.tasks.length;
@@ -539,42 +547,57 @@ function renderCV(pid){
   var ac=p.color;
   var now=new Date();
   var months=['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  var dateStr=months[now.getMonth()]+' '+now.getFullYear();
+  var dateStr=months[now.getMonth()]+' '+now.getFullYear()+' à '+now.getHours()+'h'+String(now.getMinutes()).padStart(2,'0');
+  var circum=2*Math.PI*56;
 
-  // Hero background
-  var bgStyle='background:linear-gradient(145deg,'+darken(ac,60)+' 0%,'+darken(ac,85)+' 100%)';
-  if(p.id==='guestation')bgStyle='background:linear-gradient(145deg,#4a0709 0%,#1a0203 100%)';
-  else if(p.id==='grandiose')bgStyle='background:linear-gradient(145deg,#2d2008 0%,#0d0902 100%)';
+  // Hero BG
+  var heroBg=p.id==='guestation'
+    ?'background:linear-gradient(145deg,#1a0305 0%,#0d0102 100%)'
+    :p.id==='grandiose'
+    ?'background:linear-gradient(145deg,#12090a 0%,#0a0600 100%)'
+    :'background:linear-gradient(145deg,#0d0d14 0%,#080808 100%)';
 
   var html='';
-  // LIVE BADGE + HERO
-  html+='<div class="cv-live-badge"><div class="cv-live-dot"></div>Suivi en direct</div>';
-  html+='<div class="cv-hero"><div class="cv-hero-bg" style="'+bgStyle+'"></div>';
-  html+='<div class="cv-hero-overlay"></div>';
-  html+='<div class="cv-hero-particles" id="cv-particles"></div>';
-  html+='<div class="cv-hero-inner">';
-  html+='<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px">';
-  html+='<div>';
-  html+='<div class="cv-hero-eyebrow">Studio AY — Suivi projet en temps réel</div>';
-  html+='<div class="cv-hero-title">'+p.name+'</div>';
-  html+='<div class="cv-hero-client">'+p.client+(p.instagram?' · '+p.instagram:'')+'</div>';
-  html+='<div style="font-size:11px;opacity:.35;margin-top:12px">Dernière mise à jour : '+dateStr+'</div>';
-  html+='</div>';
-  var circum=289.03;
-  html+='<div class="cv-ring-wrap">';
-  html+='<svg class="cv-ring-svg" width="120" height="120" viewBox="0 0 120 120">';
-  html+='<circle class="cv-ring-bg" cx="60" cy="60" r="46"/>';
-  html+='<circle class="cv-ring-fill" id="cv-ring" cx="60" cy="60" r="46" stroke="'+ac+'" stroke-dasharray="'+circum+'" stroke-dashoffset="'+circum+'"/>';
-  html+='</svg>';
-  html+='<div class="cv-ring-text"><div class="cv-ring-pct" id="cv-pct-val">0</div><div class="cv-ring-lbl">complet</div></div>';
-  html+='</div>';
-  html+='</div></div></div>';
 
-  // STATS STRIP
-  html+='<div class="cv-strip">';
-  html+='<div class="cv-strip-item"><div class="cv-strip-val" style="color:'+ac+'">'+done+'</div><div class="cv-strip-lbl">Terminé</div></div>';
-  html+='<div class="cv-strip-item"><div class="cv-strip-val" style="color:#5B8FD4">'+prog+'</div><div class="cv-strip-lbl">En cours</div></div>';
-  html+='<div class="cv-strip-item"><div class="cv-strip-val" style="color:#aaa">'+(total-done-prog)+'</div><div class="cv-strip-lbl">À venir</div></div>';
+  // LIVE BADGE
+  html+='<div class="cv-live"><div class="cv-live-ring"></div>Suivi en direct</div>';
+
+  // HERO
+  html+='<div class="cv-hero">';
+  html+='<div class="cv-hero-bg" style="'+heroBg+'"></div>';
+  html+='<div class="cv-hero-noise"></div>';
+  html+='<div class="cv-hero-grid"></div>';
+  html+='<div class="cv-hero-glow" style="background:'+ac+'"></div>';
+  html+='<div class="cv-hero-inner">';
+  // Left
+  html+='<div class="cv-hero-left">';
+  html+='<div class="cv-hero-eyebrow">Studio HAMOUNI — Tableau de bord client</div>';
+  html+='<div class="cv-hero-name">'+p.name+'</div>';
+  html+='<div class="cv-hero-client">'+p.client+'</div>';
+  if(p.instagram)html+='<div class="cv-hero-ig">'+p.instagram+'</div>';
+  html+='<div class="cv-hero-meta">';
+  html+='<div class="cv-hero-tag">'+SM[p.status].l+'</div>';
+  html+='<div class="cv-hero-tag">Deadline : '+p.deadline+'</div>';
+  html+='<div class="cv-hero-updated">Mis à jour : '+dateStr+'</div>';
+  html+='</div>';
+  html+='</div>';
+  // Ring
+  html+='<div class="cv-ring-wrap">';
+  html+='<svg class="cv-ring-svg" width="130" height="130" viewBox="0 0 130 130">';
+  html+='<circle class="cv-ring-track" cx="65" cy="65" r="56"/>';
+  html+='<circle class="cv-ring-fill" id="cv-ring" cx="65" cy="65" r="56" stroke="'+ac+'" stroke-dasharray="'+circum+'" stroke-dashoffset="'+circum+'"/>';
+  html+='</svg>';
+  html+='<div class="cv-ring-center"><div class="cv-ring-pct" id="cv-pct-val">0</div><div class="cv-ring-lbl">complet</div></div>';
+  html+='</div>';
+  html+='</div></div>';
+
+  // STATS
+  var donePct=total?Math.round(done/total*100):0;
+  var progPct=total?Math.round(prog/total*100):0;
+  html+='<div class="cv-stats">';
+  html+='<div class="cv-stat"><div class="cv-stat-val" style="color:'+ac+'">'+done+'</div><div class="cv-stat-lbl">Tâches terminées</div><div class="cv-stat-bar" style="width:'+donePct+'%;background:'+ac+'"></div></div>';
+  html+='<div class="cv-stat"><div class="cv-stat-val" style="color:#60a5fa">'+prog+'</div><div class="cv-stat-lbl">En cours</div><div class="cv-stat-bar" style="width:'+progPct+'%;background:#60a5fa"></div></div>';
+  html+='<div class="cv-stat"><div class="cv-stat-val" style="color:rgba(255,255,255,.35)">'+(total-done-prog)+'</div><div class="cv-stat-lbl">À venir</div><div class="cv-stat-bar" style="width:'+(total?Math.round((total-done-prog)/total*100):0)+'%;background:rgba(255,255,255,.15)"></div></div>';
   html+='</div>';
 
   // BODY
@@ -582,7 +605,7 @@ function renderCV(pid){
 
   // Filters
   html+='<div class="cv-filters">';
-  html+='<button class="cv-fb active" onclick="cvFilter(\'all\',this)">Tout voir</button>';
+  html+='<button class="cv-fb active" onclick="cvFilter(\'all\',this)">Tout</button>';
   html+='<button class="cv-fb" onclick="cvFilter(\'inprogress\',this)">En cours</button>';
   html+='<button class="cv-fb" onclick="cvFilter(\'todo\',this)">À venir</button>';
   html+='<button class="cv-fb" onclick="cvFilter(\'done\',this)">Terminé</button>';
@@ -594,22 +617,24 @@ function renderCV(pid){
   // Étapes
   if(p.etapes&&p.etapes.length){
     html+='<div class="cv-section">';
-    html+='<div class="cv-sh"><div class="cv-sh-title">Étapes du projet</div><div class="cv-sh-line"></div></div>';
-    html+='<div class="cv-etapes">';
+    html+='<div class="cv-sh"><div class="cv-sh-label">Étapes du projet</div><div class="cv-sh-line"></div><div class="cv-sh-count">'+p.etapes.length+' étapes</div></div>';
+    html+='<div class="cv-timeline">';
     p.etapes.forEach(function(e,i){
       var isLast=i===p.etapes.length-1;
-      var dc=e.status==='done'?'#5CAF8A':e.status==='current'?ac:'#e0ddd8';
-      var bg=e.status==='done'?'rgba(92,175,138,.08)':e.status==='current'?'rgba(201,168,108,.06)':'white';
-      var shadow=e.status==='current'?'0 0 0 4px '+ac+'22':'';
-      html+='<div class="cv-et" style="animation-delay:'+(i*.08)+'s">';
-      html+='<div class="cv-et-left"><div class="cv-et-dot" style="background:'+dc+';box-shadow:'+shadow+'"></div>'+(isLast?'':'<div class="cv-et-line"></div>')+'</div>';
-      html+='<div class="cv-et-content" style="background:'+bg+'">';
-      html+='<div class="cv-et-date">'+e.date+'</div>';
-      html+='<div class="cv-et-name" style="color:'+(e.status==='done'?'#5CAF8A':e.status==='current'?ac:'#1a1a1a')+'">'+e.name+'</div>';
-      if(e.desc)html+='<div class="cv-et-desc">'+e.desc+'</div>';
-      var badge=e.status==='done'?'done':e.status==='current'?'curr':'todo';
-      var blabel=e.status==='done'?'✓ Terminé':e.status==='current'?'● En cours':'○ À venir';
-      html+='<div class="cv-et-badge '+badge+'">'+blabel+'</div>';
+      var dc=e.status==='done'?'#10b981':e.status==='current'?ac:'rgba(255,255,255,.15)';
+      var isActive=e.status==='current';
+      var badgeStyle=e.status==='done'?'background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.2)':e.status==='current'?'background:rgba(201,168,108,.1);color:'+ac+';border:1px solid rgba(201,168,108,.2)':'background:rgba(255,255,255,.04);color:rgba(255,255,255,.3);border:1px solid rgba(255,255,255,.08)';
+      var blabel=e.status==='done'?'✓ TERMINÉ':e.status==='current'?'● EN COURS':'○ À VENIR';
+      html+='<div class="cv-te" style="animation-delay:'+(i*.08)+'s">';
+      html+='<div class="cv-te-track">';
+      html+='<div class="cv-te-dot '+(isActive?'active':'')+'" style="background:'+dc+';color:'+dc+'"></div>';
+      if(!isLast)html+='<div class="cv-te-line"></div>';
+      html+='</div>';
+      html+='<div class="cv-te-card '+(isActive?'active-card':'')+'">';
+      html+='<div class="cv-te-date">'+e.date+'</div>';
+      html+='<div class="cv-te-name" style="color:'+(e.status==='done'?'rgba(255,255,255,.4)':e.status==='current'?'#fff':'rgba(255,255,255,.6)')+'">'+e.name+'</div>';
+      if(e.desc)html+='<div class="cv-te-desc">'+e.desc+'</div>';
+      html+='<span class="cv-te-badge" style="'+badgeStyle+'">'+blabel+'</span>';
       html+='</div></div>';
     });
     html+='</div></div>';
@@ -617,12 +642,19 @@ function renderCV(pid){
 
   // Livrables
   if(p.deliverables&&p.deliverables.length){
-    var dlv=p.deliverables;
     html+='<div class="cv-section">';
-    html+='<div class="cv-sh"><div class="cv-sh-title">Livrables</div><div class="cv-sh-line"></div></div>';
-    dlv.forEach(function(d){
-      var ds=d.status==='validated'?{l:'✓ Livré & validé',c:'#f0faf5',tc:'#5CAF8A'}:d.status==='inreview'?{l:'En révision',c:'#fdf8f0',tc:'#C9A86C'}:{l:'À venir',c:'#f5f5f5',tc:'#aaa'};
-      html+='<div style="background:white;border-radius:12px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)"><div style="font-size:18px">'+d.icon+'</div><div style="flex:1"><div style="font-size:13.5px;font-weight:500;color:#1a1a1a">'+d.name+'</div><div style="font-size:11px;color:#aaa;margin-top:2px">Prévu : '+d.date+'</div></div><span style="font-size:10px;padding:4px 10px;border-radius:20px;background:'+ds.c+';color:'+ds.tc+';font-weight:500">'+ds.l+'</span></div>';
+    html+='<div class="cv-sh"><div class="cv-sh-label">Livrables</div><div class="cv-sh-line"></div><div class="cv-sh-count">'+p.deliverables.filter(function(d){return d.status==='validated';}).length+'/'+p.deliverables.length+' validés</div></div>';
+    p.deliverables.forEach(function(d,i){
+      var ds=d.status==='validated'
+        ?{cls:'dl-validated',l:'LIVRÉ ✓'}
+        :d.status==='inreview'
+        ?{cls:'dl-inreview',l:'EN RÉVISION'}
+        :{cls:'dl-pending',l:'À VENIR'};
+      html+='<div class="cv-dl" style="animation-delay:'+(i*.06)+'s">';
+      html+='<div class="cv-dl-icon">'+d.icon+'</div>';
+      html+='<div style="flex:1"><div class="cv-dl-name">'+d.name+'</div><div class="cv-dl-date">📅 '+d.date+'</div></div>';
+      html+='<span class="cv-dl-badge '+ds.cls+'">'+ds.l+'</span>';
+      html+='</div>';
     });
     html+='</div>';
   }
@@ -631,8 +663,8 @@ function renderCV(pid){
 
   // FOOTER
   html+='<div class="cv-footer">';
-  html+='<div><div class="cv-footer-brand">Studio AY</div><div class="cv-footer-sub">@hamouni.ay · Directeur créatif · Paris</div></div>';
-  html+='<div class="cv-footer-right"><div>Projet : '+p.name+'</div><div>Deadline : '+p.deadline+'</div></div>';
+  html+='<div><div class="cv-footer-brand">Studio HAMOUNI</div><div class="cv-footer-sub">Ayoub HAMOUNI · @hamouni.ay<br>Directeur créatif · Paris</div></div>';
+  html+='<div class="cv-footer-right"><div class="cv-footer-project">'+p.name+'</div><div class="cv-footer-deadline">Deadline : '+p.deadline+'</div></div>';
   html+='</div>';
 
   document.getElementById('cv-page').innerHTML=html;
@@ -640,46 +672,26 @@ function renderCV(pid){
   window._cvAc=ac;
   window._cvPct=pct;
 
-  // Animate
+  // Animations
   setTimeout(function(){
-    // Animate ring
     var ring=document.getElementById('cv-ring');
-    if(ring){
-      var c=2*Math.PI*46;
-      ring.style.strokeDashoffset=c-(c*pct/100);
-    }
-    // Count up
+    if(ring){var c=2*Math.PI*56;ring.style.strokeDashoffset=c-(c*pct/100);}
     var val=document.getElementById('cv-pct-val');
-    if(val){
-      var cur=0,step=pct/60;
-      var iv=setInterval(function(){cur=Math.min(cur+step,pct);val.textContent=Math.round(cur);if(cur>=pct)clearInterval(iv);},16);
-    }
-    // Particles
-    makeParticles(ac);
-  },200);
+    if(val){var cur=0,step=pct/80;var iv=setInterval(function(){cur=Math.min(cur+step,pct);val.textContent=Math.round(cur);if(cur>=pct)clearInterval(iv);},14);}
+  },150);
 
-  // AUTO-REFRESH every 30 seconds if cloud enabled
+  // Auto-refresh every 30s
   if(USE_CLOUD){
-    if(window._cvRefreshInterval)clearInterval(window._cvRefreshInterval);
-    window._cvRefreshInterval=setInterval(function(){
-      if(!USE_CLOUD)return;
+    if(window._cvRef)clearInterval(window._cvRef);
+    window._cvRef=setInterval(function(){
       pullFromCloud(function(){
-        var newP=S.projects.find(function(x){return x.id===pid;});
-        if(!newP)return;
-        var newDone=newP.tasks.filter(function(t){return t.status==="done";}).length;
-        var newTotal=newP.tasks.length;
-        var newPct=newTotal?Math.round(newDone/newTotal*100):0;
-        // Re-render if changed
-        if(newPct!==window._cvLastPct||newDone!==window._cvLastDone){
-          window._cvLastPct=newPct;window._cvLastDone=newDone;
-          renderCV(pid);
-          // Flash to show update
-          var body=document.querySelector('.cv-body');
-          if(body)body.classList.add('cv-update-flash');
-        }
+        var np=S.projects.find(function(x){return x.id===pid;});
+        if(!np)return;
+        var nd=np.tasks.filter(function(t){return t.status==='done';}).length;
+        if(nd!==window._cvDone){window._cvDone=nd;renderCV(pid);}
       });
     },30000);
-    window._cvLastPct=pct;window._cvLastDone=done;
+    window._cvDone=done;
   }
 }
 
@@ -710,21 +722,25 @@ function buildCVTasks(p,filter,ac){
     var tasks=p.tasks.filter(function(t){return t.status===s;});
     if(!tasks.length)return;
     var lbl=s==='done'?'Terminé':s==='inprogress'?'En cours':'À venir';
-    var dc=s==='done'?'#5CAF8A':s==='inprogress'?ac:'#ccc';
-    html+='<div class="cv-section"><div class="cv-sh"><div class="cv-sh-title">'+lbl+'</div><div class="cv-sh-line"></div></div>';
+    var count=tasks.length;
+    var dc=s==='done'?'#10b981':s==='inprogress'?ac:'rgba(255,255,255,.15)';
+    html+='<div class="cv-section">';
+    html+='<div class="cv-sh"><div class="cv-sh-label">'+lbl+'</div><div class="cv-sh-line"></div><div class="cv-sh-count">'+count+' tâche'+(count>1?'s':'')+'</div></div>';
     tasks.forEach(function(t,i){
       var c=TC[t.tag]||TC.other;
+      var tagStyle='background:'+c.bg+';color:'+c.t;
       html+='<div class="cv-tc" style="animation-delay:'+(i*.06)+'s">';
-      html+='<div class="cv-tc-dot" style="background:'+dc+'"></div>';
-      html+='<div class="cv-tc-body"><div class="cv-tc-name" style="'+(s==='done'?'text-decoration:line-through;color:#aaa':'')+'">'+t.name+'</div>';
+      html+='<div class="cv-tc-status" style="background:'+dc+'"></div>';
+      html+='<div class="cv-tc-body">';
+      html+='<div class="cv-tc-name '+(s==='done'?'done':'')+'">'+t.name+'</div>';
       if(t.note&&s!=='done')html+='<div class="cv-tc-note">↳ '+t.note+'</div>';
       html+='</div>';
-      html+='<span class="cv-tc-tag" style="background:'+c.bg+';color:'+c.t+'">'+t.tag+'</span>';
+      html+='<span class="cv-tc-tag" style="'+tagStyle+'">'+t.tag+'</span>';
       html+='</div>';
     });
     html+='</div>';
   });
-  if(!html)html='<div style="padding:20px;color:#aaa;text-align:center">Aucune tâche dans cette catégorie.</div>';
+  if(!html)html='<div style="padding:24px;text-align:center;color:rgba(255,255,255,.2);font-size:13px">Aucune tâche dans cette catégorie.</div>';
   return html;
 }
 
@@ -882,7 +898,7 @@ function renderRapport(p){
   if(ec.length){h+='<div class="rp-section"><div class="rp-title">Étape actuelle</div>';ec.forEach(function(e){h+='<div class="rp-row"><div class="rp-dot" style="background:'+p.color+'"></div><div style="flex:1"><div>'+e.name+'</div>'+(e.desc?'<div style="font-size:11px;color:var(--text3)">'+e.desc+'</div>':'')+'</div><span style="font-size:11px;color:var(--text3)">'+e.date+'</span></div>';});h+='</div>';}
   if(todo.length){h+='<div class="rp-section"><div class="rp-title">Prochaines actions</div>';todo.slice(0,5).forEach(function(t){h+='<div class="rp-row"><div class="rp-dot" style="background:var(--text3)"></div><span>'+t.name+'</span></div>';});if(todo.length>5)h+='<div style="font-size:12px;color:var(--text3);padding:8px 12px">+ '+(todo.length-5)+' autres…</div>';h+='</div>';}
   h+='<div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">';
-  h+='<div style="font-size:12px;color:var(--text3)">Studio AY · Ayoub · @hamouni.ay</div>';
+  h+='<div style="font-size:12px;color:var(--text3)">Studio HAMOUNI · Ayoub · @hamouni.ay</div>';
   h+='<div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm no-print" onclick="window.print()">🖨️ PDF</button><button class="btn btn-primary btn-sm no-print" onclick="openShare(\''+p.id+'\')">📤 Partager</button></div>';
   h+='</div>';
   h+='</div>';
