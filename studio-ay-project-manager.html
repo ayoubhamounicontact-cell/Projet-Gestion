@@ -64,7 +64,6 @@ button { cursor: pointer; }
    ADMIN LAYOUT
    ============================================================ */
 #admin { display: flex; min-height: 100vh; }
-#cv    { display: none; }
 
 /* ---- SIDEBAR ---- */
 .sb {
@@ -727,404 +726,6 @@ button { cursor: pointer; }
 .toast.ok .toast-dot { background: var(--c-green); }
 .toast.err .toast-dot { background: var(--c-red); }
 
-/* ============================================================
-   CLIENT VIEW — Premium Dark Portal
-   ============================================================ */
-.cv-page {
-  min-height: 100vh;
-  background: #080808;
-  font-family: var(--font-body);
-  color: #fff;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* LIVE INDICATOR */
-.cv-live {
-  position: fixed;
-  top: 18px; right: 18px;
-  z-index: 999;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 12px;
-  background: rgba(34,197,94,.08);
-  border: 1px solid rgba(34,197,94,.2);
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #22c55e;
-  letter-spacing: .06em;
-  text-transform: uppercase;
-  backdrop-filter: blur(12px);
-  animation: liveIn .6s cubic-bezier(.34,1.2,.64,1);
-}
-@keyframes liveIn { from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none} }
-.cv-live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #22c55e;
-  position: relative;
-}
-.cv-live-dot::after {
-  content: '';
-  position: absolute; inset: -4px;
-  border-radius: 50%;
-  border: 1.5px solid #22c55e;
-  animation: ping 2s ease-out infinite;
-  opacity: 0;
-}
-@keyframes ping { 0%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(2.4)} }
-
-/* HERO */
-.cv-hero {
-  position: relative;
-  overflow: hidden;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-.cv-hero-bg {
-  position: absolute; inset: 0;
-  background: #080808;
-}
-.cv-hero-mesh {
-  position: absolute; inset: 0;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 70% 20%, var(--mesh-color) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(201,168,108,.04) 0%, transparent 50%);
-  opacity: .8;
-}
-.cv-hero-grid {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse at 50% 50%, black 40%, transparent 80%);
-}
-.cv-hero-fade {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 200px;
-  background: linear-gradient(to top, #080808, transparent);
-}
-.cv-hero-inner {
-  position: relative;
-  padding: 120px 60px 60px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: flex-end;
-  gap: 40px;
-}
-.cv-hero-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.3);
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.cv-hero-eyebrow::before {
-  content: '';
-  width: 28px; height: 1px;
-  background: rgba(255,255,255,.2);
-}
-.cv-hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(36px, 5vw, 58px);
-  font-weight: 800;
-  letter-spacing: -.04em;
-  line-height: 1.0;
-  margin-bottom: 14px;
-  color: #fff;
-}
-.cv-hero-client {
-  font-size: 14px;
-  color: rgba(255,255,255,.4);
-  font-weight: 300;
-  margin-bottom: 6px;
-}
-.cv-hero-ig { font-size: 12px; color: rgba(255,255,255,.2); }
-.cv-hero-tags {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-.cv-tag {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  padding: 5px 12px;
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 20px;
-  color: rgba(255,255,255,.35);
-}
-
-/* RING */
-.cv-ring-wrap { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
-.cv-ring-svg { transform: rotate(-90deg); filter: drop-shadow(0 0 20px var(--ring-color)); }
-.cv-ring-track { fill: none; stroke: rgba(255,255,255,.05); stroke-width: 5; }
-.cv-ring-fill {
-  fill: none;
-  stroke-width: 5;
-  stroke-linecap: round;
-  stroke: var(--ring-color);
-  transition: stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1);
-}
-.cv-ring-center {
-  position: absolute; inset: 0;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-}
-.cv-ring-pct {
-  font-family: var(--font-display);
-  font-size: 32px;
-  font-weight: 700;
-  color: #fff;
-  line-height: 1;
-}
-.cv-ring-label {
-  font-size: 9px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: rgba(255,255,255,.3);
-  margin-top: 4px;
-}
-
-/* STATS STRIP */
-.cv-strip {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(255,255,255,.06);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-  background: rgba(255,255,255,.015);
-}
-.cv-strip-cell {
-  padding: 22px 32px;
-  border-right: 1px solid rgba(255,255,255,.06);
-  position: relative;
-}
-.cv-strip-cell:last-child { border-right: none; }
-.cv-strip-val {
-  font-family: var(--font-display);
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 6px;
-}
-.cv-strip-lbl {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: rgba(255,255,255,.3);
-}
-.cv-strip-bar {
-  position: absolute;
-  bottom: 0; left: 0;
-  height: 2px;
-  transition: width 1.2s cubic-bezier(.4,0,.2,1);
-}
-
-/* BODY */
-.cv-body { padding: 56px 60px; }
-.cv-section { margin-bottom: 52px; }
-.cv-sh {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 22px;
-}
-.cv-sh-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .14em;
-  color: rgba(255,255,255,.25);
-  white-space: nowrap;
-}
-.cv-sh-line { flex: 1; height: 1px; background: rgba(255,255,255,.06); }
-.cv-sh-count {
-  font-size: 10px;
-  color: rgba(255,255,255,.18);
-  white-space: nowrap;
-}
-
-/* FILTERS */
-.cv-filters {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 28px;
-  flex-wrap: wrap;
-}
-.cv-fb {
-  padding: 7px 18px;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,.08);
-  background: transparent;
-  color: rgba(255,255,255,.35);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all .18s;
-  font-family: var(--font-body);
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-.cv-fb:hover { border-color: rgba(255,255,255,.18); color: rgba(255,255,255,.65); }
-.cv-fb.active {
-  background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.18);
-  color: #fff;
-}
-
-/* TASK CARDS */
-.cv-tc {
-  background: rgba(255,255,255,.025);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 10px;
-  padding: 15px 18px;
-  margin-bottom: 7px;
-  display: flex;
-  align-items: flex-start;
-  gap: 13px;
-  transition: all .22s cubic-bezier(.4,0,.2,1);
-  animation: taskIn .5s cubic-bezier(.34,1.1,.64,1) both;
-}
-.cv-tc:hover {
-  background: rgba(255,255,255,.04);
-  border-color: rgba(255,255,255,.1);
-  transform: translateX(3px);
-}
-@keyframes taskIn {
-  from { opacity: 0; transform: translateX(-14px); }
-  to   { opacity: 1; transform: none; }
-}
-.cv-tc-icon {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-top: 5px;
-}
-.cv-tc-name {
-  font-size: 13.5px;
-  color: rgba(255,255,255,.8);
-  line-height: 1.45;
-  flex: 1;
-  font-weight: 400;
-}
-.cv-tc-name.done { text-decoration: line-through; color: rgba(255,255,255,.22); }
-.cv-tc-note { font-size: 11px; color: rgba(255,255,255,.25); font-style: italic; margin-top: 4px; }
-.cv-tc-tag {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  padding: 3px 8px;
-  border-radius: 4px;
-  align-self: flex-start;
-  flex-shrink: 0;
-}
-
-/* ÉTAPES TIMELINE CLIENT */
-.cv-etape {
-  display: flex;
-  gap: 20px;
-  animation: taskIn .5s cubic-bezier(.34,1.1,.64,1) both;
-}
-.cv-et-track { display: flex; flex-direction: column; align-items: center; width: 24px; flex-shrink: 0; padding-top: 4px; }
-.cv-et-dot {
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-.cv-et-dot.active::after {
-  content: '';
-  position: absolute; inset: -5px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  opacity: .3;
-  animation: ping 2.5s ease-out infinite;
-}
-.cv-et-line { width: 1px; flex: 1; min-height: 20px; background: rgba(255,255,255,.06); margin: 4px 0; }
-.cv-et-body {
-  background: rgba(255,255,255,.025);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin-bottom: 10px;
-  flex: 1;
-  transition: all .2s;
-}
-.cv-et-body:hover { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
-.cv-et-body.curr { border-color: rgba(201,168,108,.25); background: rgba(201,168,108,.03); }
-.cv-et-date {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  color: rgba(255,255,255,.28);
-  margin-bottom: 7px;
-}
-.cv-et-name {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-.cv-et-desc {
-  font-size: 12px;
-  color: rgba(255,255,255,.38);
-  line-height: 1.55;
-  margin-bottom: 10px;
-}
-.cv-et-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 20px;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-}
-.etb-done { background: rgba(34,197,94,.1);  color: #22c55e; border: 1px solid rgba(34,197,94,.2); }
-.etb-curr { background: rgba(201,168,108,.1);color: #C9A86C; border: 1px solid rgba(201,168,108,.2); }
-.etb-todo { background: rgba(255,255,255,.04);color: rgba(255,255,255,.3); border: 1px solid rgba(255,255,255,.08); }
-
-/* FOOTER */
-.cv-footer {
-  border-top: 1px solid rgba(255,255,255,.06);
-  padding: 40px 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 24px;
-}
-.cv-footer-brand {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--c-accent);
-  letter-spacing: -.02em;
-  margin-bottom: 5px;
-}
-.cv-footer-sub { font-size: 11px; color: rgba(255,255,255,.22); line-height: 1.7; }
-.cv-footer-r { text-align: right; }
-.cv-footer-project { font-size: 13px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
-.cv-footer-dl { font-size: 11px; color: rgba(255,255,255,.2); }
-
 /* ---- RESPONSIVE ---- */
 @media (max-width: 900px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1154,6 +755,114 @@ button { cursor: pointer; }
   .dh-top { flex-direction: column; }
   .dh-pbar { width: 100%; margin-left: 0; }
 }
+/* ---- PLANNING ---- */
+.plan-week {
+  display: grid;
+  grid-template-columns: 140px repeat(7, 1fr);
+  gap: 0;
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: var(--c-surface);
+}
+.plan-header-cell {
+  background: var(--c-surface2);
+  border-bottom: 1px solid var(--c-border);
+  border-right: 1px solid var(--c-border);
+  padding: 12px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--c-text3);
+}
+.plan-header-cell.today { color: var(--c-accent); background: rgba(201,168,108,.05); }
+.plan-row-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px;
+  border-bottom: 1px solid var(--c-border);
+  border-right: 1px solid var(--c-border);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text2);
+  background: var(--c-surface2);
+}
+.plan-row-label:last-child { border-bottom: none; }
+.plan-cell {
+  border-bottom: 1px solid var(--c-border);
+  border-right: 1px solid var(--c-border);
+  min-height: 64px;
+  padding: 6px;
+  position: relative;
+  cursor: pointer;
+  transition: background .15s;
+}
+.plan-cell:hover { background: rgba(255,255,255,.02); }
+.plan-cell.today { background: rgba(201,168,108,.03); }
+.plan-cell:last-child { border-right: none; }
+.plan-block {
+  border-radius: 4px;
+  padding: 4px 7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  transition: opacity .15s;
+  position: relative;
+}
+.plan-block:hover { opacity: .85; }
+.plan-block-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.plan-block-h { font-size: 9px; opacity: .7; white-space: nowrap; }
+.plan-add-btn {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--c-border2);
+  opacity: 0;
+  transition: opacity .15s;
+}
+.plan-cell:hover .plan-add-btn { opacity: 1; }
+/* Summary cards */
+.plan-summary { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.plan-proj-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--r-lg);
+  padding: 14px 16px;
+  border-left: 3px solid var(--pc);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.plan-proj-name { font-size: 13px; font-weight: 600; color: var(--c-text); margin-bottom: 3px; }
+.plan-proj-h { font-size: 11px; color: var(--c-text3); }
+.plan-proj-badge {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--pc);
+}
+/* Charge bar */
+.charge-bar-wrap { background: var(--c-surface); border: 1px solid var(--c-border); border-radius: var(--r-lg); padding: 16px 20px; margin-bottom: 20px; }
+.charge-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--c-text2); margin-bottom: 10px; }
+.charge-track { height: 6px; background: rgba(255,255,255,.06); border-radius: 3px; overflow: hidden; }
+.charge-fill { height: 100%; border-radius: 3px; transition: width .5s cubic-bezier(.4,0,.2,1); }
+.charge-ok   { background: var(--c-green); }
+.charge-mid  { background: var(--c-amber); }
+.charge-over { background: var(--c-red); }
+
 @media print { .no-print { display: none!important; } body { background: white!important; } }
 </style>
 </head>
@@ -1186,6 +895,10 @@ button { cursor: pointer; }
       <div class="nav-item" onclick="gv('projects');closeSB()">
         <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M3 7a2 2 0 012-2h4l2 2h8a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
         Tous les projets
+      </div>
+      <div class="nav-item" onclick="gv('planning');closeSB()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Planning
       </div>
       <div class="sb-section" style="margin-top:8px">Projets actifs</div>
       <div id="sb-projects"></div>
@@ -1258,15 +971,28 @@ button { cursor: pointer; }
       </div>
       <div id="pdc"></div>
     </div>
+
+    <!-- PLANNING VIEW -->
+    <div id="view-planning" class="view">
+      <div class="topbar">
+        <div class="tb-l">
+          <button class="hamburger" onclick="openSB()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+          <div class="tb-title">Planning</div>
+        </div>
+        <div class="tb-r">
+          <button class="btn btn-ghost btn-sm" onclick="prevWeek()">← Semaine préc.</button>
+          <button class="btn btn-ghost btn-sm" id="week-label" onclick="goToday()">Cette semaine</button>
+          <button class="btn btn-ghost btn-sm" onclick="nextWeek()">Semaine suiv. →</button>
+        </div>
+      </div>
+      <div style="padding:24px" id="planning-content"></div>
+    </div>
   </main>
 </div>
 
-<!-- ===========================
-     CLIENT VIEW
-     =========================== -->
-<div id="cv">
-  <div class="cv-page" id="cv-page"></div>
-</div>
+
 
 <!-- MODALS -->
 <div class="mo" id="m-np">
@@ -1376,17 +1102,8 @@ button { cursor: pointer; }
   </div>
 </div>
 
-<div class="mo" id="m-share">
-  <div class="modal">
-    <div class="m-title">Lien client</div>
-    <p style="font-size:12px;color:var(--c-text3);margin-bottom:14px;line-height:1.7">Le client voit <strong style="color:var(--c-text2)">uniquement son projet</strong> en lecture seule, mis à jour en temps réel. Tes notes internes sont cachées.</p>
-    <div style="background:var(--c-surface2);border:1px solid var(--c-border2);border-radius:var(--r);padding:12px;font-family:monospace;font-size:11px;color:var(--c-accent);word-break:break-all;line-height:1.5" id="share-url"></div>
-    <div class="fa">
-      <button class="btn btn-ghost" onclick="cm('m-share')">Fermer</button>
-      <button class="btn btn-primary" onclick="copyShare()">Copier le lien</button>
-    </div>
-  </div>
-</div>
+
+
 
 <div class="toast" id="toast"><div class="toast-dot"></div><span id="toast-msg"></span></div>
 
@@ -1480,211 +1197,9 @@ function pull(cb) {
 // ============================================================
 //  CLIENT VIEW CHECK
 // ============================================================
-function checkCV() {
-  var pid = new URLSearchParams(window.location.search).get('client');
-  if (!pid) return false;
-  document.getElementById('admin').style.display = 'none';
-  document.getElementById('cv').style.display = 'block';
-  if (USE_CLOUD) {
-    pull(function() { renderCV(pid); });
-  } else {
-    renderCV(pid);
-  }
-  return true;
-}
-
 // ============================================================
 //  CLIENT VIEW RENDER
 // ============================================================
-function renderCV(pid) {
-  var p = S.projects.find(function(x) { return x.id === pid; });
-  if (!p) {
-    document.getElementById('cv-page').innerHTML = '<div style="padding:60px;text-align:center;color:rgba(255,255,255,.3);font-size:14px">Projet introuvable</div>';
-    return;
-  }
-
-  var done  = p.tasks.filter(function(t) { return t.status === 'done'; }).length;
-  var prog  = p.tasks.filter(function(t) { return t.status === 'inprogress'; }).length;
-  var total = p.tasks.length;
-  var pct   = total ? Math.round(done / total * 100) : 0;
-  var ac    = p.color;
-  var now   = new Date();
-  var mos   = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
-  var dateStr = mos[now.getMonth()] + ' ' + now.getFullYear() + ' — ' + now.getHours() + 'h' + String(now.getMinutes()).padStart(2,'0');
-  var circum  = 2 * Math.PI * 60;
-  var meshColor = hexAlpha(ac, 0.08);
-
-  var html = '';
-
-  // Live badge
-  html += '<div class="cv-live"><div class="cv-live-dot"></div>Suivi en direct</div>';
-
-  // Hero
-  html += '<div class="cv-hero">';
-  html += '<div class="cv-hero-bg"></div>';
-  html += '<div class="cv-hero-mesh" style="--mesh-color:' + meshColor + '"></div>';
-  html += '<div class="cv-hero-grid"></div>';
-  html += '<div class="cv-hero-fade"></div>';
-  html += '<div class="cv-hero-inner">';
-  // Left
-  html += '<div>';
-  html += '<div class="cv-hero-eyebrow">HAMOUNI Studio — Tableau de bord client</div>';
-  html += '<div class="cv-hero-title">' + p.name + '</div>';
-  html += '<div class="cv-hero-client">' + p.client + '</div>';
-  if (p.instagram) html += '<div class="cv-hero-ig">' + p.instagram + '</div>';
-  html += '<div class="cv-hero-tags">';
-  html += '<div class="cv-tag">' + SM[p.status].l + '</div>';
-  html += '<div class="cv-tag">Deadline : ' + p.deadline + '</div>';
-  html += '<div class="cv-tag">Mis à jour : ' + dateStr + '</div>';
-  html += '</div></div>';
-  // Ring
-  html += '<div class="cv-ring-wrap" style="--ring-color:' + ac + '">';
-  html += '<svg class="cv-ring-svg" width="140" height="140" viewBox="0 0 140 140">';
-  html += '<circle class="cv-ring-track" cx="70" cy="70" r="60"/>';
-  html += '<circle class="cv-ring-fill" id="cv-ring" cx="70" cy="70" r="60" stroke-dasharray="' + circum + '" stroke-dashoffset="' + circum + '"/>';
-  html += '</svg>';
-  html += '<div class="cv-ring-center"><div class="cv-ring-pct" id="cv-pct">0</div><div class="cv-ring-label">complet</div></div>';
-  html += '</div>';
-  html += '</div></div>';
-
-  // Stats strip
-  var dPct = total ? Math.round(done/total*100) : 0;
-  var pPct = total ? Math.round(prog/total*100) : 0;
-  var tPct = total ? Math.round((total-done-prog)/total*100) : 0;
-  html += '<div class="cv-strip">';
-  html += cv_strip_cell(done,   'Terminées', ac, dPct);
-  html += cv_strip_cell(prog,   'En cours',  '#3b82f6', pPct);
-  html += cv_strip_cell(total-done-prog, 'À venir', 'rgba(255,255,255,.3)', tPct);
-  html += '</div>';
-
-  // Body
-  html += '<div class="cv-body">';
-
-  // Filters
-  html += '<div class="cv-filters">';
-  html += '<button class="cv-fb active" onclick="cvF(\'all\',this)">Tout voir</button>';
-  html += '<button class="cv-fb" onclick="cvF(\'inprogress\',this)">En cours</button>';
-  html += '<button class="cv-fb" onclick="cvF(\'todo\',this)">À venir</button>';
-  html += '<button class="cv-fb" onclick="cvF(\'done\',this)">Terminé</button>';
-  html += '</div>';
-
-  // Tasks
-  html += '<div id="cv-tasks">' + buildCVTasks(p, 'all', ac) + '</div>';
-
-  // Étapes
-  if (p.etapes && p.etapes.length) {
-    html += '<div class="cv-section">';
-    html += '<div class="cv-sh"><div class="cv-sh-label">Étapes du projet</div><div class="cv-sh-line"></div><div class="cv-sh-count">' + p.etapes.length + ' étapes</div></div>';
-    p.etapes.forEach(function(e, i) {
-      var isLast = i === p.etapes.length - 1;
-      var dc = e.status === 'done' ? '#22c55e' : e.status === 'current' ? ac : 'rgba(255,255,255,.12)';
-      var badgeClass = e.status === 'done' ? 'etb-done' : e.status === 'current' ? 'etb-curr' : 'etb-todo';
-      var bLabel = e.status === 'done' ? '✓ Terminé' : e.status === 'current' ? '● En cours' : '○ À venir';
-      html += '<div class="cv-etape" style="animation-delay:' + (i * .08) + 's">';
-      html += '<div class="cv-et-track">';
-      html += '<div class="cv-et-dot ' + (e.status === 'current' ? 'active' : '') + '" style="background:' + dc + ';color:' + dc + '"></div>';
-      if (!isLast) html += '<div class="cv-et-line"></div>';
-      html += '</div>';
-      html += '<div class="cv-et-body ' + (e.status === 'current' ? 'curr' : '') + '">';
-      html += '<div class="cv-et-date">' + e.date + '</div>';
-      html += '<div class="cv-et-name" style="color:' + (e.status === 'done' ? 'rgba(255,255,255,.3)' : e.status === 'current' ? '#fff' : 'rgba(255,255,255,.55)') + '">' + e.name + '</div>';
-      if (e.desc) html += '<div class="cv-et-desc">' + e.desc + '</div>';
-      html += '<span class="cv-et-badge ' + badgeClass + '">' + bLabel + '</span>';
-      html += '</div></div>';
-    });
-    html += '</div>';
-  }
-
-  html += '</div>'; // cv-body
-
-  // Footer
-  html += '<div class="cv-footer">';
-  html += '<div><div class="cv-footer-brand">HAMOUNI Studio</div><div class="cv-footer-sub">Ayoub HAMOUNI · @hamouni.ay<br>Directeur créatif · Paris</div></div>';
-  html += '<div class="cv-footer-r"><div class="cv-footer-project">' + p.name + '</div><div class="cv-footer-dl">Deadline : ' + p.deadline + '</div></div>';
-  html += '</div>';
-
-  document.getElementById('cv-page').innerHTML = html;
-  window._cvP = p;
-  window._cvAc = ac;
-  window._cvDone = done;
-
-  // Animate ring & counter
-  setTimeout(function() {
-    var ring = document.getElementById('cv-ring');
-    if (ring) ring.style.strokeDashoffset = circum - (circum * pct / 100);
-    var val = document.getElementById('cv-pct');
-    if (val) {
-      var cur = 0, step = pct / 80;
-      var iv = setInterval(function() {
-        cur = Math.min(cur + step, pct);
-        val.textContent = Math.round(cur);
-        if (cur >= pct) clearInterval(iv);
-      }, 14);
-    }
-  }, 200);
-
-  // Auto-refresh every 30s
-  if (USE_CLOUD) {
-    if (window._cvRef) clearInterval(window._cvRef);
-    window._cvRef = setInterval(function() {
-      pull(function() {
-        var np = S.projects.find(function(x) { return x.id === pid; });
-        if (!np) return;
-        var nd = np.tasks.filter(function(t) { return t.status === 'done'; }).length;
-        if (nd !== window._cvDone) renderCV(pid);
-      });
-    }, 30000);
-  }
-}
-
-function cv_strip_cell(val, lbl, color, pct) {
-  return '<div class="cv-strip-cell">'
-    + '<div class="cv-strip-val" style="color:' + color + '">' + val + '</div>'
-    + '<div class="cv-strip-lbl">' + lbl + '</div>'
-    + '<div class="cv-strip-bar" style="width:' + pct + '%;background:' + color + '"></div>'
-    + '</div>';
-}
-
-function buildCVTasks(p, filter, ac) {
-  var statuses = filter === 'all' ? ['inprogress', 'todo', 'done'] : [filter];
-  var html = '';
-  statuses.forEach(function(s) {
-    var tasks = p.tasks.filter(function(t) { return t.status === s; });
-    if (!tasks.length) return;
-    var lbl = s === 'done' ? 'Terminé' : s === 'inprogress' ? 'En cours' : 'À venir';
-    var dc  = s === 'done' ? '#22c55e' : s === 'inprogress' ? ac : 'rgba(255,255,255,.14)';
-    html += '<div class="cv-section">';
-    html += '<div class="cv-sh"><div class="cv-sh-label">' + lbl + '</div><div class="cv-sh-line"></div><div class="cv-sh-count">' + tasks.length + ' tâche' + (tasks.length > 1 ? 's' : '') + '</div></div>';
-    tasks.forEach(function(t, i) {
-      var c = TC[t.tag] || TC.other;
-      html += '<div class="cv-tc" style="animation-delay:' + (i * .055) + 's">';
-      html += '<div class="cv-tc-icon" style="background:' + dc + '"></div>';
-      html += '<div style="flex:1"><div class="cv-tc-name ' + (s === 'done' ? 'done' : '') + '">' + t.name + '</div>';
-      if (t.note && s !== 'done') html += '<div class="cv-tc-note">↳ ' + t.note + '</div>';
-      html += '</div>';
-      html += '<span class="cv-tc-tag" style="background:' + c.bg + ';color:' + c.t + '">' + t.tag + '</span>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
-  if (!html) html = '<div style="padding:24px;text-align:center;color:rgba(255,255,255,.18);font-size:13px">Aucune tâche dans cette catégorie</div>';
-  return html;
-}
-
-function cvF(filter, btn) {
-  document.querySelectorAll('.cv-fb').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  var el = document.getElementById('cv-tasks');
-  if (el && window._cvP) el.innerHTML = buildCVTasks(window._cvP, filter, window._cvAc);
-}
-
-function hexAlpha(hex, a) {
-  var r = parseInt(hex.slice(1,3), 16);
-  var g = parseInt(hex.slice(3,5), 16);
-  var b = parseInt(hex.slice(5,7), 16);
-  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
-}
-
 // ============================================================
 //  ADMIN VIEWS
 // ============================================================
@@ -1694,6 +1209,7 @@ function gv(n) {
   document.getElementById('view-' + n).classList.add('active');
   if (n === 'dashboard') { renderDash(); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
   else if (n === 'projects') { renderAll(); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
+  else if (n === 'planning') { renderPlanning(); document.querySelectorAll('.nav-item')[2].classList.add('active'); }
 }
 function op(id) { S.cur = id; S.tab = 'overview'; gv('project-detail'); renderDetail(id); }
 function goBack() { gv('projects'); }
@@ -1756,8 +1272,7 @@ function renderDetail(id) {
   var tls  = ['Vue générale', 'Tâches', 'Étapes', 'Rapport', 'Notes'];
 
   document.getElementById('dta').innerHTML =
-    '<button class="btn btn-ghost btn-sm no-print" onclick="openEP(\'' + p.id + '\')">Modifier</button>' +
-    '<button class="btn btn-ghost btn-sm no-print" onclick="openShare(\'' + p.id + '\')">Lien client</button>';
+    '<button class="btn btn-ghost btn-sm no-print" onclick="openEP(\'' + p.id + '\')">Modifier</button>';
 
   var hero = '<div class="detail-header" style="border-top:2px solid ' + p.color + '">';
   hero += '<div class="dh-top">';
@@ -1888,7 +1403,7 @@ function renderRapport(p) {
 
   h += '<div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--c-border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">';
   h += '<div style="font-size:11px;color:var(--c-text3)">HAMOUNI Studio · Ayoub HAMOUNI · @hamouni.ay</div>';
-  h += '<div style="display:flex;gap:8px" class="no-print"><button class="btn btn-ghost btn-sm" onclick="window.print()">Imprimer / PDF</button><button class="btn btn-primary btn-sm" onclick="openShare(\'' + p.id + '\')">Partager</button></div>';
+  h += '<div style="display:flex;gap:8px" class="no-print"><button class="btn btn-ghost btn-sm" onclick="window.print()">Imprimer / PDF</button></div>';
   h += '</div></div>';
   return h;
 }
@@ -2057,17 +1572,6 @@ function saveEP() {
   p.instagram = document.getElementById('ep-ig').value.trim()     || null;
   save(); cm('m-ep'); renderDetail(S.cur); renderDash(); showToast('Projet mis à jour', true);
 }
-function openShare(id) {
-  var url = window.location.origin + window.location.pathname + '?client=' + id;
-  document.getElementById('share-url').textContent = url;
-  om('m-share');
-}
-function copyShare() {
-  var url = document.getElementById('share-url').textContent;
-  navigator.clipboard.writeText(url)
-    .then(function() { showToast('Lien copié !', true); cm('m-share'); })
-    .catch(function() { showToast('Copie manuelle nécessaire', false); });
-}
 function saveNote(id, val) {
   var p = S.projects.find(function(x) { return x.id === id; });
   if (p) { p.notes = val; save(); }
@@ -2191,11 +1695,195 @@ function loadDefault() {
   save();
 }
 
+
+// ============================================================
+//  PLANNING
+// ============================================================
+var _planOffset = 0; // weeks from today
+
+function getWeekDays(offset) {
+  var now = new Date();
+  var day = now.getDay(); // 0=Sun, 1=Mon...
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1) + (offset * 7));
+  monday.setHours(0,0,0,0);
+  var days = [];
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    days.push(d);
+  }
+  return days;
+}
+
+function formatDate(d) {
+  return d.getDate() + '/' + (d.getMonth()+1);
+}
+
+function isToday(d) {
+  var n = new Date();
+  return d.getDate()===n.getDate() && d.getMonth()===n.getMonth() && d.getFullYear()===n.getFullYear();
+}
+
+function dayKey(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function prevWeek() { _planOffset--; renderPlanning(); }
+function nextWeek() { _planOffset++; renderPlanning(); }
+function goToday()  { _planOffset = 0; renderPlanning(); }
+
+function renderPlanning() {
+  var days = getWeekDays(_planOffset);
+  var dayNames = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+  var months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+
+  // Load planning data from localStorage
+  var planData = {};
+  try { planData = JSON.parse(localStorage.getItem('hamouni_plan') || '{}'); } catch(e) {}
+
+  // Update week label
+  var lbl = document.getElementById('week-label');
+  if (lbl) {
+    if (_planOffset === 0) lbl.textContent = 'Cette semaine';
+    else lbl.textContent = formatDate(days[0]) + ' — ' + formatDate(days[6]) + ' ' + days[0].getFullYear();
+  }
+
+  // Compute total hours per project this week
+  var projHours = {};
+  S.projects.forEach(function(p) { projHours[p.id] = 0; });
+  days.forEach(function(d) {
+    var key = dayKey(d);
+    if (planData[key]) {
+      planData[key].forEach(function(block) {
+        if (projHours[block.pid] !== undefined) projHours[block.pid] += block.hours;
+        else projHours[block.pid] = block.hours;
+      });
+    }
+  });
+
+  var totalHours = Object.values(projHours).reduce(function(a,b){return a+b;}, 0);
+  var maxHours = 40; // 5 days × 8h
+  var chargeClass = totalHours <= 30 ? 'charge-ok' : totalHours <= 40 ? 'charge-mid' : 'charge-over';
+  var chargeLabel = totalHours <= 30 ? 'Charge normale' : totalHours <= 40 ? 'Semaine chargée' : '⚠️ Surchargé';
+
+  var html = '';
+
+  // Charge bar
+  html += '<div class="charge-bar-wrap">';
+  html += '<div class="charge-bar-label"><span>Charge de la semaine — ' + chargeLabel + '</span><span style="font-weight:600">' + totalHours + 'h / ' + maxHours + 'h</span></div>';
+  html += '<div class="charge-track"><div class="charge-fill ' + chargeClass + '" style="width:' + Math.min(100, Math.round(totalHours/maxHours*100)) + '%"></div></div>';
+  html += '</div>';
+
+  // Summary cards per project
+  html += '<div class="plan-summary">';
+  S.projects.forEach(function(p) {
+    var h = projHours[p.id] || 0;
+    html += '<div class="plan-proj-card" style="--pc:' + p.color + '">';
+    html += '<div><div class="plan-proj-name">' + p.name + '</div><div class="plan-proj-h">' + h + 'h cette semaine</div></div>';
+    html += '<div class="plan-proj-badge">' + h + 'h</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Week grid
+  html += '<div class="plan-week">';
+  // Header row
+  html += '<div class="plan-header-cell" style="font-size:10px;color:var(--c-text3)">Projet</div>';
+  days.forEach(function(d, i) {
+    var todayCls = isToday(d) ? ' today' : '';
+    html += '<div class="plan-header-cell' + todayCls + '">' + dayNames[i] + '<br><span style="font-size:13px;font-weight:700;letter-spacing:0">' + d.getDate() + '</span></div>';
+  });
+
+  // One row per project
+  S.projects.forEach(function(p) {
+    // Row label
+    html += '<div class="plan-row-label"><div class="p-dot" style="background:' + p.color + '"></div>' + p.name + '</div>';
+    // Day cells
+    days.forEach(function(d) {
+      var key = dayKey(d);
+      var blocks = (planData[key] || []).filter(function(b) { return b.pid === p.id; });
+      var todayCls = isToday(d) ? ' today' : '';
+      html += '<div class="plan-cell' + todayCls + '" onclick="addBlock('' + p.id + '','' + key + '')">';
+      blocks.forEach(function(b) {
+        html += '<div class="plan-block" style="background:' + p.color + '" onclick="event.stopPropagation();editBlock('' + key + '','' + b.id + '')">';
+        html += '<span class="plan-block-name">' + (b.label || p.name) + '</span>';
+        html += '<span class="plan-block-h">' + b.hours + 'h</span>';
+        html += '</div>';
+      });
+      if (!blocks.length) html += '<div class="plan-add-btn">+</div>';
+      html += '</div>';
+    });
+  });
+  html += '</div>';
+
+  // Pro tips
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:4px">';
+  html += '<div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:16px 18px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-text3);margin-bottom:8px">💡 Comment utiliser</div><div style="font-size:12px;color:var(--c-text3);line-height:1.7">Clique sur une cellule pour ajouter un bloc de travail. Donne-toi <strong style="color:var(--c-text2)">un seul projet prioritaire</strong> par demi-journée.</div></div>';
+  html += '<div style="background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:16px 18px"><div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--c-text3);margin-bottom:8px">🎯 Règle des 3</div><div style="font-size:12px;color:var(--c-text3);line-height:1.7">Chaque matin, choisis <strong style="color:var(--c-text2)">3 tâches max</strong> à finir dans la journée. Rien d'autre ne compte.</div></div>';
+  html += '</div>';
+
+  document.getElementById('planning-content').innerHTML = html;
+}
+
+function savePlanData(data) {
+  localStorage.setItem('hamouni_plan', JSON.stringify(data));
+}
+
+function addBlock(pid, dateKey) {
+  var p = S.projects.find(function(x) { return x.id === pid; });
+  if (!p) return;
+
+  // Quick modal
+  var label = prompt('Que vas-tu faire sur "' + p.name + '" ? (laisse vide pour juste mettre des heures)');
+  if (label === null) return; // cancelled
+  var hoursStr = prompt('Combien d'heures ? (ex: 2, 3.5)', '2');
+  if (hoursStr === null) return;
+  var hours = parseFloat(hoursStr);
+  if (isNaN(hours) || hours <= 0) { alert('Nombre d'heures invalide'); return; }
+
+  var planData = {};
+  try { planData = JSON.parse(localStorage.getItem('hamouni_plan') || '{}'); } catch(e) {}
+  if (!planData[dateKey]) planData[dateKey] = [];
+  planData[dateKey].push({ id: 'b_' + Date.now(), pid: pid, label: label || p.name, hours: hours });
+  savePlanData(planData);
+  renderPlanning();
+  showToast(hours + 'h planifiées sur ' + p.name, true);
+}
+
+function editBlock(dateKey, blockId) {
+  var planData = {};
+  try { planData = JSON.parse(localStorage.getItem('hamouni_plan') || '{}'); } catch(e) {}
+  if (!planData[dateKey]) return;
+  var block = planData[dateKey].find(function(b) { return b.id === blockId; });
+  if (!block) return;
+
+  var action = prompt('Bloc : "' + block.label + '" — ' + block.hours + 'h
+
+Entrer une nouvelle durée (en heures) ou "supprimer" pour effacer', block.hours);
+  if (action === null) return;
+  if (action.trim().toLowerCase() === 'supprimer') {
+    planData[dateKey] = planData[dateKey].filter(function(b) { return b.id !== blockId; });
+    if (!planData[dateKey].length) delete planData[dateKey];
+    savePlanData(planData);
+    renderPlanning();
+    showToast('Bloc supprimé', true);
+  } else {
+    var h = parseFloat(action);
+    if (!isNaN(h) && h > 0) {
+      block.hours = h;
+      savePlanData(planData);
+      renderPlanning();
+      showToast('Mis à jour', true);
+    }
+  }
+}
+
 // ============================================================
 //  INIT
 // ============================================================
 if (!loadLocal()) loadDefault();
-if (!checkCV()) renderDash();
+renderDash();
 </script>
 </body>
 </html>
