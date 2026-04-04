@@ -1186,12 +1186,23 @@ function pull(cb) {
     headers: { 'X-Master-Key': JSONBIN_KEY }
   }).then(function(r) { return r.json(); })
   .then(function(d) {
-    if (d.record && d.record.projects) {
+    if (d.record && d.record.projects && d.record.projects.length > 0) {
+      // Cloud has real data — use it
       S.projects = d.record.projects;
       try { localStorage.setItem('hamouni_wos', JSON.stringify({ projects: S.projects, ts: Date.now() })); } catch(e) {}
+    } else {
+      // Cloud is empty — check local, else load defaults
+      if (!loadLocal()) loadDefault();
+      // Push defaults to cloud so it's synced
+      push();
     }
     if (cb) cb();
-  }).catch(function() { if (cb) cb(); });
+  }).catch(function() {
+    // Network error — use local or defaults
+    if (!loadLocal()) loadDefault();
+    setSync('err');
+    if (cb) cb();
+  });
 }
 
 // ============================================================
@@ -1882,8 +1893,17 @@ Entrer une nouvelle durée (en heures) ou "supprimer" pour effacer', block.hours
 // ============================================================
 //  INIT
 // ============================================================
-if (!loadLocal()) loadDefault();
-renderDash();
+// Try cloud first, fallback to local, fallback to defaults
+if (USE_CLOUD) {
+  // Show UI immediately with local/default data while cloud loads
+  if (!loadLocal()) loadDefault();
+  renderDash();
+  // Then sync with cloud in background
+  pull(function() { renderDash(); });
+} else {
+  if (!loadLocal()) loadDefault();
+  renderDash();
+}
 </script>
 </body>
 </html>
